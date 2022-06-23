@@ -3,8 +3,12 @@
  * @Date: 2022-06-23
  * @Description: 
  */
-console.log('welcome-my-webpack')
+import 'amfe-flexible'
+import 'normalize.css/normalize.css'
 import './styles/common.scss'
-const div = document.createElement('div')
-div.className = 'main'
-document.body.appendChild(div)
+import Vue from 'vue'
+import App from './App.vue'
+new Vue({
+  el:'#app',
+  render:h=>h(App)
+})

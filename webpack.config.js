@@ -6,6 +6,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { DefinePlugin } = require('webpack')
+const { VueLoaderPlugin } = require('vue-loader')
 module.exports = (env) => {
   return {
     entry: {
@@ -21,12 +23,16 @@ module.exports = (env) => {
     devtool: env.development ? 'source-map' : false,
     plugins:[
       new HtmlWebpackPlugin({
-        title:'mytest',
+        title:'my-web-test',
         template:'./public/index.html'
       }),
       new MiniCssExtractPlugin({
         filename:'static/style/[name].[contenthash].css'
-      })
+      }),
+      new DefinePlugin({
+        BASEURL:"'./'"
+      }),
+      new VueLoaderPlugin()
     ],
     module: {
       rules:[
@@ -69,6 +75,10 @@ module.exports = (env) => {
           test:/\.js$/i,
           loader:'babel-loader',
           exclude:path.resolve(__dirname,'node_modules')
+        },
+        {
+          test:/\.vue$/i,
+          loader:'vue-loader'
         }
       ]
     }
