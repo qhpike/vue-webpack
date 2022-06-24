@@ -6,9 +6,11 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const { DefinePlugin } = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const WebpackBar = require('webpackbar')
+const { DefinePlugin  } = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
-module.exports = (env) => {
+module.exports = (env,argv) => {
   return {
     entry: {
       index:'./src/index.js'
@@ -21,6 +23,10 @@ module.exports = (env) => {
     },
     mode:env.development ? 'development' : 'production',
     devtool: env.development ? 'source-map' : false,
+    devServer:{
+      static:'./dist',
+      hot:false,
+    },
     plugins:[
       new HtmlWebpackPlugin({
         title:'my-web-test',
@@ -32,7 +38,19 @@ module.exports = (env) => {
       new DefinePlugin({
         BASEURL:"'./'"
       }),
-      new VueLoaderPlugin()
+      new VueLoaderPlugin(),
+      new CopyWebpackPlugin(
+        {
+          patterns:[
+            {from:'./public/favicon.ico'}
+          ]
+        }
+      ),
+      new WebpackBar({
+        color: env.development ? "#00BFFF" : "#67c23a",  // 默认green，进度条颜色支持HEX
+        basic: false,   // 默认true，启用一个简单的日志报告器
+        profile:false,  // 默认false，启用探查器。
+      })
     ],
     module: {
       rules:[
@@ -72,6 +90,13 @@ module.exports = (env) => {
           ]
         },
         {
+          test: /\.(png|svg|jpg|jpeg|gif)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'static/img/[name].[contenthash:6][ext]'
+          }
+        },
+        {
           test:/\.js$/i,
           loader:'babel-loader',
           exclude:path.resolve(__dirname,'node_modules')
@@ -81,6 +106,24 @@ module.exports = (env) => {
           loader:'vue-loader'
         }
       ]
+    },
+    optimization: {
+      moduleIds: 'deterministic',
+      runtimeChunk: 'single',
+     splitChunks: {
+       cacheGroups: {
+         vendor: {
+           test: /[\\/]node_modules[\\/]/,
+           name: 'vendors',
+           chunks: 'all',
+         },
+       },
+     },
+    },
+    resolve:{
+      alias:{
+        '@':path.resolve(__dirname,'src/')
+      }
     }
   }
 }

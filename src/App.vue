@@ -15,6 +15,9 @@
       return {
         title:'vue-start'
       }
+    },
+    mounted() {
+      console.log(process.env.NODE_ENV,'app-mounted')
     }
   }
 </script>

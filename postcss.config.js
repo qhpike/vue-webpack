@@ -11,5 +11,13 @@ module.exports = {
       propList: ['*'],
       selectorBlackList: ['.norem', 'var.scss'] 
   })
-]
+          ],
+// "plugins": [
+    //   [
+    //     "@babel/plugin-transform-runtime",
+    //     {
+    //       "corejs": 3
+    //     }
+    //   ]
+    // ]
 }

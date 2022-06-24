@@ -6,6 +6,7 @@
 import 'amfe-flexible'
 import 'normalize.css/normalize.css'
 import './styles/common.scss'
+
 import Vue from 'vue'
 import App from './App.vue'
 new Vue({
