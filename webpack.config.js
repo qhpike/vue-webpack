@@ -17,11 +17,11 @@ module.exports = (env,argv) => {
     },
     output: {
       path:path.resolve(__dirname,'dist'),
-      filename:'[name].[contenthash:6].js',
+      filename:'static/js/[name].[contenthash:6].js',
       assetModuleFilename:'static/[name].[contenthash].[ext]',
       clean:true,
     },
-    mode:env.development ? 'development' : 'production',
+    mode:env.development ? 'development' : 'production' ,
     devtool: env.development ? 'source-map' : false,
     devServer:{
       static:'./dist',
