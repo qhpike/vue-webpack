@@ -10,6 +10,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WebpackBar = require('webpackbar')
 const { DefinePlugin  } = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
+const readEnv = require('./readEnv')
+const envirmont = readEnv('development')
+console.log(typeof envirmont.VUE_APP_HOSPITAL_SERVER,'objisany')
 module.exports = (env,argv) => {
   return {
     entry: {
@@ -36,7 +39,12 @@ module.exports = (env,argv) => {
         filename:'static/style/[name].[contenthash].css'
       }),
       new DefinePlugin({
-        BASEURL:"'./'"
+        BASEURL:"'./'",
+        BASEHEAD:envirmont.VUE_APP_SMS_SERVER
+        // "process.env" :{
+        //   ...envirmont
+        // }
+        
       }),
       new VueLoaderPlugin(),
       new CopyWebpackPlugin(

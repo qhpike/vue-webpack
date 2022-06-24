@@ -17,7 +17,7 @@
       }
     },
     mounted() {
-      console.log(process.env.NODE_ENV,'app-mounted')
+     console.log(process.env.VUE_APP_SMS_SERVER,'basehead')
     }
   }
 </script>
