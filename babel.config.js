@@ -5,7 +5,7 @@
  */
 const prodPlugins =[]
 if(process.env.NODE_ENV==='production') {
-  // prodPlugins.push('babel-plugin-transform-remove-console')
+  prodPlugins.push('babel-plugin-transform-remove-console')
   
 }
 module.exports = {

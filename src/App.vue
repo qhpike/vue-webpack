@@ -17,7 +17,7 @@
       }
     },
     mounted() {
-     console.log(process.env.VUE_APP_SMS_SERVER,'basehead')
+     console.log(URL.BASE_SERVER,'window')
     }
   }
 </script>
