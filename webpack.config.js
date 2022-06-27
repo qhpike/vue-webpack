@@ -7,12 +7,14 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const WebpackBar = require('webpackbar')
 const { DefinePlugin  } = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
 const readEnv = require('./readEnv')
 const envirmont = readEnv('development')
 module.exports = (env,argv) => {
+  console.log(typeof env.report,'argsv')
   return {
     entry: {
       index:'./src/index.js'
@@ -35,7 +37,7 @@ module.exports = (env,argv) => {
         template:'./public/index.html'
       }),
       new MiniCssExtractPlugin({
-        filename:'static/style/[name].[contenthash].css'
+        filename:'static/css/[name].[contenthash].css'
       }),
       new DefinePlugin({
         BASEURL:"'./'",
@@ -56,6 +58,10 @@ module.exports = (env,argv) => {
         color: env.development ? "#00BFFF" : "#67c23a",  // 默认green，进度条颜色支持HEX
         basic: false,   // 默认true，启用一个简单的日志报告器
         profile:false,  // 默认false，启用探查器。
+      }),
+      new BundleAnalyzerPlugin({
+        analyzerMode: env.report ? 'server' :'disabled', //脚本后面跟reprot可开启analyzer分析
+        // generateStatsFile: env.report
       })
     ],
     module: {
@@ -125,6 +131,11 @@ module.exports = (env,argv) => {
          },
        },
      },
+    },
+    performance: {
+      hints: "warning", // 枚举
+      maxAssetSize: 20000000, // 整数类型（以字节为单位）
+      maxEntrypointSize: 30000000, // 整数类型（以字节为单位）
     },
     resolve:{
       alias:{
