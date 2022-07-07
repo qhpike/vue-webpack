@@ -14,6 +14,7 @@
 </template>
 
 <script>
+
   export default {
     components: {
       Page1: () => import('./views/page1/index.vue'),
@@ -25,7 +26,7 @@
       }
     },
     mounted() {
-     console.log(URL.BASE_SERVER,'window')
+     console.log(MYURL,'window')
     }
   }
 </script>

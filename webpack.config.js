@@ -28,6 +28,7 @@ module.exports = (env,argv) => {
     mode:env.development ? 'development' : 'production' ,
     devtool: env.development ? 'source-map' : false,
     devServer:{
+      port:80,
       static:'./dist',
       hot:false,
     },
@@ -41,7 +42,7 @@ module.exports = (env,argv) => {
       }),
       new DefinePlugin({
         BASEURL:"'./'",
-        URL :JSON.stringify({
+        MYURL :JSON.stringify({
           ...envirmont
         })
         
@@ -106,6 +107,13 @@ module.exports = (env,argv) => {
           type: 'asset/resource',
           generator: {
             filename: 'static/img/[name].[contenthash:6][ext]'
+          }
+        },
+        {
+          test:  /\.(eot|woff|woff2|ttf)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'static/font/[name].[contenthash:6][ext]'
           }
         },
         {
