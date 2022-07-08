@@ -6,8 +6,6 @@
 <template>
   <div class="box">
     {{title}}
-    <img src="./assets/image/test.jpg" class="img" alt="">
-    <img src="./assets/image/test.jpg" class="img" alt="">
     <Page1></Page1>
     <Page2></Page2>
   </div>
@@ -25,7 +23,7 @@
       }
     },
     mounted() {
-     console.log(URL.BASE_SERVER,'window')
+     console.log(MYURL.BASE_SERVER,'window')
     }
   }
 </script>

@@ -41,7 +41,7 @@ module.exports = (env,argv) => {
       }),
       new DefinePlugin({
         BASEURL:"'./'",
-        URL :JSON.stringify({
+        MYURL :JSON.stringify({
           ...envirmont
         })
         
@@ -109,9 +109,16 @@ module.exports = (env,argv) => {
           }
         },
         {
+          test: /\.(woff|woff2|eot|ttf|otf)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'static/font/[name].[contenthash:6][ext]'
+          }
+        },
+        {
           test:/\.js$/i,
           loader:'babel-loader',
-          exclude:path.resolve(__dirname,'node_modules')
+          exclude:/node_modules/
         },
         {
           test:/\.vue$/i,
