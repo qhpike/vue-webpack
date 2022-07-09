@@ -19,7 +19,6 @@
 <style lang="scss" scoped>
   img {
     display:inline-block;
-    width:200px;
-    float:left;
+    width: 200px;
   }
 </style>

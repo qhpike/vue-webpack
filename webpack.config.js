@@ -110,7 +110,7 @@ module.exports = (env,argv) => {
           }
         },
         {
-          test:  /\.(eot|woff|woff2|ttf)$/i,
+          test: /\.(woff|woff2|eot|ttf|otf)$/i,
           type: 'asset/resource',
           generator: {
             filename: 'static/font/[name].[contenthash:6][ext]'
@@ -119,7 +119,7 @@ module.exports = (env,argv) => {
         {
           test:/\.js$/i,
           loader:'babel-loader',
-          exclude:path.resolve(__dirname,'node_modules')
+          exclude:/node_modules/
         },
         {
           test:/\.vue$/i,
