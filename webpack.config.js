@@ -12,16 +12,17 @@ const WebpackBar = require('webpackbar')
 const { DefinePlugin  } = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
 const readEnv = require('./readEnv')
-const envirmont = readEnv('development')
-module.exports = (env,argv) => {
-  console.log(typeof env.report,'argsv')
+const envirmont = readEnv()
+module.exports = env => {
+  console.log(env.development,'argsv')
   return {
     entry: {
-      index:'./src/index.js'
+      main:'./src/index.js'
     },
     output: {
       path:path.resolve(__dirname,'dist'),
-      filename:'static/js/[name].[contenthash:6].js',
+      filename:'static/js/[name].[contenthash:6].bundle.js',
+      chunkFilename: 'static/js/[name].[chunkhash:6].chunk.js',
       assetModuleFilename:'static/[name].[contenthash].[ext]',
       clean:true,
     },
@@ -30,7 +31,7 @@ module.exports = (env,argv) => {
     devServer:{
       port:80,
       static:'./dist',
-      hot:false,
+      hot:true,
     },
     plugins:[
       new HtmlWebpackPlugin({
@@ -38,7 +39,8 @@ module.exports = (env,argv) => {
         template:'./public/index.html'
       }),
       new MiniCssExtractPlugin({
-        filename:'static/css/[name].[contenthash].css'
+        filename:'static/css/[name].[contenthash].css',
+        // chunkFilename: 'static/cssextract/[id].[contenthash].css'
       }),
       new DefinePlugin({
         BASEURL:"'./'",
@@ -70,7 +72,9 @@ module.exports = (env,argv) => {
         {
           test:/\.css$/i,
           use:[
-            MiniCssExtractPlugin.loader,
+            {
+              loader: env.development ? 'style-loader' : MiniCssExtractPlugin.loader,
+            },
             {
               loader:'css-loader',
               options:{
@@ -79,12 +83,16 @@ module.exports = (env,argv) => {
               }
             },
             'postcss-loader'
-          ]
+          ],
+          // exclude:path.resolve(__dirname,'./node_modules/element-ui')
         },
         {
           test:/\.scss$/i,
           use:[
-            MiniCssExtractPlugin.loader,
+            
+            {
+              loader: env.development ? 'style-loader' : MiniCssExtractPlugin.loader,
+            },
             {
               loader:'css-loader',
               options:{
@@ -137,6 +145,24 @@ module.exports = (env,argv) => {
            name: 'vendors',
            chunks: 'all',
          },
+         element: {
+           test: /[\\/]node_modules[\\/]element-ui[\\/]/,
+           name: 'element',
+           chunks: 'all',
+           priority:10
+         },
+         vue: {
+           test: /[\\/]node_modules[\\/]vue[\\/]/,
+           name: 'vue',
+           chunks: 'all',
+           priority:10
+         },
+         vuex: {
+          test: /[\\/]node_modules[\\/]vuex[\\/]/,
+          name: 'vuex',
+          chunks: 'all',
+          priority:10
+        },
        },
      },
     },
@@ -148,7 +174,9 @@ module.exports = (env,argv) => {
     resolve:{
       alias:{
         '@':path.resolve(__dirname,'src/')
-      }
-    }
+      },
+      extensions: [".js", ".json", ".jsx", ".css",".vue"],
+    },
+    stats:'all'
   }
 }

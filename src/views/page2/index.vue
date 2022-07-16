@@ -17,13 +17,17 @@
 
 <script>
   export default {
+    name:'mypage',
     components:{
       Test:()=> import('@/components/Test.vue')
     },
     data() {
       return {
-        msg:'我欲因之夢吳越，一夜飛度鏡湖月,天涯'
+        msg:'我欲因之夢吳越，一夜飛度鏡湖月!'
       }
+    },
+    mounted() {
+      console.log(this.$route,'router===')
     },
     methods: {
       reverse() {

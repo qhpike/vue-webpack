@@ -7,6 +7,7 @@
   <div class="page1">
    
     <Test> page1</Test>
+    <router-link :to="{ path: '/page', params: { userId: 123 }}">User</router-link>
   </div>
 </template>
 
@@ -14,6 +15,13 @@
   export default {
     components:{
       Test:()=> import('@/components/Test.vue')
+    },
+    async mounted() {
+    },
+    methods: {
+      goPage() {
+        this.$router.push({path:'/page',query:{size:'small'}})
+      }
     }
     
   }

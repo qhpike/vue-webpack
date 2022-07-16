@@ -12,7 +12,14 @@
 
 <script>
   export default {
-    title:'test'
+    data() {
+      return {
+        title:'test'
+      }
+    },
+    mounted() {
+      console.log('mounted')
+    }
   }
 </script>
 

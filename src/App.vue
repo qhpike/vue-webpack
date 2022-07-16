@@ -5,18 +5,14 @@
 -->
 <template>
   <div class="box">
-    {{title}}
-    <Page1></Page1>
-    <Page2></Page2>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-
   export default {
     components: {
-      Page1: () => import('./views/page1/index.vue'),
-      Page2: () => import('@/views/page2/index.vue')
+      Layout: () => import('./views/Layout/index.vue')
     },
     data() {
       return {
@@ -31,6 +27,8 @@
 
 <style lang="scss" scoped>
 .box {
+  height: 100vh;
+  width: 100vw;
   font-size: 24px;
 }
 .img {
