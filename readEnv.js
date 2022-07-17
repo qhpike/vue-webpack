@@ -6,7 +6,6 @@
 const fs = require('fs')
 const path = require('path')
 module.exports = () => {
-  console.log(process.env.NODE_ENV,'node_env')
   const sendName = process.env.NODE_ENV
   let filename = path.join(__dirname, `./.env.${sendName}`)
   try {

@@ -4,7 +4,7 @@ import  VueRouter  from 'vue-router'
 
 Vue.use(VueRouter)
 
-const routes = [
+export const constantRoutes = [
     {
         path:'/login',
         component: () => import('@/views/login')  
@@ -16,17 +16,13 @@ const routes = [
     {
         path: '/',
         component: () => import('@/views/Layout'),
-        children: [{
-            path: '/test',
-            component: () => import('@/views/page2'),
-        }]
     },
     
-    {path:'/404',component: () => import('@/views/404')},
+    // {path:'/404',component: () => import('@/views/404')},
     {path:'*',component: () => import('@/views/404')}
 ]
-const route = new VueRouter({
+const router = new VueRouter({
     mode:'hash',
-    routes
+    routes:constantRoutes
 })
-export default route
+export default router

@@ -11,6 +11,8 @@
             return {
                 title:'my is layout'
             }
+        },
+        mounted() {
         }
     }
 </script>

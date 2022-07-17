@@ -27,7 +27,6 @@
       }
     },
     mounted() {
-      console.log(this.$route,'router===')
     },
     methods: {
       reverse() {

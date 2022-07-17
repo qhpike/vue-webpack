@@ -27,9 +27,24 @@
                 this.username = '';
                 this.password = '';
             },
-            login() {
-                console.log('login')
+            async login() {
+                this.$store.dispatch('user/login',{
+                    username:this.username,
+                    password:this.password
+                }).then(res=>{
+                    if(res.code===200) {
+                        this.$message.success('登录成功')
+                        this.$router.push({ path: this.redirect || '/' })
+                    } else {
+                        this.$message.error(res.message)
+                    }
+                    
+                }).catch(error=>{
+                    console.log(error,'error')
+                })
             }
+        },
+        mounted() {
         }
     }
 </script>

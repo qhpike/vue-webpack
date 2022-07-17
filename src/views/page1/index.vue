@@ -6,7 +6,7 @@
 <template>
   <div class="page1">
    
-    <Test> page1</Test>
+    <Test> page199</Test>
     <router-link :to="{ path: '/page', params: { userId: 123 }}">User</router-link>
   </div>
 </template>

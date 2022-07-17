@@ -20,7 +20,6 @@
       }
     },
     mounted() {
-     console.log(MYURL.BASE_SERVER,'window')
     }
   }
 </script>
