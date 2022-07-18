@@ -1,17 +1,24 @@
 import {setToken,getToken,removeToken } from '@/utils/auth.js'
 import { formatRouterTree,toRouter } from '@/utils/routerHook.js'
-import { login,getMenu } from '@/services/user'
-import { constantRoutes } from '@/router'
-const state = {
-    token:getToken(),
-    name: '',
-    avatar: '',
-    roles: [],
-    perms: [],
-    routes:[]
+import { login,getMenu,logout } from '@/services/user'
+import { constantRoutes,resetRouter } from '@/router'
+
+const getDefaultState = () => {
+    return {
+        token:getToken(),
+        name: '',
+        avatar: '',
+        roles: [],
+        perms: [],
+        routes:[]
+    }
 }
+const state = getDefaultState()
 
 const mutations = {
+    RESET_STATE: (state) => {
+        Object.assign(state, getDefaultState())
+    },
     SET_TOKEN: (state,token)=>{
         state.token = token
     },
@@ -53,6 +60,20 @@ const actions = {
             })
         })
 
+    },
+    logout({ commit, state }) {
+        return new Promise((resolve, reject) => {
+            logout().then(() => {
+                removeToken() // must remove  token  first
+                resetRouter()
+                commit('RESET_STATE')
+                commit('SET_TOKEN', '')
+                commit('SET_PERMS', [])
+                resolve()
+            }).catch(error => {
+                reject(error)
+            })
+        })
     },
         // get user info
         getInfo({ commit, state }) {

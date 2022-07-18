@@ -21,8 +21,15 @@ export const constantRoutes = [
     {path:'/404',component: () => import('@/views/404')},
     // {path:'*',component: () => import('@/views/404')}
 ]
-const router = new VueRouter({
+const createRouter = () => new VueRouter({
     mode:'hash',
     routes:constantRoutes
 })
+
+const router =  createRouter()
+
+export function resetRouter () {
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher // the relevant part
+  }
 export default router

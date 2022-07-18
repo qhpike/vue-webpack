@@ -6,11 +6,11 @@
 const pxtorem = require('postcss-pxtorem')
 module.exports = {
   plugins:[require('postcss-preset-env'),
-//   pxtorem({
-//       rootValue: 192, 
-//       propList: ['*'],
-//       selectorBlackList: ['.norem', 'var.scss'] 
-//   })
+  pxtorem({
+      rootValue: 192, 
+      propList: ['*'],
+      selectorBlackList: ['.norem', 'var.scss'] 
+  })
           ],
 // "plugins": [
     //   [

@@ -8,9 +8,17 @@ export function login(data) {
     })
 }
 
+export function logout() {
+    return instance({
+        url: '/api/v1/sys/logout',
+        method: 'post'
+    })
+}
+
 export function getMenu() {
     return instance({
         url:'/api/v1/sys/info',
         method:'get'
     })
 }
+
