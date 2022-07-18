@@ -20,7 +20,18 @@
             return {
                 username:'',
                 password:'',
+                redirect:undefined
             }
+        },
+        watch: {
+            $route: {
+                handler(route) {
+                    this.redirect = route.query && route.query.redirect
+                },
+                immediate:true,
+            }
+        },
+        mounted() {
         },
         methods: {
             resetForm() {

@@ -2,7 +2,6 @@ import Cookies from "js-cookie";
 const Tokenkey ='cqbegin'
 
 export function getToken() {
-    console.log(Cookies.get(Tokenkey),'gettoken')
     return Cookies.get(Tokenkey)
 }
 

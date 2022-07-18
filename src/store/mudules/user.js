@@ -28,7 +28,6 @@ const mutations = {
         state.avatar = avatar
     },
     SET_ROLES: (state, roles) => {
-        console.log(roles,'=>rolse')
         state.roles = roles
     },
     SET_PERMS: (state, perms) => {
