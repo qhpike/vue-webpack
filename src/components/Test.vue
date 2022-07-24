@@ -5,8 +5,8 @@
 -->
 <template>
   <div>
-    <img src="@/assets/image/test.jpg" alt="">
-    <slot></slot>
+    <!-- <img src="@/assets/image/test.jpg" alt=""> -->
+    <!-- <slot></slot> -->
   </div>
 </template>
 
