@@ -12,6 +12,7 @@ const WebpackBar = require('webpackbar')
 const { DefinePlugin  } = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
 const readEnv = require('./readEnv')
+const { resolve } = require('path')
 const envirmont = readEnv()
 module.exports = env => {
   return {
@@ -28,7 +29,7 @@ module.exports = env => {
     mode:env.development ? 'development' : 'production' ,
     devtool: env.development ? 'source-map' : false,
     devServer:{
-      port:80,
+      port:90,
       static:'./dist',
       hot:true,
     },
@@ -114,7 +115,8 @@ module.exports = env => {
           type: 'asset/resource',
           generator: {
             filename: 'static/img/[name].[contenthash:6][ext]'
-          }
+          },
+          exclude:resolve('src/icons/svg')
         },
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
@@ -131,6 +133,18 @@ module.exports = env => {
         {
           test:/\.vue$/i,
           loader:'vue-loader'
+        },
+        {
+          test:/\.svg$/i,
+          use:[
+            {
+              loader:'svg-sprite-loader',
+              options:{
+                symbolId: 'icon-[name]'
+              }
+            },
+          ],
+          include:resolve('src/icons/svg')
         }
       ]
     },
