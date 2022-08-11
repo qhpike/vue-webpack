@@ -130,7 +130,30 @@ module.exports = env => {
         },
         {
           test:/\.vue$/i,
-          loader:'vue-loader'
+          loader:'vue-loader',
+          options:{
+            loaders:[
+            
+              {
+                loader: env.development ? 'style-loader' : MiniCssExtractPlugin.loader,
+              },
+              {
+                loader:'css-loader',
+                options:{
+                  importLoaders:1,
+                  esModule:false,
+                }
+              },
+              'postcss-loader',
+              'sass-loader',
+              {
+                loader:'sass-resources-loader',
+                options:{
+                  resources:'./src/styles/var.scss'
+                }
+              }
+            ]
+          }
         }
       ]
     },

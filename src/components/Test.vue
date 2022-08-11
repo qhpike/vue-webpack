@@ -18,7 +18,7 @@
       }
     },
     mounted() {
-    }
+    },
   }
 </script>
 

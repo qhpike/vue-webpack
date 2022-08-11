@@ -1,6 +1,9 @@
 <template>
     <div>
-        <el-container style="height: 100vh; border: 1px solid #eee">
+      <SideBar class="side-bar"></SideBar>
+      <AppMain></AppMain>
+      <Navbar></Navbar>
+        <!-- <el-container style="height: 100vh; border: 1px solid #eee">
            
 
             <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
@@ -43,12 +46,19 @@
             </el-container>
 
             
-        </el-container>
+        </el-container> -->
     </div>
 </template>
 
 <script>
+  import { SideBar,Navbar,AppMain } from './components'
     export default {
+        components: {
+          SideBar,
+          Navbar,
+          AppMain
+
+        },
         data() {
             return {
                 title:'my is layout'
@@ -80,7 +90,15 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style>
+        :root {
+    --main-side-width:200px;
+    --main-side-back:#808080;
+}
+</style>
+
+<style lang="scss">
+
       .el-header {
     background-color: #B3C0D1;
     color: #333;
