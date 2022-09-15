@@ -96,7 +96,7 @@ module.exports = env => {
             {
               loader:'css-loader',
               options:{
-                importLoaders:1,
+                importLoaders:2,
                 esModule:false,
               }
             },
@@ -105,7 +105,7 @@ module.exports = env => {
             {
               loader:'sass-resources-loader',
               options:{
-                resources:'./src/styles/var.scss'
+                resources:'./src/styles/var.module.scss'
               }
             }
           ]
@@ -136,7 +136,7 @@ module.exports = env => {
             {
               loader:'svg-sprite-loader',
               options:{
-                symbolId: 'icon-[name]'
+                symbolId: 'icon-[name]',
               }
             },
           ],
@@ -208,6 +208,9 @@ module.exports = env => {
       maxEntrypointSize: 30000000, // 整数类型（以字节为单位）
     },
     resolve:{
+      fallback: {
+        path:require.resolve('path-browserify')
+      },
       alias:{
         '@':path.resolve(__dirname,'src/')
       },

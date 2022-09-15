@@ -12,6 +12,7 @@ export function formatRouterTree(list, myid = 0) {
 }
 // 只有路由数据,过滤type为2的菜单权限
 export function toRouter(userRouters) {
+    console.log(userRouters,'menu-start')
     const newRouters = userRouters.filter(item => item.type === 1).map((r) => {
         let routes
         if (r.parent_id === 0) {
@@ -37,7 +38,9 @@ export function toRouter(userRouters) {
             routes.children = toRouter(r.children)
         }
         return routes
+        
     })
+    console.log(newRouters,'menu-end')
     newRouters.push({ path: '*', redirect: '/404', hidden: true })
     return newRouters
 }

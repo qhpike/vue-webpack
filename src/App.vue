@@ -4,16 +4,13 @@
  * @Description: 
 -->
 <template>
-  <div class="box">
+  <div id="app">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
   export default {
-    components: {
-      Layout: () => import('./views/Layout/index.vue')
-    },
     data() {
       return {
         title:'vue-start',

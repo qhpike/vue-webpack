@@ -1,18 +1,4 @@
 <template>
-    <!-- <div class="login-page">
-       <div class="login-box">
-        <el-form class="login-form"  label-position="left" label-width="120PX">
-            <el-form-item label="用户名:" >
-                <el-input v-model="username" ></el-input>
-            </el-form-item>
-            <el-form-item label="密码:" >
-                <el-input v-model="password" type="password"></el-input>
-            </el-form-item>
-            <el-button type="primary" @click="login">登录</el-button>
-            <el-button @click="resetForm">重置</el-button>
-        </el-form>
-       </div>
-    </div> -->
     <div>
         <img src="@/assets/image/bg.png" alt="" class="wave">
     <div class="container">

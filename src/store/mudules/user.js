@@ -90,9 +90,11 @@ const actions = {
                     const perms = _perms.filter(item => item.type === 2).map(menu => {
                         return menu.perms
                     })
+                    
                     const permsString = perms.toString()
                     const roles = formatRouterTree(data.roles)
                     const acccessRoutes = toRouter(roles)
+                    console.log(roles,acccessRoutes,'roles')
                     // roles must be a non-empty array
                     if (!roles || roles.length <= 0) {
                         reject('菜单权限不能为空!')
