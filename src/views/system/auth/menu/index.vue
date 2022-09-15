@@ -10,9 +10,10 @@
       <el-table
         ref="menuTable"
         v-loading="isLoading"
+        fit
         size="small"
+        style="width:100%"
         :data="menuall"
-        style="width: 100%;margin-bottom: 20px;"
         row-key="id"
         border
         :header-cell-style="headClass"
@@ -114,7 +115,7 @@
           width="80"
         />
         <el-table-column
-          fixed="right"
+         
           label="操作"
           width="100"
         >
@@ -137,6 +138,7 @@
 
 <script>
 // import { mapGetters } from 'vuex'
+import { loadJs } from '@/utils/index'
 import { formatRouterTree } from '@/utils/routerHook'
 import MenuDialog from './components/MenuDialog'
 import { debounce } from 'lodash'
@@ -174,7 +176,9 @@ export default {
     },
     beforeMount() {
     },
-    mounted() {
+    async mounted() {
+      const aes = await loadJs('./sdk.js')
+      console.log(aes,'aesxx')
     },
     methods: {
         headClass() {

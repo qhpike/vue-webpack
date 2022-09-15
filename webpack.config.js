@@ -53,7 +53,8 @@ module.exports = env => {
       new CopyWebpackPlugin(
         {
           patterns:[
-            {from:'./public/favicon.ico'}
+            {from:'./public/favicon.ico'},
+            {from:'./public/sdk.js'}
           ]
         }
       ),

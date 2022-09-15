@@ -31,12 +31,6 @@
     left: 0;
     z-index: 1001;
     overflow: hidden;
-    .el-menu-item {
-      display: flex !important;
-    }
-    .el-submenu__title {
-      // display: flex !important;
-    }
 
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;

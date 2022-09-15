@@ -14,7 +14,7 @@ export const constantRoutes = [
         path: '/',
         component: () => import('@/views/Layout'),
         redirect: '/dashboard',
-        meta:{title:'管理223',icon:'manager'},
+        meta:{title:'管理223',icon:'dashboard'},
         children: [{
             path: 'dashboard',
             name: 'Dashboard',
@@ -36,6 +36,7 @@ export const constantRoutes = [
 // 添加页面时，在此处录入路径及对应组件
 export const asyncRoutesMap = {
     'views/system/auth/menu/index': () => import('@/views/system/auth/menu'),
+    '/system/auth/users': () => import('@/views/system/auth/users'),
     
 }
 const createRouter = () => new VueRouter({

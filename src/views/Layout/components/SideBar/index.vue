@@ -55,7 +55,6 @@ import variables from  '@/styles/var.module.scss'
         },
         },
         mounted() {
-            console.log(this.permission_routes,'my-vuex-data')
         }
     }
 </script>
