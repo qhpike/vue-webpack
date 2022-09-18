@@ -24,7 +24,6 @@ export default {
     install(Vue) {
         const ppt = require.context('@/service/', true, /\.js$/).keys()
         const files = require.context('@/service/', true, /\.js$/)
-        console.log(ppt)
         const modules = {}
 
         // 挂载 $service
@@ -35,7 +34,6 @@ export default {
             .keys()
             .forEach(e => {
                 const list = e.substr(2).split('/')
-                console.log(e.substr(2),list)
                 // 路径和文件名拆分成数组
                 const parents = list.slice(0, list.length - 1)
 
@@ -46,7 +44,6 @@ export default {
                 let prev = null
                 let key = null
                 parents.forEach((k) => {
-                    console.log(curr[k])
                     if (!curr[k]) {
                         curr[k] = {}
                     }

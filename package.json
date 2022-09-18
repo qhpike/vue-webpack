@@ -23,6 +23,8 @@
     "core-js": "^3.23.2",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
+    "eslint-config-vue": "^2.0.2",
+    "eslint-plugin-vue": "^9.5.1",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss-loader": "^7.0.0",

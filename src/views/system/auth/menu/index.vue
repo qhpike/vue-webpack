@@ -166,7 +166,6 @@ export default {
     },
     watch: {
         visible(mynew, myold) {
-            console.log('新', mynew, '旧', myold)
         }
     },
     beforeCreate() {
@@ -178,7 +177,6 @@ export default {
     },
     async mounted() {
       const aes = await loadJs('./sdk.js')
-      console.log(aes,'aesxx')
     },
     methods: {
         headClass() {
@@ -254,7 +252,6 @@ export default {
                         type: 'error'
                     })
                 }
-                console.log(result.message)
             } catch (error) {
                 console.log(error)
             }

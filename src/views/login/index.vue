@@ -79,11 +79,9 @@
                 })
             },
             userBlur() {
-                console.log('userblur')
                 this.input1 =true
             },
             userBlur2() {
-                console.log('userblur')
                 this.input2 = true
             }
         },

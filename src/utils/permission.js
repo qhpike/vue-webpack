@@ -82,7 +82,6 @@ export function formatRouterTree(list, myid = 0) {
 }
 // 只有路由数据,过滤type为2的菜单权限
 export function toRouter(userRouters) {
-    console.log(userRouters,'让你的')
     const newRouters = userRouters.filter(item => item.type === 1).map((r) => {
         let routes
         if (r.parent_id === 0) {
@@ -91,8 +90,7 @@ export function toRouter(userRouters) {
                 name: r.name,
                 redirect: r.redirect,
                 meta: { title: r.title, icon: r.icon },
-                component: () => import('@/views/Layout')
-                // component: (resolve) => require([`@/views${r.cpath}/index.vue`], resolve)
+                component: () => import('@/Layout')
             }
         } else {
             routes = {
@@ -102,8 +100,6 @@ export function toRouter(userRouters) {
                 hidden: r.hidden,
                 meta: { title: r.title, icon: r.icon },
                 component: () => import(`@/views${r.view_path}/index.vue`)
-                // 错误原因是老外修改了webpack打包逻辑,此处改为require
-                // component: (resolve) => require([`@/views${r.view_path}/index.vue`], resolve)
             }
         }
 

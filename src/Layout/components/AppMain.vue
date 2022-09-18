@@ -1,7 +1,10 @@
 <template>
     <div >
-        <span>main-board</span>
+        <transition name="fade-transform" mode="out-in">
+
         <router-view></router-view>
+
+        </transition>
     </div>
 </template>
 

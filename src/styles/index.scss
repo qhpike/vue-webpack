@@ -1,5 +1,5 @@
 @import '@/styles/sidebar.scss';
-@import '@/styles/var.module.scss';
+// @import '@/styles/var.module.scss';
 body {
     height: 100%;
     -moz-osx-font-smoothing: grayscale;
@@ -55,7 +55,7 @@ body {
     }
   }
   
-  // main-container global css
+
   .app-container {
     padding: 20px;
   }

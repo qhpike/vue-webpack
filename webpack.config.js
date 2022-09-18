@@ -152,21 +152,21 @@ module.exports = env => {
               {
                 loader: env.development ? 'style-loader' : MiniCssExtractPlugin.loader,
               },
-              {
-                loader:'css-loader',
-                options:{
-                  importLoaders:1,
-                  esModule:false,
-                }
-              },
-              'postcss-loader',
-              'sass-loader',
-              {
-                loader:'sass-resources-loader',
-                options:{
-                  resources:'./src/styles/var.scss'
-                }
-              }
+              // {
+              //   loader:'css-loader',
+              //   options:{
+              //     importLoaders:1,
+              //     esModule:false,
+              //   }
+              // },
+              // 'postcss-loader',
+              // 'sass-loader',
+              // {
+              //   loader:'sass-resources-loader',
+              //   options:{
+              //     resources:'./src/styles/var.module.scss'
+              //   }
+              // }
             ]
           }
         }

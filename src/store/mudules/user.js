@@ -94,7 +94,6 @@ const actions = {
                     const permsString = perms.toString()
                     const roles = formatRouterTree(data.roles)
                     const acccessRoutes = toRouter(roles)
-                    console.log(roles,acccessRoutes,'roles')
                     // roles must be a non-empty array
                     if (!roles || roles.length <= 0) {
                         reject('菜单权限不能为空!')

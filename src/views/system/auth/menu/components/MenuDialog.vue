@@ -189,16 +189,10 @@ export default {
     },
     watch: {
         'menuForm.type': function(newss, old) {
-            console.log(newss, this.menuForm,
-                '新的监测')
-            console.log(this.$listeners, 'yy')
         },
         menuId: function(newid, oldid) {
-            console.log('hhhh', this.menuForm.perms, 'ID来了')
-            // this.getmenuinfo(newid)
         },
         'menuForm.parent_id': function(newpid, oldpid) {
-            console.log(newpid, '新的父节点id')
         },
         deep: true
     },
@@ -206,7 +200,6 @@ export default {
         this.initPerms()
     },
     mounted() {
-        console.log('dg-mounted')
     },
     methods: {
         handleMenuNodeClick(data) {

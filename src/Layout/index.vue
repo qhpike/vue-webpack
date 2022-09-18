@@ -48,7 +48,6 @@
                 } catch (error) {
                     console.log(error)
                 }
-                console.log('dnegludd')
                 if(answer) {
                     this.$store.dispatch('user/logout').then(res=>{
                     this.$router.push('/login')

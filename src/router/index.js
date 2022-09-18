@@ -12,20 +12,15 @@ export const constantRoutes = [
     },
     {
         path: '/',
-        component: () => import('@/views/Layout'),
-        redirect: '/dashboard',
-        meta:{title:'管理223',icon:'dashboard'},
+        component: () => import('@/Layout'),
+        // redirect: '/dashboard',
+        meta:{title:'Dashboard',icon:'dashboard'},
         children: [{
             path: 'dashboard',
             name: 'Dashboard',
             component: () => import('@/views/dashboard/index'),
             meta: { title: 'Dashboard', icon: 'dashboard' }
-        },{
-            path:'menu-set',
-            name:'menu-set',
-            component: () => import('@/views/system/auth/menu'),
-            meta: { title: '菜单设置', icon: 'dashboard' }
-        }
+        },
     ]
     },
    
