@@ -29,6 +29,7 @@
 .app-main {
     height: calc(100% - 50px);
      padding: 20px;
+     
     width: 100%;
     box-sizing: border-box;
 }
