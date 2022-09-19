@@ -1,3 +1,8 @@
+<!--
+ * @Author: akexian
+ * @Date: 2022-09-19
+ * @Description: 
+-->
 <template>
     <div :class="classObj" class="app-wrapper">
       <SideBar class="sidebar-container"></SideBar>
@@ -57,4 +62,12 @@
         }
     }
 </script>
+<style lang="scss" scoped>
+    .app-wrapper {
+        height:100%;
+        width: 100%;
+        position: relative;
+    }
+    
+</style>
 

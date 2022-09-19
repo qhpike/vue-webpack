@@ -1,3 +1,8 @@
+<!--
+ * @Author: akexian
+ * @Date: 2022-09-19
+ * @Description: 
+-->
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
@@ -24,7 +29,7 @@ export default {
     },
     data() {
         return {
-            title: '草场监管平台',
+            title: 'Vue-admin',
             logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
             // logo: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2890752735,3425811954&fm=26&gp=0.jpg'
         }

@@ -1,3 +1,8 @@
+/*
+ * @Author: akexian
+ * @Date: 2022-07-18
+ * @Description: 
+ */
 import Vue from 'vue'
 import  VueRouter  from 'vue-router'
 
@@ -26,7 +31,6 @@ export const constantRoutes = [
    
     
     {path:'/404',component: () => import('@/views/404')},
-    // {path:'*',component: () => import('@/views/404')}
 ]
 // 添加页面时，在此处录入路径及对应组件
 export const asyncRoutesMap = {

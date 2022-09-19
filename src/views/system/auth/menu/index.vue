@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-container">
+  <div class="app-container">
     <div class="menu-header">
       <el-row class="top-button">
         <el-button size="mini" @click="handleRefresh">刷新</el-button>
