@@ -1,36 +1,24 @@
 
 #app {
-  position: relative;
 
   .main-container {
     transition: left .28s;
-    position: absolute;
-    left: $sideBarWidth;
-    top: 50px;
-    width: calc(100% - $sideBarWidth );
-    height: 100vh;
+    width: calc(100% - $sideBarWidth);
+    height: 100%;
   }
   .navbar {
-    width:100%;
     height: 50px;
-    position: absolute;
-    left:0;
-    top:0;
-    padding-left: $sideBarWidth;
     background: #fff;
     box-shadow: 0 1px 4px rgba(0,21,41,.08);
+    display: flex;
+    justify-content: space-between;
     }
   .sidebar-container {
     transition: width 0.28s;
     width: $sideBarWidth ;
     background-color: $menuBg;
     height: 100%;
-    position: absolute;
     font-size: 0px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1001;
     overflow: hidden;
 
     .horizontal-collapse-transition {
@@ -108,10 +96,8 @@
     }
 
     .main-container {
-      left: 54px;
-    }
-    .navbar {
-      padding-left: 54px;
+      width: calc(100% - 54px);
+      height: 100%;
     }
 
     .submenu-title-noDropdown {

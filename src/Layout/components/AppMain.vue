@@ -1,5 +1,10 @@
+<!--
+ * @Author: akexian
+ * @Date: 2022-09-19
+ * @Description: 
+-->
 <template>
-    <div >
+    <div class="app-main">
         <transition name="fade-transform" mode="out-in">
 
         <router-view></router-view>
@@ -20,3 +25,12 @@
         }
     }
 </script>
+<style lang="scss" scoped>
+.app-main {
+    height: calc(100% - 50px);
+     padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+    
+</style>

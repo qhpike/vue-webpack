@@ -6,8 +6,12 @@
 <template>
     <div :class="classObj" class="app-wrapper">
       <SideBar class="sidebar-container"></SideBar>
-      <AppMain class="main-container"></AppMain>
-      <Navbar class="navbar"></Navbar>
+      <div class="main-container">
+          
+        <Navbar ></Navbar>
+        <AppMain ></AppMain>
+      </div>
+      
     </div>
 </template>
 
@@ -66,7 +70,7 @@
     .app-wrapper {
         height:100%;
         width: 100%;
-        position: relative;
+        display: flex;
     }
     
 </style>

@@ -6,7 +6,7 @@
 <template>
     <div class="app-container">
         <div class="box-show">
-            <el-table height="600">
+            <el-table height="400">
                 <el-table-column label="test"></el-table-column>
                 <el-table-column label="test"></el-table-column>
                 <el-table-column label="test"></el-table-column>

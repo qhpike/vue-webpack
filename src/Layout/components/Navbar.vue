@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div class="navbar">
       <Hamburger :is-active="sidebar.opened" @toggleClick="toggleSideBar" class="hamburger-container"></Hamburger>
 
 
@@ -55,7 +55,6 @@
     .hamburger-container {
     line-height: 46px;
     height: 100%;
-    float: left;
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color:transparent;
@@ -65,12 +64,9 @@
     }
   }
 
-   .breadcrumb-container {
-    float: left;
-  }
+ 
 
   .right-menu {
-    float: right;
     height: 100%;
     line-height: 50px;
 
