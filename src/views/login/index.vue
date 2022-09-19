@@ -69,6 +69,7 @@
                 }).then(res=>{
                     if(res.code===200) {
                         this.$message.success('登录成功')
+                        console.log(this.redirect,'this.redirect')
                         this.$router.push({ path: this.redirect || '/' })
                     } else {
                         this.$message.error(res.message)

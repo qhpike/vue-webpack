@@ -11,8 +11,6 @@
         ref="menuTable"
         v-loading="isLoading"
         fit
-        size="small"
-        style="width:100%"
         :data="menuall"
         row-key="id"
         border
@@ -23,8 +21,6 @@
         <el-table-column
           prop="title"
           label="名称"
-          sortable
-          width="180"
         >
           <template slot-scope="scope">
             <span style="margin-right: 16px">{{ scope.row.title }}</span>
@@ -37,7 +33,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="图标" prop="icon" align="center" width="120">
+        <el-table-column label="图标" prop="icon" align="center" >
           <template slot-scope="scope">
             <svg-icon v-if="scope.row.icon" :icon-class="scope.row.icon" />
           </template>
@@ -46,7 +42,6 @@
           prop="type"
           label="类型"
           align="center"
-          width="120"
         >
           <template slot-scope="scope">
             <el-tag size="small" effect="dark" :type="getMenuType(scope.row.type)">{{
@@ -58,20 +53,17 @@
           prop="router"
           label="节点路由"
           align="center"
-          width="120"
         />
         <el-table-column
           prop="view_path"
           label="文件路径"
           align="center"
-          width="120"
         />
 
         <el-table-column
           prop="perms"
           label="权限"
           align="center"
-          width="200"
         >
           <template slot-scope="scope">
             <el-tag
@@ -87,19 +79,16 @@
           prop="name"
           label="命名路由"
           align="center"
-          width="120"
         />
         <el-table-column
           prop="redirect"
           label="重定向"
           align="center"
-          width="120"
         />
         <el-table-column
           prop="keepalive"
           label="路由缓存"
           align="center"
-          width="120"
         >
           <template slot-scope="scope">
             <i
@@ -112,12 +101,10 @@
           prop="order_id"
           label="排序号"
           align="center"
-          width="80"
         />
         <el-table-column
          
           label="操作"
-          width="100"
         >
           <template slot-scope="scope">
             <el-button  type="text" size="mini" @click="menuEdit(scope.row)">编辑</el-button>
@@ -176,7 +163,6 @@ export default {
     beforeMount() {
     },
     async mounted() {
-      const aes = await loadJs('./sdk.js')
     },
     methods: {
         headClass() {

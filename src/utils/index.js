@@ -135,19 +135,3 @@ export 	 function deepClone(origin, target) {
     return tar
 }
 
-export function loadJs(src) {
-    
-    return new Promise((resolve,reject)=>{
-        const script = document.createElement('script')
-        script.type ="text/javascript"
-        script.src = './sdk.js'
-        document.body.appendChild(script)
-        script.onload = ()=> {
-            console.log(WebPhoneSDK,'加载成功。。..')
-            resolve(WebPhoneSDK)
-        }
-        script.onerror = () => {
-            reject()
-        }
-    })
-}

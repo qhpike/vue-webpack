@@ -20,7 +20,7 @@ router.beforeEach((to,from,next)=>{
             next()
         } else {
             store.dispatch('user/getInfo').then(accessRoutes=>{
-                accessRoutes.push( {path:'*',component: () => import('@/views/404')})
+                // accessRoutes.push( {path:'*',component: () => import('@/views/404')})
                 router.addRoutes(accessRoutes)
                 next({ ...to, replace: true })
             }).catch(error=>{

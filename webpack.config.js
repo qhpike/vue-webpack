@@ -54,7 +54,6 @@ module.exports = env => {
         {
           patterns:[
             {from:'./public/favicon.ico'},
-            {from:'./public/sdk.js'}
           ]
         }
       ),
