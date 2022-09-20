@@ -22,12 +22,4 @@
 </script>
 
 <style lang="scss">
-.box {
-  height: 100vh;
-  width: 100vw;
-  font-size: 24px;
-}
-.img {
-  width:200px;
-}
 </style>

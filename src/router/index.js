@@ -18,7 +18,7 @@ export const constantRoutes = [
     {
         path: '/',
         component: () => import('@/Layout'),
-        // redirect: '/dashboard',
+        redirect: '/dashboard',
         meta:{title:'Dashboard',icon:'dashboard'},
         children: [{
             path: 'dashboard',
@@ -34,8 +34,11 @@ export const constantRoutes = [
 ]
 // 添加页面时，在此处录入路径及对应组件
 export const asyncRoutesMap = {
-    'views/system/auth/menu/index': () => import('@/views/system/auth/menu'),
-    '/system/auth/users': () => import('@/views/system/auth/users'),
+    '菜单管理': '/system/auth/menu',
+    '用户管理': '/system/auth/users',
+    '用户日志': '/system/logo',
+    '机构管理': '/system/area',
+    '角色管理': '/system/auth/roles',
     
 }
 const createRouter = () => new VueRouter({

@@ -7,7 +7,6 @@
 }
 
   .main-container {
-    transition: left .28s;
     flex: 1;
     flex-basis: 0;
     width: calc(100% - $sideBarWidth);
@@ -28,6 +27,7 @@
     height: 100%;
     font-size: 0px;
     overflow: hidden;
+    z-index: 1001;
 
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;

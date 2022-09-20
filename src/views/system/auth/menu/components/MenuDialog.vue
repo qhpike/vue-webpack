@@ -58,7 +58,7 @@
         </el-form-item>
         <el-form-item v-show="menuForm.parent_id!==0" label="文件路径" label-width="80px">
           <el-select v-model="menuForm.view_path" placeholder="请选择文件路径" style="width: 100%;">
-            <el-option v-for="item in viewFiles" :key="item" :label="item" :value="item" />
+            <el-option v-for="(item,key) in viewFiles" :key="key" :label="key+item" :value="item" />
           </el-select>
         </el-form-item>
         <el-form-item label="重定向" label-width="80px">
@@ -177,7 +177,7 @@ export default {
     },
     computed: {
         viewFiles: function() {
-            return Object.keys(asyncRoutesMap)
+            return asyncRoutesMap
         },
         getMenuTypeRulues: function() {
             if (this.menuForm.type === 1) {
@@ -200,6 +200,12 @@ export default {
         this.initPerms()
     },
     mounted() {
+      for (const key in asyncRoutesMap) {
+        if (Object.hasOwnProperty.call(asyncRoutesMap, key)) {
+          console.log(key,'key')
+          
+        }
+      }
     },
     methods: {
         handleMenuNodeClick(data) {

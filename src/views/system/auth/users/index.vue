@@ -17,7 +17,6 @@
       <el-col :span="20">
         <div class="grid-content">
           <el-button
-            v-permission="$service.user.permission.add"
             size="small"
             type="primary"
             @click="handleAddUser"
@@ -132,7 +131,6 @@
                   >编辑</el-button
                 >
                 <el-button
-                  v-permission="$service.user.permission.delete"
                   size="small"
                   type="danger"
                   icon="el-icon-delete"
