@@ -1,6 +1,12 @@
+/*
+ * @Author: akexian
+ * @Date: 2022-07-18
+ * @Description: 
+ */
 import axios from 'axios'
 import store from '../store'
 import { getToken } from './auth'
+import { Message  } from 'element-ui'
 import qs from 'qs'
 
 const instance = axios.create({
@@ -16,6 +22,7 @@ instance.interceptors.request.use(function (config) {
     if (store.getters.token) {
       config.headers['Authorization'] = 'Bearer ' + getToken()
   }
+  console.log(config,'config')
     return config;
   }, function (error) {
     // 对请求错误做些什么
@@ -24,15 +31,46 @@ instance.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
+    const res = response.data;    
+
+
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
-    return  response.data
+    if(res.code!==200) {
+      console.log(res.code,'异常CODE')
+      Message({
+        message: res.message || 'Error',
+        type: 'error',
+        duration: 5 * 1000
+      })
+      
+      if (res.code === 401) {
+        // to re-login
+        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
+          confirmButtonText: 'Re-Login',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
+        })
+      }
+    } else {
+      return res
+    }
    
   
     
   }, function (error) {
+    console.log(error)
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 5 * 1000
+    })
     return Promise.reject(error);
   });
 

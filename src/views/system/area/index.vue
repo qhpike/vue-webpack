@@ -73,10 +73,10 @@
     </div>
     <el-dialog title="添加机构" :visible.sync="dialogFormVisible" @closed="dialogClose">
       <el-form ref="areaForm" :rules="areaRoles" :model="areaForm" label-width="80px">
-        <el-form-item label="上级机构" prop="parent_id">
+        <el-form-item label="上级机构" prop="parentId">
           <el-cascader
             ref="areaTree"
-            v-model="areaForm.parent_id"
+            v-model="areaForm.parentId"
             :options="areaTree.data"
             :props="areaTree.defaultProps"
             clearable
@@ -108,7 +108,7 @@ export default {
             isLoading: false,
             dialogFormVisible: false,
             areaForm: {
-                parent_id: null,
+                parentId: null,
                 name: null
             },
             ss: '',
@@ -123,7 +123,7 @@ export default {
                 }
             },
             areaRoles: {
-                parent_id: [{ required: true, message: '请选择上级机构', trigger: 'change' }],
+                parentId: [{ required: true, message: '请选择上级机构', trigger: 'change' }],
                 name: [{ required: true, message: '请输入机构名称', trigger: 'blur' }]
             }
         }
@@ -226,7 +226,7 @@ export default {
                 const result = await this.$service.area.add(this.areaForm)
                 console.log(result)
                 this.$message.success('机构创建成功')
-                this.areaForm = { parent_id: null, name: null }
+                this.areaForm = { parentId: null, name: null }
                 this.$refs.areaForm.clearValidate()
                 this.dialogFormVisible = false
             } catch (error) {
@@ -235,7 +235,7 @@ export default {
             }
         },
         dialogClose() {
-            this.areaForm = { parent_id: null, name: null }
+            this.areaForm = { parentId: null, name: null }
             this.$refs.areaForm.clearValidate()
         }
 

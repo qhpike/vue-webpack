@@ -29,7 +29,7 @@ export default {
     },
     data() {
         return {
-            title: 'Vue-admin',
+            title: '信息管理系统',
             logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
             // logo: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2890752735,3425811954&fm=26&gp=0.jpg'
         }

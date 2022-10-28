@@ -19,7 +19,7 @@
       <el-form-item label="节点名称" label-width="80px" prop="title">
         <el-input v-model.trim="menuForm.title" placeholder="请输入节点名称" />
       </el-form-item>
-      <el-form-item label="上级节点" label-width="80px" prop="parent_id">
+      <el-form-item label="上级节点" label-width="80px" prop="parentId">
         <el-popover v-model="popdisplay" placement="bottom-start" width="500">
           <el-tree
             ref="pidtree"
@@ -56,8 +56,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-show="menuForm.parent_id!==0" label="文件路径" label-width="80px">
-          <el-select v-model="menuForm.view_path" placeholder="请选择文件路径" style="width: 100%;">
+        <el-form-item v-show="menuForm.parentId!==0" label="文件路径" label-width="80px">
+          <el-select v-model="menuForm.viewPath" placeholder="请选择文件路径" style="width: 100%;">
             <el-option v-for="(item,key) in viewFiles" :key="key" :label="key+item" :value="item" />
           </el-select>
         </el-form-item>
@@ -141,14 +141,14 @@ export default {
             parentNodeName: '根目录',
             menuForm: {
                 id: -1,
-                parent_id: 0,
+                parentId: 0,
                 perms: '',
                 hidden: 0,
                 icon: '',
                 name: '',
                 title: '',
                 router: '',
-                view_path: '',
+                viewPath: '',
                 redirect: '',
                 type: 1,
                 order_id: 0,
@@ -165,7 +165,7 @@ export default {
                     title: [{ required: true, message: '请输入节点名称', trigger: 'blur' }],
                     router: [{ required: true, message: '请输入节点路由', trigger: 'blur' }],
                     icon: [{ required: true, message: '请选择图标', trigger: 'change' }],
-                    parent_id: [{ required: true, message: '请选择上级节点', trigger: 'change' }]
+                    parentId: [{ required: true, message: '请选择上级节点', trigger: 'change' }]
                 },
                 perm: {
                     title: [{ required: true, message: '请输入节点名称', trigger: 'blur' }],
@@ -192,7 +192,7 @@ export default {
         },
         menuId: function(newid, oldid) {
         },
-        'menuForm.parent_id': function(newpid, oldpid) {
+        'menuForm.parentId': function(newpid, oldpid) {
         },
         deep: true
     },
@@ -209,7 +209,7 @@ export default {
     },
     methods: {
         handleMenuNodeClick(data) {
-            this.menuForm.parent_id = data.id
+            this.menuForm.parentId = data.id
             this.parentNodeName = data.title
             this.popdisplay = false
         },
@@ -221,14 +221,14 @@ export default {
             // 重置表单
             this.menuForm = {
                 id: -1,
-                parent_id: 0,
+                parentId: 0,
                 perms: '',
                 hidden: 0,
                 icon: '',
                 name: '',
                 title: '',
                 router: '',
-                view_path: '',
+                viewPath: '',
                 redirect: '',
                 type: 1,
                 order_id: 0,

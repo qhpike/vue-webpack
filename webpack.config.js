@@ -35,7 +35,7 @@ module.exports = env => {
     },
     plugins:[
       new HtmlWebpackPlugin({
-        title:'my-web-testsss',
+        title:'my-web-test',
         template:'./public/index.html'
       }),
       new MiniCssExtractPlugin({

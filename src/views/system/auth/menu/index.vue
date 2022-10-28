@@ -55,7 +55,7 @@
           align="center"
         />
         <el-table-column
-          prop="view_path"
+          prop="viewPath"
           label="文件路径"
           align="center"
         />
@@ -182,10 +182,19 @@ export default {
             })
         },
         async initMenuAll(handle) {
-            const { data } = await this.$service.menu.list()
+            try {
+              const {code,data} = await this.$service.menu.list()
+            if(code!==200) return;
             this.menuall = formatRouterTree(data)
             handle && this.$message({ message: '刷新成功', type: 'success', duration: 1000 })
-            this.isLoading = false
+            } catch (error) {
+              console.log(error,'有了错误')
+            }
+            finally{
+              console.log('最终执行')
+              this.isLoading = false
+            }
+            
         },
         getMenuLabel(type) {
             switch (type) {
