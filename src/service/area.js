@@ -5,7 +5,7 @@ class SysAreaService {
     @Permission('api/v1/area/list')
     list() {
         return request({
-            url: '/api/v1/area/list',
+            url: '/api/v1/system/list',
             method: 'get'
         })
     }

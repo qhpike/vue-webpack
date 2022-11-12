@@ -2,7 +2,6 @@
   <div class="app-container">
     <div class="menu-header">
       <el-row class="top-button">
-        <el-button size="mini" @click="handleRefresh">刷新</el-button>
         <el-button  type="primary" size="mini" @click="menuAdd">新增</el-button>
       </el-row>
     </div>
@@ -185,7 +184,7 @@ export default {
             try {
               const {code,data} = await this.$service.menu.list()
             if(code!==200) return;
-            this.menuall = formatRouterTree(data)
+            this.menuall = formatRouterTree(data.roles)
             handle && this.$message({ message: '刷新成功', type: 'success', duration: 1000 })
             } catch (error) {
               console.log(error,'有了错误')
@@ -265,6 +264,8 @@ export default {
 <style lang="scss" scoped>
 .top-button{
 margin-bottom: 20px;
+text-align: right;
+padding-right: 20px;
 /* padding-left: 15px; */
 }
 .menu-container {

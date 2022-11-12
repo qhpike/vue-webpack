@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     name: 'Hamburger',
     props: {
@@ -26,6 +27,11 @@ export default {
         toggleClick() {
             this.$emit('toggleClick')
         }
+    },
+    computed: {
+      ...mapGetters([
+        'name'
+      ])
     }
 }
 </script>

@@ -4,11 +4,12 @@
 
 
     <!-- <breadcrumb class="breadcrumb-container" />   -->
-            
+            <div style="margin-left: auto;margin-top:20px;padding-right:20px;">{{name}}</div>
             <div class="right-menu">
+              
             <el-dropdown class="avatar-container" trigger="click">
                 <div class="avatar-wrapper">
-                <img src="../../assets/image/test.jpg" class="user-avatar">
+                <img :src="avatar" class="user-avatar">
                 <i class="el-icon-caret-bottom" />
                 </div>
                 <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -41,7 +42,8 @@
         computed:{
             ...mapGetters([
             'sidebar',
-            'avatar'
+            'avatar',
+            'name',
             ])
         },
         methods: {

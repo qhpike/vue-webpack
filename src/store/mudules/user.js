@@ -84,7 +84,7 @@ const actions = {
                         reject('Verification failed, please Login again.')
                     }
     
-                    const { name, avatar, areaid } = data
+                    const { name, avatar, areaId } = data
                     // 取回的权限数组转为树型
                     const _perms = JSON.parse(JSON.stringify(data.roles))
                     const perms = _perms.filter(item => item.type === 2).map(menu => {
@@ -102,8 +102,9 @@ const actions = {
                     commit('SET_ROLES', roles)
                     commit('SET_PERMS', permsString)
                     commit('SET_NAME', name)
-                    commit('SET_AREAID', areaid)
+                    commit('SET_AREAID', areaId)
                     commit('SET_AVATAR', avatar)
+                    console.log('avatar',avatar)
                     commit('SET_ROUTES',acccessRoutes)
                     resolve(acccessRoutes)
                 }).catch(error => {

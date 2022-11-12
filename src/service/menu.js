@@ -12,9 +12,8 @@ class SysMenuService {
     // @Permission('api/v1/menu/info')
     info(id) {
         return request({
-            url: '/api/v1/menu/info',
+            url: `/api/v1/menu/list/${id}`,
             method: 'get',
-            params: { id }
         })
     }
     @Permission('api/v1/menu/update')
@@ -28,17 +27,16 @@ class SysMenuService {
     @Permission('api/v1/menu/add')
     add(data) {
         return request({
-            url: '/api/v1/menu/add',
+            url: '/api/v1/menu/list',
             method: 'post',
             data
         })
     }
-    @Permission('api/v1/menu/delete')
+    @Permission('api/v1/menu/list')
     delete(id) {
         return request({
-            url: `/api/v1/menu/delete`,
-            method: 'post',
-            data: { id }
+            url: `/api/v1/menu/list/${id}`,
+            method: 'DELETE',
         })
     }
 }
