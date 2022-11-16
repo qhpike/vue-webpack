@@ -16,11 +16,11 @@ class SysMenuService {
             method: 'get',
         })
     }
-    @Permission('api/v1/menu/update')
+    @Permission('api/v1/menu/list')
     update(data) {
         return request({
-            url: '/api/v1/menu/update',
-            method: 'post',
+            url: '/api/v1/menu/list',
+            method: 'put',
             data
         })
     }

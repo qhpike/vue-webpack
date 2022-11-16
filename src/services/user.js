@@ -22,7 +22,7 @@ export function logout() {
 
 export function getMenu() {
     return instance({
-        url:'/api/v1/system/info',
+        url:'/api/v1/user/info',
         method:'get'
     })
 }

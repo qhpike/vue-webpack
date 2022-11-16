@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="menu-header">
+    <div >
       <el-row class="top-button">
         <el-button  type="primary" size="mini" @click="menuAdd">新增</el-button>
       </el-row>
@@ -50,7 +50,7 @@
         </el-table-column>
         <el-table-column
           prop="router"
-          label="节点路由"
+          label="路由"
           align="center"
         />
         <el-table-column
@@ -118,6 +118,7 @@
       :mode="dialogMode"
       :menu-tree="menuTree"
       :menu-id="menuId"
+      @success="initMenuAll"
     />
   </div>
 </template>
@@ -168,7 +169,7 @@ export default {
             return 'text-align: center;background:#ebeef4;'
         },
         handleRefresh: debounce(function() {
-            this.isLoading = true
+            
             this.initMenuAll('handle')
         }, 2000, {
             leading: true,
@@ -181,6 +182,7 @@ export default {
             })
         },
         async initMenuAll(handle) {
+          this.isLoading = true
             try {
               const {code,data} = await this.$service.menu.list()
             if(code!==200) return;
@@ -249,6 +251,7 @@ export default {
             } catch (error) {
                 console.log(error)
             }
+            this.initMenuAll()
         },
         menuEdit(item) {
             this.menuId = item.id

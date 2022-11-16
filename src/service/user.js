@@ -1,13 +1,14 @@
 import request from '@/utils/request'
 import { Permission } from '@/core/decorator/service'
+import qs from 'qs'
 
 class SysUserService {
     @Permission('api/v1/user/list')
-    list(id) {
+    list(params) {
         return request({
-            url: '/api/v1/user/list',
-            method: 'post',
-            data: { id }
+            url: `/api/v1/user/list?${qs.stringify(params)}`,
+            method: 'get',
+            // params,
         })
     }
     @Permission('api/v1/user/update')
@@ -15,7 +16,7 @@ class SysUserService {
         return request({
             url: '/api/v1/user/update',
             method: 'post',
-            data
+            data,
         })
     }
     @Permission('api/v1/user/add')

@@ -40,12 +40,13 @@
       <!-- 分面板 -->
       <!-- 菜单面板 -->
       <div v-if="menuForm.type === 1" class="menu-pane">
+        <el-form-item label="路由" label-width="80px" prop="router">
+          <el-input v-model.trim="menuForm.router" placeholder="请输入节点路由" />
+        </el-form-item>
         <el-form-item label="命名路由" label-width="80px" prop="name">
           <el-input v-model.trim="menuForm.name" placeholder="请输入路由名称" />
         </el-form-item>
-        <el-form-item label="节点路由" label-width="80px" prop="router">
-          <el-input v-model.trim="menuForm.router" placeholder="请输入节点路由" />
-        </el-form-item>
+        
         <el-form-item label="节点图标" label-width="80px" prop="icon">
           <el-select v-model="menuForm.icon" placeholder="请选择图标" style="width: 100%;" prop="icon">
             <el-option v-for="item in svgIcons" :key="item" :label="item" :value="item">
@@ -161,10 +162,8 @@ export default {
             },
             menuFormRules: {
                 menu: {
-                    name: [{ required: true, message: '请输入路由命名', trigger: 'blur' }],
                     title: [{ required: true, message: '请输入节点名称', trigger: 'blur' }],
                     router: [{ required: true, message: '请输入节点路由', trigger: 'blur' }],
-                    icon: [{ required: true, message: '请选择图标', trigger: 'change' }],
                     parentId: [{ required: true, message: '请选择上级节点', trigger: 'change' }]
                 },
                 perm: {
@@ -311,11 +310,12 @@ export default {
                     console.log(postData)
                     postData.id = null
                     const result = await this.$service.menu.add({ ...postData })
-                    this.$message({ message: result.message, type: 'success' })
+                    this.$message.success('增加成功')
                 } else if (this.mode === 1) {
                     const result = await this.$service.menu.update({ ...postData })
-                    this.$message({ message: result.message, type: 'success' })
+                    this.$message.success('修改成功')
                 }
+                this.$emit('success')
                 this.$emit('update', false)
             } catch (error) {
                 this.$message.error('操作失败')

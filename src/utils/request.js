@@ -16,9 +16,14 @@ const instance = axios.create({
 
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
+  console.log(config,config.data,'confgixx')
     // 在发送请求之前做些什么
     // config.data = qs.stringify(config.data)
     // config.headers['content-type'] ='application/x-www-form-urlencoded'
+  //如果传输的编码格式为applicationx-www-formurlencod,则序列化data
+  if(config.headers['content-type'] === 'application/x-www-form-urlencoded') {
+    config.data = qs.stringify(config.data)
+  }
     if (store.getters.token) {
       config.headers['Authorization'] = 'Bearer ' + getToken()
   }
