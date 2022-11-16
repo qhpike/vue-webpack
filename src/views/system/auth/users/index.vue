@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="query" label-width="80px" inline size="mini">
+    <el-form :model="query" label-width="80px" inline size="mini" ref="form">
       <el-form-item label="部门:">
         <el-cascader
           v-model="query.areaId"
@@ -29,7 +29,7 @@
       style="width: 100%; margin-top: 30px"
       border
       fit
-      height="500"
+      :height="tableHeight"
       align="center"
       :header-cell-style="headClass"
     >
@@ -58,7 +58,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
+    <div style="text-align:right;margin-top:20px;">
+      <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page.sync="params.page"
@@ -68,11 +69,12 @@
       :total="total"
     >
     </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
-import { parseTime, deepClone } from "@/utils/index";
+import { parseTime, deepClone,getTableHeight } from "@/utils/index";
 import { formatRouterTree } from "@/utils/routerHook";
 import { validPhone } from "@/utils/validate";
 import { mapGetters } from "vuex";
@@ -87,8 +89,9 @@ export default {
       total: 100,
       params: {
         page: 1,
-        pageSize: 2,
+        pageSize: 5,
       },
+      tableHeight:0,
     };
   },
 
@@ -99,6 +102,9 @@ export default {
   mounted() {
     this.getAreaList();
     this.getList();
+    this.$nextTick(()=>{
+      this.tableHeight = getTableHeight(this.$refs.form)
+    })
   },
   methods: {
     headClass() {

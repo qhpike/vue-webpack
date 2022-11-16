@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
-    <div >
-      <el-row class="top-button">
+      <el-form ref="form">
+        <el-row class="top-button">
         <el-button  type="primary" size="mini" @click="menuAdd">新增</el-button>
       </el-row>
-    </div>
+      </el-form>
     <div class="menu-content">
       <el-table
         ref="menuTable"
@@ -13,6 +13,7 @@
         :data="menuall"
         row-key="id"
         border
+        :height="tableHeight"
         :header-cell-style="headClass"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         @row-click="handleRowClick"
@@ -125,7 +126,7 @@
 
 <script>
 // import { mapGetters } from 'vuex'
-import { loadJs } from '@/utils/index'
+import { loadJs,getTableHeight } from '@/utils/index'
 import { formatRouterTree } from '@/utils/routerHook'
 import MenuDialog from './components/MenuDialog'
 import { debounce } from 'lodash'
@@ -146,7 +147,8 @@ export default {
                 }
             },
             menuId: -1,
-            menuall: []
+            menuall: [],
+            tableHeight:undefined,
         }
     },
     computed: {
@@ -163,6 +165,9 @@ export default {
     beforeMount() {
     },
     async mounted() {
+      this.$nextTick(()=>{
+        this.tableHeight = getTableHeight(this.$refs.form) + 48
+      })
     },
     methods: {
         headClass() {

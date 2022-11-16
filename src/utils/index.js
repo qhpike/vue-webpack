@@ -135,3 +135,8 @@ export 	 function deepClone(origin, target) {
     return tar
 }
 
+export function getTableHeight(el) {
+    return document.body.offsetHeight - el.$el.offsetHeight -50 -40 -47 -30
+    
+}
+
