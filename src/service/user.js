@@ -8,7 +8,6 @@ class SysUserService {
         return request({
             url: `/api/v1/user/list?${qs.stringify(params)}`,
             method: 'get',
-            // params,
         })
     }
     @Permission('api/v1/user/update')

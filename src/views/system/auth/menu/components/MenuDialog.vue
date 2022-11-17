@@ -1,25 +1,24 @@
 <template>
-  <el-dialog
-    :title="mode===0 ? '新增':'编辑'"
+  <el-modal
     :visible="visible"
-    center
-    append-to-body
+    @close="close"
     :close-on-click-modal="false"
-    :close-on-press-escape="false"
-    @open="handleDialogOpen"
-    @close="handleDialogClosed"
+    btn
+    width="23%"
+    @submit="submit"
+    :title="mode===0 ? '新增':'编辑'"
   >
-    <el-form ref="menuForm" :model="menuForm" :rules="getMenuTypeRulues" label-width="80px">
+    <el-form ref="menuForm" :model="menuForm" :rules="getMenuTypeRulues" size="small" label-width="100px" label-position="right">
       <el-form-item label="菜单类型">
         <el-radio-group v-model="menuForm.type" @change="handleMenuTypeChange">
           <el-radio :label="1">菜单</el-radio>
           <el-radio :label="2">权限</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="节点名称" label-width="80px" prop="title">
+      <el-form-item label="节点名称" prop="title">
         <el-input v-model.trim="menuForm.title" placeholder="请输入节点名称" />
       </el-form-item>
-      <el-form-item label="上级节点" label-width="80px" prop="parentId">
+      <el-form-item label="上级节点" prop="parentId">
         <el-popover v-model="popdisplay" placement="bottom-start" width="500">
           <el-tree
             ref="pidtree"
@@ -40,14 +39,14 @@
       <!-- 分面板 -->
       <!-- 菜单面板 -->
       <div v-if="menuForm.type === 1" class="menu-pane">
-        <el-form-item label="路由" label-width="80px" prop="router">
+        <el-form-item label="路由" prop="router">
           <el-input v-model.trim="menuForm.router" placeholder="请输入节点路由" />
         </el-form-item>
-        <el-form-item label="命名路由" label-width="80px" prop="name">
+        <el-form-item label="命名路由" prop="name">
           <el-input v-model.trim="menuForm.name" placeholder="请输入路由名称" />
         </el-form-item>
         
-        <el-form-item label="节点图标" label-width="80px" prop="icon">
+        <el-form-item label="节点图标" prop="icon">
           <el-select v-model="menuForm.icon" placeholder="请选择图标" style="width: 100%;" prop="icon">
             <el-option v-for="item in svgIcons" :key="item" :label="item" :value="item">
               <span style="float: left; font-size: 16px; color: #444444;">
@@ -57,24 +56,24 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-show="menuForm.parentId!==0" label="文件路径" label-width="80px">
+        <el-form-item v-show="menuForm.parentId!==0" label="文件路径">
           <el-select v-model="menuForm.viewPath" placeholder="请选择文件路径" style="width: 100%;">
             <el-option v-for="(item,key) in viewFiles" :key="key" :label="key+item" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item label="重定向" label-width="80px">
+        <el-form-item label="重定向" >
           <el-input v-model.trim="menuForm.redirect" placeholder="请输入重定向" />
         </el-form-item>
-        <el-form-item label="是否显示" label-width="80px">
+        <el-form-item label="是否显示" >
           <el-switch v-model="menuForm.hidden" :active-value="0" :inactive-value="1" />
         </el-form-item>
-        <el-form-item label="开启缓存" label-width="80px">
+        <el-form-item label="开启缓存" >
           <el-switch v-model="menuForm.keepalive" :active-value="1" :inactive-value="0" />
         </el-form-item>
       </div>
       <!-- 权限面板 -->
       <div v-if="menuForm.type === 2" class="perms-pane">
-        <el-form-item label="权限" label-width="80px" prop="perms">
+        <el-form-item label="权限"  prop="perms">
           <el-cascader
             v-model="menuForm.perms"
             separator=":"
@@ -86,22 +85,16 @@
         </el-form-item>
       </div>
       <!-- 分面板结束 -->
-      <el-form-item label="排序号" label-width="80px">
-        <el-input-number
-          v-model="menuForm.order_id"
+      <el-form-item label="排序号" >
+        <el-input
+          v-model="menuForm.orderId"
           controls-position="right"
           :min="0"
           style="width: 100%;"
         />
       </el-form-item>
     </el-form>
-    <div slot="footer">
-      <el-row type="flex" justify="end">
-        <el-button @click="$emit('update', false)">取 消</el-button>
-        <el-button type="primary" @click="handleSaveMenu">确 定</el-button>
-      </el-row>
-    </div>
-  </el-dialog>
+  </el-modal>
 </template>
 
 <script>
@@ -110,10 +103,6 @@ import { asyncRoutesMap } from '@/router/index'
 import { flatPerms, filterPerms } from '@/utils/permission'
 export default {
     name: 'MenuDialog',
-    model: {
-        prop: 'visible',
-        event: 'update'
-    },
     props: {
         mode: {
             type: Number,
@@ -128,12 +117,10 @@ export default {
         },
         visible: {
             type: Boolean,
+            default: false,
             required: true
         },
-        menuId: {
-            type: Number,
-            default: -1
-        }
+        id: undefined
 
     },
     data() {
@@ -152,7 +139,7 @@ export default {
                 viewPath: '',
                 redirect: '',
                 type: 1,
-                order_id: 0,
+                getDetail: 0,
                 keepalive: 1
             },
             perms: {
@@ -187,13 +174,9 @@ export default {
         }
     },
     watch: {
-        'menuForm.type': function(newss, old) {
-        },
-        menuId: function(newid, oldid) {
-        },
-        'menuForm.parentId': function(newpid, oldpid) {
-        },
-        deep: true
+        visible(val) {
+          val && this.id &&  this.getDetail(this.id)
+        }
     },
     created() {
         this.initPerms()
@@ -214,7 +197,7 @@ export default {
         },
         handleDialogOpen() {
             this.$emit('update', true)
-            this.getmenuinfo(this.menuId)
+            this.getDetail(this.id)
         },
         handleDialogClosed() {
             // 重置表单
@@ -230,7 +213,7 @@ export default {
                 viewPath: '',
                 redirect: '',
                 type: 1,
-                order_id: 0,
+                getDetail: 0,
                 keepalive: 1
             }
             this.parentNodeName = '根目录'
@@ -263,11 +246,10 @@ export default {
             const str = perms.map(perm => perm.join(':')).join(',')
             return str
         },
-        async getmenuinfo() {
-            if (this.mode === 1 && this.menuId) {
-                // const info = await getinfo(this.menuId)
+        async getDetail(id) {
+                // const info = await getinfo(this.id)
                 // api改为this.$service引入
-                const info = await this.$service.menu.info(this.menuId)
+                const info = await this.$service.menu.info(id)
                 if (info.code === 200) {
                     // this.menuForm = Object.assign({}, info.data)
                     const { menu, parent } = info.data
@@ -284,7 +266,6 @@ export default {
                 } else {
                     this.$message.error('数据获取失败')
                 }
-            }
         },
         async handleSaveMenu() {
             try {
@@ -297,7 +278,7 @@ export default {
                 return
             }
         },
-        async menuSave() {
+        async submit() {
             const postData = { ...this.menuForm }
             if (postData.type === 2) {
                 postData.perms = this.joinPerms(postData.perms)
@@ -306,20 +287,24 @@ export default {
                 delete postData.perms
             }
             try {
-                if (this.mode === 0) {
+                if (this.id) {
+                     const result = await this.$service.menu.update({ ...postData })
+                    this.$message.success('修改成功')
+                } else if (this.mode === 1) {
+                   
                     console.log(postData)
                     postData.id = null
                     const result = await this.$service.menu.add({ ...postData })
                     this.$message.success('增加成功')
-                } else if (this.mode === 1) {
-                    const result = await this.$service.menu.update({ ...postData })
-                    this.$message.success('修改成功')
                 }
                 this.$emit('success')
-                this.$emit('update', false)
+                this.close()
             } catch (error) {
                 this.$message.error('操作失败')
             }
+        },
+        close() {
+          this.$emit("update:visible", false);
         }
     }
 

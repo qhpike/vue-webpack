@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="query" label-width="80px" inline size="mini" ref="form">
+    <el-form :model="query" label-width="80px" inline size="small" ref="form">
       <el-form-item label="部门:">
         <el-cascader
           v-model="query.areaId"
@@ -20,15 +20,15 @@
         ></el-cascader>
       </el-form-item>
       <el-form-item label="">
-        <el-button type="primary">新增用户</el-button>
+        <el-button type="primary" @click="handleAdd">新增用户</el-button>
       </el-form-item>
     </el-form>
 
     <el-table
       :data="tableData"
       style="width: 100%; margin-top: 30px"
-      border
       fit
+      size="small"
       :height="tableHeight"
       align="center"
       :header-cell-style="headClass"
@@ -48,11 +48,11 @@
       <el-table-column prop="remark" label="备注"> </el-table-column>
 
       <el-table-column label="操作" align="center">
-        <template>
-          <el-button size="small" type="text" icon="el-icon-edit"
+        <template v-slot="{ row }">
+          <el-button size="small" type="text" icon="el-icon-edit" @click="handleEdit(row)"
             >编辑</el-button
           >
-          <el-button size="small" type="text" icon="el-icon-delete"
+          <el-button size="small" type="text" icon="el-icon-delete" @click="handleDelete(row)"
             >删除</el-button
           >
         </template>
@@ -70,6 +70,7 @@
     >
     </el-pagination>
     </div>
+    <user-dialog :visible.sync="visible" :areaTree="areaTree" :id="id"></user-dialog>
   </div>
 </template>
 
@@ -78,9 +79,14 @@ import { parseTime, deepClone,getTableHeight } from "@/utils/index";
 import { formatRouterTree } from "@/utils/routerHook";
 import { validPhone } from "@/utils/validate";
 import { mapGetters } from "vuex";
+import { contain } from 'postcss-pxtorem/lib/filter-prop-list';
 export default {
+  components: {
+    UserDialog: () => import('./UserDialog.vue')
+  },
   data() {
     return {
+      id:undefined,
       areaTree: [],
       query: {
         areaId: undefined,
@@ -92,6 +98,7 @@ export default {
         pageSize: 5,
       },
       tableHeight:0,
+      visible:false,
     };
   },
 
@@ -142,6 +149,16 @@ export default {
       this.$refs.areaTree.toggleDropDownVisible();
       this.getList();
     },
+    handleAdd() {
+      this.visible = true;
+    },
+    handleEdit({id}) {
+      this.id = id;
+      this.visible = true;
+    },
+    handleDelete({id}) {
+
+    }
   },
 };
 </script>

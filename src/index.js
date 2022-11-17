@@ -12,11 +12,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from '@/router'
 import store from '@/store'
-import ServiceRegister from './core/decorator/service'
+// import ServiceRegister from './core/decorator/service'
 import './routerHook'
 import './icons'
+import '@/core/index'
 Vue.use(ElementUI, { size: 'mini', zIndex: 3000 })
-Vue.use(ServiceRegister)
+// Vue.use(ServiceRegister)
 Vue.config.productionTip = false
 new Vue({
   el:'#app',

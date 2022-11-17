@@ -1,99 +1,99 @@
 <template>
-  <div>
-    <el-dialog
-      :title="dialogType === 'edit' ? '用户编辑' : '新增用户'"
-      :visible.sync="dialogVisible"
-      :close-on-click-modal="false"
+  <el-modal
+    :visible="visible"
+    @submit="handleSubmit"
+    @close="close"
+    :close-on-click-modal="false"
+    btn
+    width="23%"
+    title="新增用户"
+  >
+    <el-form
+      ref="userForm"
+      :model="userForm"
+      :rules="userRules"
+      status-icon
+      size="small"
+      label-width="100px"
+      label-position="right"
     >
-      <el-form
-        v-if="dialogVisible"
-        ref="userForm"
-        :model="user"
-        :rules="userRules"
-        status-icon
-        size="medium"
-        label-width="80px"
-        label-position="left"
-      >
-        <el-form-item label="机构" prop="area_id">
-          <el-cascader
-            ref="areaTree"
-            v-model="user.area_id"
-            :disabled="dialogType !== 'new'"
-            :options="newArea.data"
-            :props="newArea.defaultProps"
-            clearable
-            :show-all-levels="false"
-            placeholder="请选择机构"
-            @change="toggleDropDown"
-          />
-        </el-form-item>
-        <el-form-item label="账号" prop="username">
-          <el-input
-            v-model.trim="user.username"
-            placeholder="请输入账号"
-            clearable
-            :disabled="dialogType !== 'new'"
-          />
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input
-            v-model.trim="user.password"
-            type="password"
-            clearable
-            placeholder="请输入密码"
-          />
-        </el-form-item>
-        <el-form-item label="密码" prop="checkPass">
-          <el-input
-            v-model.trim="user.checkPass"
-            type="password"
-            clearable
-            placeholder="请再次输入密码"
-          />
-        </el-form-item>
-        <el-form-item label="手机" prop="phone">
-          <el-input
-            ref="phone"
-            v-model.trim="user.phone"
-            clearable
-            placeholder="请输入手机号"
-          />
-        </el-form-item>
-        <el-form-item label="角色" prop="roleList">
-          <el-cascader
-            v-model="user.roleList"
-            :options="allRole.data"
-            :props="allRole.defaultProps"
-            clearable
-            :show-all-levels="false"
-            placeholder="请选择角色"
-          />
-        </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model.trim="user.name" placeholder="请输入姓名" />
-        </el-form-item>
-        <el-form-item label="昵称">
-          <el-input v-model.trim="user.nickName" placeholder="请输入昵称" />
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model.trim="user.remark" placeholder="请输入备注" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('userForm')"
-          >确 定</el-button
-        >
-      </div>
-    </el-dialog>
-  </div>
+      <el-form-item label="部门：" prop="areaId">
+        <el-cascader
+          v-model="userForm.areaId"
+          placeholder="请选择部门"
+          :options="areaTree"
+          ref="areaTree"
+          :props="{
+            checkStrictly: true,
+            label: 'name',
+            value: 'id',
+            emitPath: false,
+            multiple: false,
+          }"
+          :show-all-levels="false"
+          @change="areaChange"
+          clearable
+        ></el-cascader>
+      </el-form-item>
+      <el-form-item label="用户账号：" prop="username">
+        <el-input
+          v-model.trim="userForm.username"
+          placeholder="请输入账号"
+          clearable
+        />
+      </el-form-item>
+      <el-form-item label="用户密码：" prop="password">
+        <el-input
+          v-model.trim="userForm.password"
+          type="password"
+          clearable
+          placeholder="请输入密码"
+        />
+      </el-form-item>
+      <el-form-item label="确认密码：" prop="checkPass">
+        <el-input
+          v-model.trim="userForm.checkPass"
+          type="password"
+          clearable
+          placeholder="请再次输入密码"
+        />
+      </el-form-item>
+      <el-form-item label="手机：" prop="phone">
+        <el-input
+          ref="phone"
+          v-model.trim="userForm.phone"
+          clearable
+          placeholder="请输入手机号"
+        />
+      </el-form-item>
+      <el-form-item label="角色：" prop="roleList">
+      </el-form-item>
+
+      <el-form-item label="姓名：">
+        <el-input v-model.trim="userForm.name" placeholder="请输入姓名" />
+      </el-form-item>
+      <el-form-item label="昵称：">
+        <el-input v-model.trim="userForm.nickName" placeholder="请输入昵称" />
+      </el-form-item>
+      <el-form-item label="备注：">
+        <el-input v-model.trim="userForm.remark" placeholder="请输入备注" />
+      </el-form-item>
+    </el-form>
+  </el-modal>
 </template>
 
 <script>
 export default {
+  props: {
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+    areaTree:[],
+    id:undefined,
+  },
   data() {
-     const validateUsername = async (rule, value, callback) => {
+    const validateUsername = async (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error("请输入6位以上用户名"));
       } else {
@@ -109,7 +109,7 @@ export default {
       if (value === "") {
         callback(new Error("请输入密码"));
       } else {
-        if (this.user.checkPass !== "") {
+        if (this.userForm.checkPass !== "") {
           this.$refs.userForm.validateField("checkPass");
         }
         callback();
@@ -132,21 +132,41 @@ export default {
       }
     };
     return {
-      user: {
-        id: null,
-        area_id: null,
-        username: "",
-        password: "",
-        checkPass: "",
-        name: "",
-        phone: "",
-        nick_name: "",
-        avatar:
-          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3866513739,3961195204&fm=26&gp=0.jpg",
-        remark: "",
-        roleList: [],
+      userForm: {
+        areaId: undefined,
+        username: undefined,
+        password: undefined,
+        checkPass: undefined,
+        phone: undefined,
+        name: undefined,
+        nickName: undefined,
+        remark: undefined,
       },
+      userRules: {
+
+      }
     };
+  },
+  watch: {
+    visible(val) {
+        val && this.id && this.getDetail(this.id)
+    }
+  },
+  methods: {
+    close() {
+      this.$emit("update:visible", false);
+      console.log("close");
+    },
+    handleSubmit() {
+
+    },
+    /**部门选择 */
+    areaChange(val) {
+        this.$refs.areaTree.toggleDropDownVisible();
+    },
+    getDetail(id) {
+        // const {code,data} = await this.$service.user.
+    }
   },
 };
 </script>

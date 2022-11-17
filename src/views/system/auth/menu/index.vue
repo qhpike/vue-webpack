@@ -12,7 +12,7 @@
         fit
         :data="menuall"
         row-key="id"
-        border
+        size="small"
         :height="tableHeight"
         :header-cell-style="headClass"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
@@ -98,7 +98,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="order_id"
+          prop="orderId"
           label="排序号"
           align="center"
         />
@@ -106,16 +106,16 @@
          
           label="操作"
         >
-          <template slot-scope="scope">
-            <el-button  type="text" size="mini" @click="menuEdit(scope.row)">编辑</el-button>
-            <el-button  type="text" size="mini" @click="menuDelete(scope.row)">删除</el-button>
+          <template v-slot="{ row }">
+            <el-button  type="text" size="small" @click="handleEdit(row)">编辑</el-button>
+            <el-button  type="text" size="small" @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <menu-dialog
-      id="ss"
-      v-model="visible"
+      :id="id"
+      :visible.sync="visible"
       :mode="dialogMode"
       :menu-tree="menuTree"
       :menu-id="menuId"
@@ -136,6 +136,7 @@ export default {
     },
     data() {
         return {
+          id:undefined,
             dialogMode: 0,
             visible: false,
             isLoading: false,
@@ -150,14 +151,6 @@ export default {
             menuall: [],
             tableHeight:undefined,
         }
-    },
-    computed: {
-    },
-    watch: {
-        visible(mynew, myold) {
-        }
-    },
-    beforeCreate() {
     },
     created() {
         this.initMenuAll()
@@ -191,7 +184,7 @@ export default {
             try {
               const {code,data} = await this.$service.menu.list()
             if(code!==200) return;
-            this.menuall = formatRouterTree(data.roles)
+            this.menuTree.data = this.menuall = formatRouterTree(data.roles)
             handle && this.$message({ message: '刷新成功', type: 'success', duration: 1000 })
             } catch (error) {
               console.log(error,'有了错误')
@@ -231,17 +224,16 @@ export default {
             this.$refs.menuTable.toggleRowExpansion(row)
         },
         menuAdd() {
-            this.menuTree.data = this.menuall
             this.dialogMode = 0
             this.visible = true
         },
-        async menuDelete(item) {
+        async handleDelete({id}) {
             try {
                 await this.$confirm('此操作将永久删除，是否继续', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
                 })
-                const result = await this.$service.menu.delete(item.id)
+                const result = await this.$service.menu.delete(id)
                 if (result.code === 200) {
                     this.$message({
                         message: result.message,
@@ -258,10 +250,9 @@ export default {
             }
             this.initMenuAll()
         },
-        menuEdit(item) {
-            this.menuId = item.id
-            this.menuTree.data = this.menuall
-            this.dialogMode = 1
+        handleEdit({id}) {
+          console.log(id,'idxx')
+            this.id = id
             this.visible = true
         }
     }
