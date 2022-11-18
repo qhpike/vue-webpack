@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="query" label-width="80px" inline size="small" ref="form">
+      <!-- <el-form-item label="姓名">
+        <el-input v-model="query.name" @change="getList"></el-input>
+      </el-form-item> -->
       <el-form-item label="部门:">
         <el-cascader
           v-model="query.areaId"
@@ -70,7 +73,7 @@
     >
     </el-pagination>
     </div>
-    <user-dialog :visible.sync="visible" :areaTree="areaTree" :id="id"></user-dialog>
+    <user-dialog :visible.sync="visible" :areaTree="areaTree" :id.sync="id"></user-dialog>
   </div>
 </template>
 
@@ -118,7 +121,7 @@ export default {
       return "text-align: center;background:#eef1f6;";
     },
     async getList() {
-      this.query.createTime = "2022-02-02";
+      this.query.createTime ='2022-02-02';
       const query = {
         query:this.query,
         params:this.params,
@@ -156,8 +159,21 @@ export default {
       this.id = id;
       this.visible = true;
     },
-    handleDelete({id}) {
-
+    async handleDelete({id}) {
+      try {
+        await this.$confirm('此操作将永久删除，是否继续','提示',{
+        confirmButtonText:'确定',
+        cancelButtonText:'取消',
+      })
+      } catch (error) {
+        throw new Error(error)
+      }
+      const {code,msg} = await this.$service.user.delete(id)
+      if(code!==200) {
+        this.$message.warning(msg)
+      }
+      this.$message.success('删除成功')
+      this.getList()
     }
   },
 };

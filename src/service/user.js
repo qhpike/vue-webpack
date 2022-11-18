@@ -10,34 +10,39 @@ class SysUserService {
             method: 'get',
         })
     }
-    @Permission('api/v1/user/update')
+    @Permission('api/v1/user/list')
     update(data) {
         return request({
-            url: '/api/v1/user/update',
-            method: 'post',
+            url: '/api/v1/user/list',
+            method: 'put',
             data,
         })
     }
-    @Permission('api/v1/user/add')
+    @Permission('api/v1/user/list')
     add(data) {
         return request({
-            url: '/api/v1/user/add',
+            url: '/api/v1/user/list',
             method: 'post',
             data
         })
     }
-    @Permission('api/v1/user/delete')
-    delete(data) {
+    @Permission('api/v1/user/list')
+    delete(id) {
         return request({
-            url: '/api/v1/user/delete',
-            method: 'post',
-            data
+            url: `/api/v1/user/list/${id}`,
+            method: 'delete',
+        })
+    }
+    detail(id) {
+        return request({
+            url: `/api/v1/user/list/${id}`,
+            method: 'get',
         })
     }
     // @Permission('api/v1/user/vlidateUser')
     vlidateUser(username) {
         return request({
-            url: '/api/v1/user/vlidateUser',
+            url: '/api/v1/user/validate',
             method: 'post',
             data: {
                 username

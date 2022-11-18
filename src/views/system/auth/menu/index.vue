@@ -107,8 +107,8 @@
           label="操作"
         >
           <template v-slot="{ row }">
-            <el-button  type="text" size="small" @click="handleEdit(row)">编辑</el-button>
-            <el-button  type="text" size="small" @click="handleDelete(row)">删除</el-button>
+            <el-button  type="text" size="small" icon="el-icon-edit" @click="handleEdit(row)">编辑</el-button>
+            <el-button  type="text" size="small" icon="el-icon-delete" @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -3,20 +3,30 @@
     :visible="visible"
     @submit="handleSubmit"
     @close="close"
+    center
     :close-on-click-modal="false"
     btn
-    width="23%"
-    title="新增用户"
+    width="40%"
+    :title="this.id ? '编辑用户' : '新增用户'"
   >
     <el-form
+    inline
       ref="userForm"
       :model="userForm"
-      :rules="userRules"
+      :rules="rules"
       status-icon
       size="small"
       label-width="100px"
       label-position="right"
     >
+    <el-form-item  label="用户账号：" prop="username">
+        <el-input
+        :disabled="Boolean(id)"
+          v-model.trim="userForm.username"
+          placeholder="请输入账号"
+          clearable
+        />
+      </el-form-item>
       <el-form-item label="部门：" prop="areaId">
         <el-cascader
           v-model="userForm.areaId"
@@ -35,14 +45,8 @@
           clearable
         ></el-cascader>
       </el-form-item>
-      <el-form-item label="用户账号：" prop="username">
-        <el-input
-          v-model.trim="userForm.username"
-          placeholder="请输入账号"
-          clearable
-        />
-      </el-form-item>
-      <el-form-item label="用户密码：" prop="password">
+      
+      <el-form-item v-if="!this.id" label="用户密码：" prop="password">
         <el-input
           v-model.trim="userForm.password"
           type="password"
@@ -50,7 +54,7 @@
           placeholder="请输入密码"
         />
       </el-form-item>
-      <el-form-item label="确认密码：" prop="checkPass">
+      <el-form-item v-if="!this.id" label="确认密码：" prop="checkPass">
         <el-input
           v-model.trim="userForm.checkPass"
           type="password"
@@ -67,7 +71,8 @@
         />
       </el-form-item>
       <el-form-item label="角色：" prop="roleList">
-      </el-form-item>
+        <el-input v-model.trim="userForm.name" placeholder="请输入姓名" />
+         </el-form-item>
 
       <el-form-item label="姓名：">
         <el-input v-model.trim="userForm.name" placeholder="请输入姓名" />
@@ -75,8 +80,15 @@
       <el-form-item label="昵称：">
         <el-input v-model.trim="userForm.nickName" placeholder="请输入昵称" />
       </el-form-item>
+     
       <el-form-item label="备注：">
         <el-input v-model.trim="userForm.remark" placeholder="请输入备注" />
+      </el-form-item>
+       <el-form-item v-if="this.id" label="状态">
+         <el-radio-group v-model="userForm.status">
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="0">禁用</el-radio>
+        </el-radio-group>
       </el-form-item>
     </el-form>
   </el-modal>
@@ -89,19 +101,22 @@ export default {
       type: Boolean,
       default: false,
     },
-    areaTree:[],
-    id:undefined,
+    areaTree: [],
+    id: undefined,
   },
   data() {
     const validateUsername = async (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("请输入6位以上用户名"));
-      } else {
+      if (value && value.length < 6) {
+        callback(new Error("用户名必须6位以上"));
+      } else if(!value){
+        callback(new Error('请输入用户名'))
+      } else{
+        console.log(value,'value')
         const result = await this.$service.user.vlidateUser(value);
-        if (result.code === 200) {
+        if (!result.data) {
           callback();
         } else {
-          callback(new Error("用户名已占用"));
+          callback(new Error("用户名已存在"));
         }
       }
     };
@@ -134,7 +149,7 @@ export default {
     return {
       userForm: {
         areaId: undefined,
-        username: undefined,
+        username: '',
         password: undefined,
         checkPass: undefined,
         phone: undefined,
@@ -142,31 +157,48 @@ export default {
         nickName: undefined,
         remark: undefined,
       },
-      userRules: {
-
-      }
+      rules: {
+        areaId: [{ required: true, message: "请选择部门", trigger: "blur" }],
+        username: [{ validator: validateUsername, trigger: "blur" }],
+      },
     };
   },
   watch: {
     visible(val) {
-        val && this.id && this.getDetail(this.id)
-    }
+      val && this.id && this.getDetail(this.id);
+    },
   },
   methods: {
     close() {
       this.$emit("update:visible", false);
-      console.log("close");
+      Object.assign(this.$data, this.$options.data());
+      this.$emit('update:id',undefined)
+      this.$nextTick(()=>{
+        this.$refs.userForm.clearValidate()
+      })
     },
-    handleSubmit() {
-
+    async handleSubmit() {
+      const userForm = JSON.parse(JSON.stringify(this.userForm))
+      delete userForm.checkPass;
+      if (this.id) {
+        const { code, data } = await this.$service.user.update(userForm);
+        if (code !== 200) return;
+      } else {
+        const { code, data } = await this.$service.user.add(userForm);
+        if (code !== 200) return;
+      }
+      this.$message.success(this.id ? "修改成功" : "添加成功");
+      this.close();
     },
     /**部门选择 */
     areaChange(val) {
-        this.$refs.areaTree.toggleDropDownVisible();
+      this.$refs.areaTree.toggleDropDownVisible();
     },
-    getDetail(id) {
-        // const {code,data} = await this.$service.user.
-    }
+    async getDetail(id) {
+      const { code, data } = await this.$service.user.detail(id);
+      console.log(code, data);
+      this.userForm = data;
+    },
   },
 };
 </script>
