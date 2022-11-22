@@ -16,7 +16,6 @@ const instance = axios.create({
 
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
-  console.log(config,config.data,'confgixx')
     // 在发送请求之前做些什么
     // config.data = qs.stringify(config.data)
     // config.headers['content-type'] ='application/x-www-form-urlencoded'
@@ -27,7 +26,6 @@ instance.interceptors.request.use(function (config) {
     if (store.getters.token) {
       config.headers['Authorization'] = 'Bearer ' + getToken()
   }
-  console.log(config,'config')
     return config;
   }, function (error) {
     // 对请求错误做些什么
@@ -42,7 +40,6 @@ instance.interceptors.response.use(function (response) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
     if(res.code!==200) {
-      console.log(res.code,'异常CODE')
       Message({
         message: res.message || 'Error',
         type: 'error',

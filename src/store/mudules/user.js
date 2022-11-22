@@ -10,7 +10,8 @@ const getDefaultState = () => {
         avatar: '',
         roles: [],
         perms: [],
-        routes:[]
+        routes:[],
+        areaId: 0,
     }
 }
 const state = getDefaultState()
@@ -28,8 +29,8 @@ const mutations = {
     SET_NAME: (state, name) => {
         state.name = name
     },
-    SET_AREAID: (state, areaid) => {
-        state.areaid = areaid
+    SET_AREAID: (state, areaId) => {
+        state.areaId = areaId
     },
     SET_AVATAR: (state, avatar) => {
         state.avatar = avatar
@@ -104,7 +105,6 @@ const actions = {
                     commit('SET_NAME', name)
                     commit('SET_AREAID', areaId)
                     commit('SET_AVATAR', avatar)
-                    console.log('avatar',avatar)
                     commit('SET_ROUTES',acccessRoutes)
                     resolve(acccessRoutes)
                 }).catch(error => {

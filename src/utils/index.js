@@ -139,4 +139,16 @@ export function getTableHeight(el) {
     return document.body.offsetHeight - el.$el.offsetHeight -50 -40 -47 -30
     
 }
+export function formatToAreaTree(list, myid = 0) {
+    // 遍历整个列表
+    return list.filter(cur => {
+    // 获取当前节点的子节点
+        const children = list.filter(item => item.parentId === cur.id)
+        if (children.length > 0) {
+            cur.children = children
+        }
+        // 只返回顶级节点
+        return cur.id === myid
+    })
+}
 

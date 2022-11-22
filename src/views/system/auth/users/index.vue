@@ -36,19 +36,18 @@
       align="center"
       :header-cell-style="headClass"
     >
-      <el-table-column label="id" prop="id"> </el-table-column>
-      <el-table-column label="用户名" prop="username" />
-      <el-table-column label="电话" prop="phone" />
-      <el-table-column label="姓名" prop="name" />
-      <el-table-column label="部门" prop="areaName"> </el-table-column>
-      <el-table-column label="部门次序" prop="ancestors" />
-      <el-table-column prop="status" label="状态">
+      <el-table-column label="用户名" align="center" prop="username" />
+      <el-table-column label="电话" align="center" prop="phone" />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column label="部门" align="center" prop="areaName"> </el-table-column>
+      <el-table-column label="部门次序" align="center" prop="ancestors" />
+      <el-table-column prop="status" align="center" label="状态">
         <template v-slot="{ row }">
           <span>{{ row.status === 1 ? "启用" : "禁用" }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column prop="remark" label="备注"> </el-table-column>
+      <el-table-column prop="remark" align="center" label="备注"> </el-table-column>
 
       <el-table-column label="操作" align="center">
         <template v-slot="{ row }">
@@ -73,16 +72,14 @@
     >
     </el-pagination>
     </div>
-    <user-dialog :visible.sync="visible" :areaTree="areaTree" :id.sync="id"></user-dialog>
+    <user-dialog :visible.sync="visible" :areaTree="areaTree" :id.sync="id" @success="getList"></user-dialog>
   </div>
 </template>
 
 <script>
 import { parseTime, deepClone,getTableHeight } from "@/utils/index";
-import { formatRouterTree } from "@/utils/routerHook";
-import { validPhone } from "@/utils/validate";
+import { formatToAreaTree } from "@/utils/index";
 import { mapGetters } from "vuex";
-import { contain } from 'postcss-pxtorem/lib/filter-prop-list';
 export default {
   components: {
     UserDialog: () => import('./UserDialog.vue')
@@ -106,7 +103,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["areaid"]),
+    ...mapGetters(["areaId"]),
   },
 
   mounted() {
@@ -133,18 +130,14 @@ export default {
     },
     async getAreaList() {
       const { code, data } = await this.$service.area.list();
-      this.areaTree = formatRouterTree(data);
-      console.log(code, data);
+      this.areaTree = formatToAreaTree(data,this.areaId);
     },
     handleSizeChange(val) {
       this.params.pageSize = Number(val);
-      console.log(val, "val-size");
       this.getList()
     },
     handleCurrentChange(val) {
       this.params.page = Number(val);
-      console.log(this.params.pageSize,'params')
-      console.log(val, "val-page");
       this.getList()
     },
     /**部门筛选 */

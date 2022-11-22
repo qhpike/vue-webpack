@@ -1,34 +1,38 @@
 import request from '@/utils/request'
-import { Permission } from '@/core/decorator/service'
+import { Btn } from '@/core/decorator/service'
 
 class SysAreaService {
-    @Permission('api/v1/area/list')
     list() {
         return request({
             url: '/api/v1/area/list',
             method: 'get'
         })
     }
-    @Permission('api/v1/area/update')
+    detail(id) {
+        return request({
+            url: `/api/v1/area/list/${id}`,
+            method: 'get'
+        })
+    }
+    @Btn('api/v1/area/update')
     update(data) {
         return request({
-            url: '/api/v1/area/update',
-            method: 'post',
+            url: '/api/v1/area/list',
+            method: 'put',
             data
         })
     }
-    @Permission('api/v1/area/delete')
+    @Btn('api/v1/area/delete')
     delete(id) {
         return request({
-            url: '/api/v1/area/delete/',
-            method: 'post',
-            data: { id }
+            url: `/api/v1/area/list/${id}`,
+            method: 'delete',
         })
     }
-    @Permission('api/v1/area/add')
-    add(data) {
+    @Btn('api/v1/area/create')
+    create(data) {
         return request({
-            url: '/api/v1/area/add',
+            url: '/api/v1/area/list',
             method: 'post',
             data
         })

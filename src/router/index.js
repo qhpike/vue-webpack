@@ -37,7 +37,7 @@ export const asyncRoutesMap = {
     '菜单管理': '/system/auth/menu',
     '用户管理': '/system/auth/users',
     '用户日志': '/system/logo',
-    '机构管理': '/system/area',
+    '部门管理': '/system/dept',
     '角色管理': '/system/auth/roles',
     
 }

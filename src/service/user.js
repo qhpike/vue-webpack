@@ -1,16 +1,15 @@
 import request from '@/utils/request'
-import { Permission } from '@/core/decorator/service'
+import { Btn } from '@/core/decorator/service'
 import qs from 'qs'
 
 class SysUserService {
-    @Permission('api/v1/user/list')
     list(params) {
         return request({
             url: `/api/v1/user/list?${qs.stringify(params)}`,
             method: 'get',
         })
     }
-    @Permission('api/v1/user/list')
+    @Btn('api/v1/user/update')
     update(data) {
         return request({
             url: '/api/v1/user/list',
@@ -18,7 +17,7 @@ class SysUserService {
             data,
         })
     }
-    @Permission('api/v1/user/list')
+    @Btn('api/v1/user/create')
     add(data) {
         return request({
             url: '/api/v1/user/list',
@@ -26,7 +25,7 @@ class SysUserService {
             data
         })
     }
-    @Permission('api/v1/user/list')
+    @Btn('api/v1/user/delete')
     delete(id) {
         return request({
             url: `/api/v1/user/list/${id}`,
@@ -39,7 +38,6 @@ class SysUserService {
             method: 'get',
         })
     }
-    // @Permission('api/v1/user/vlidateUser')
     vlidateUser(username) {
         return request({
             url: '/api/v1/user/validate',

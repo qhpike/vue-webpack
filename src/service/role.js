@@ -1,7 +1,6 @@
 import request from '@/utils/request'
-import { Permission } from '@/core/decorator/service'
+import { Btn } from '@/core/decorator/service'
 class SysRoleService {
-    @Permission('api/v1/role/list')
     list(id) {
         return request({
             url: '/api/v1/role/list',
@@ -9,7 +8,7 @@ class SysRoleService {
             data: { id }
         })
     }
-    @Permission('api/v1/role/update')
+    @Btn('api/v1/role/update')
     update(data) {
         return request({
             url: '/api/v1/role/update',
@@ -17,7 +16,7 @@ class SysRoleService {
             data
         })
     }
-    @Permission('api/v1/role/add')
+    @Btn('api/v1/role/create')
     add(data) {
         return request({
             url: '/api/v1/role/add',
@@ -25,7 +24,7 @@ class SysRoleService {
             data
         })
     }
-    @Permission('api/v1/role/delete')
+    @Btn('api/v1/role/delete')
     delete(data) {
         return request({
             url: '/api/v1/role/delete',

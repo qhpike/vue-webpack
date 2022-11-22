@@ -1,8 +1,7 @@
 import request from '@/utils/request'
-import { Permission } from '@/core/decorator/service'
+import { Btn } from '@/core/decorator/service'
 
 class WorkerService {
-    // @Permission('api/v1/worker/imgUpload')
     imgUpload(data) {
         return request({
             url: `/api/v1/worker/imgUpload`,
@@ -10,7 +9,7 @@ class WorkerService {
             data
         })
     }
-    @Permission('api/v1/worker/workerAdd')
+    @Btn('api/v1/worker/create')
     workerAdd(data) {
         return request({
             url: '/api/v1/worker/workerAdd',
@@ -18,7 +17,6 @@ class WorkerService {
             data
         })
     }
-    // @Permission('api/v1/worker/validateCardId')
     validateCardId(data) {
         return request({
             url: '/api/v1/worker/validateCardId',
@@ -26,7 +24,6 @@ class WorkerService {
             data
         })
     }
-    // @Permission('api/v1/worker/validatePhone')
     validatePhone(data) {
         return request({
             url: '/api/v1/worker/validatePhone',
@@ -34,7 +31,6 @@ class WorkerService {
             data
         })
     }
-    @Permission('api/v1/worker/list')
     list(data) {
         return request({
             url: '/api/v1/worker/list',
@@ -42,7 +38,7 @@ class WorkerService {
             data
         })
     }
-    @Permission('api/v1/worker/delete')
+    @Btn('api/v1/worker/delete')
     delete(data) {
         return request({
             url: '/api/v1/worker/delete',
@@ -50,7 +46,6 @@ class WorkerService {
             data
         })
     }
-    @Permission('api/v1/worker/detail')
     detail(data) {
         return request({
             url: '/api/v1/worker/detail',
@@ -58,7 +53,7 @@ class WorkerService {
             data
         })
     }
-    @Permission('api/v1/worker/edit')
+    @Btn('api/v1/worker/update')
     edit(data) {
         return request({
             url: '/api/v1/worker/edit',

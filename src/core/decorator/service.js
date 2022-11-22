@@ -6,7 +6,7 @@ import store from '@/store'
  * permission权限注册
  * @param {String} value info
  */
-export function Permission(value) {
+export function Btn(value) {
     return function(target, key, descriptor) {
         if (!target.permission) {
             target.permission = {}

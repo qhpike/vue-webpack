@@ -10,21 +10,21 @@
     :title="this.id ? '编辑用户' : '新增用户'"
   >
     <el-form
-    inline
+      inline
       ref="userForm"
       :model="userForm"
+      :validate-on-rule-change="false"
       :rules="rules"
       status-icon
       size="small"
       label-width="100px"
       label-position="right"
     >
-    <el-form-item  label="用户账号：" prop="username">
+      <el-form-item label="用户账号：" prop="username">
         <el-input
-        :disabled="Boolean(id)"
-          v-model.trim="userForm.username"
+          :disabled="Boolean(id)"
+          v-model="userForm.username"
           placeholder="请输入账号"
-          clearable
         />
       </el-form-item>
       <el-form-item label="部门：" prop="areaId">
@@ -45,7 +45,7 @@
           clearable
         ></el-cascader>
       </el-form-item>
-      
+
       <el-form-item v-if="!this.id" label="用户密码：" prop="password">
         <el-input
           v-model.trim="userForm.password"
@@ -72,7 +72,7 @@
       </el-form-item>
       <el-form-item label="角色：" prop="roleList">
         <el-input v-model.trim="userForm.name" placeholder="请输入姓名" />
-         </el-form-item>
+      </el-form-item>
 
       <el-form-item label="姓名：">
         <el-input v-model.trim="userForm.name" placeholder="请输入姓名" />
@@ -80,21 +80,41 @@
       <el-form-item label="昵称：">
         <el-input v-model.trim="userForm.nickName" placeholder="请输入昵称" />
       </el-form-item>
-     
+
       <el-form-item label="备注：">
         <el-input v-model.trim="userForm.remark" placeholder="请输入备注" />
       </el-form-item>
-       <el-form-item v-if="this.id" label="状态">
-         <el-radio-group v-model="userForm.status">
-            <el-radio :label="1">启用</el-radio>
-            <el-radio :label="0">禁用</el-radio>
+      <el-form-item v-if="this.id" label="状态">
+        <el-radio-group v-model="userForm.status">
+          <el-radio :label="1">启用</el-radio>
+          <el-radio :label="0">禁用</el-radio>
         </el-radio-group>
+      </el-form-item>
+      <el-form-item label="头像">
+        <el-upload
+          class="avatar-uploader"
+          action="http://localhost:3000/api/v1/user/upload"
+          :show-file-list="false"
+          :headers="headers"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+        >
+          <template v-if="imageUrl">
+            <video v-if="imageUrl.split('.')[1] === 'mp4'" :src="baseUrl + imageUrl" autoplay  class="avatar"></video>
+            <img v-else :src="baseUrl + imageUrl" class="avatar" />
+          </template>
+          
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          
+        </el-upload>
       </el-form-item>
     </el-form>
   </el-modal>
 </template>
 
 <script>
+import {getToken} from '@/utils/auth'
+import { validPhone } from '@/utils/validate'
 export default {
   props: {
     visible: {
@@ -108,10 +128,9 @@ export default {
     const validateUsername = async (rule, value, callback) => {
       if (value && value.length < 6) {
         callback(new Error("用户名必须6位以上"));
-      } else if(!value){
-        callback(new Error('请输入用户名'))
-      } else{
-        console.log(value,'value')
+      } else if (!value) {
+        callback(new Error("请输入用户名"));
+      } else {
         const result = await this.$service.user.vlidateUser(value);
         if (!result.data) {
           callback();
@@ -133,7 +152,7 @@ export default {
     const validatePass2 = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
-      } else if (value !== this.user.password) {
+      } else if (value !== this.userForm.password) {
         callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
@@ -149,18 +168,30 @@ export default {
     return {
       userForm: {
         areaId: undefined,
-        username: '',
+        username: undefined,
         password: undefined,
         checkPass: undefined,
         phone: undefined,
         name: undefined,
         nickName: undefined,
         remark: undefined,
+        avatar:undefined,
       },
       rules: {
         areaId: [{ required: true, message: "请选择部门", trigger: "blur" }],
-        username: [{ validator: validateUsername, trigger: "blur" }],
+        username: [
+          { required: true, validator: validateUsername, trigger: "blur" },
+        ],
+        password: [{required: true, validator: validatePass, trigger: 'blur'}],
+        checkPass:[{required: true, validator: validatePass2, trigger: 'blur'}],
+        phone: [{ required: true, validator: validatePhone, trigger: 'blur' }]
       },
+      baseUrl: MYURL.CUSTOMER_SERVER,
+      imageUrl:'',
+      headers:{
+        Authorization:'Bearer ' + getToken(),
+        responseType : 'blob'
+      }
     };
   },
   watch: {
@@ -171,14 +202,15 @@ export default {
   methods: {
     close() {
       this.$emit("update:visible", false);
-      Object.assign(this.$data, this.$options.data());
-      this.$emit('update:id',undefined)
-      this.$nextTick(()=>{
-        this.$refs.userForm.clearValidate()
-      })
+      // Object.assign(this.$data.userForm, this.$options.data().userForm);
+      Object.assign(this.$data,this.$options.data())
+      this.$emit("update:id", undefined);
+      this.$nextTick(() => {
+        this.$refs.userForm.clearValidate();
+      });
     },
     async handleSubmit() {
-      const userForm = JSON.parse(JSON.stringify(this.userForm))
+      const userForm = JSON.parse(JSON.stringify(this.userForm));
       delete userForm.checkPass;
       if (this.id) {
         const { code, data } = await this.$service.user.update(userForm);
@@ -188,20 +220,77 @@ export default {
         if (code !== 200) return;
       }
       this.$message.success(this.id ? "修改成功" : "添加成功");
+      this.$emit('success')
       this.close();
     },
     /**部门选择 */
     areaChange(val) {
-      this.$refs.areaTree.toggleDropDownVisible();
+      // this.$refs.areaTree.toggleDropDownVisible();
     },
     async getDetail(id) {
       const { code, data } = await this.$service.user.detail(id);
-      console.log(code, data);
       this.userForm = data;
+      this.imageUrl = data.avatar
     },
+    handleAvatarSuccess(res,file) {
+      // const arrayBuffer = this.toArrayBuffer(file.response.file.buffer.data)
+      // const blob2 = new Blob([arrayBuffer])
+      // this.imageUrl = URL.createObjectURL(blob2)
+      this.userForm.avatar = res.data.url;
+      this.imageUrl = res.data.url;
+
+    },
+    beforeAvatarUpload(file) {
+      //  const isJPG = file.type === 'image/jpeg';
+      //   const isLt2M = file.size / 1024 / 1024 < 2;
+
+      //   if (!isJPG) {
+      //     this.$message.error('上传头像图片只能是 JPG 格式!');
+      //   }
+      //   if (!isLt2M) {
+      //     this.$message.error('上传头像图片大小不能超过 2MB!');
+      //   }
+      //   return isJPG && isLt2M;
+      return true;
+    },
+    toArrayBuffer(buf) {
+      // 方法1
+    //   console.log(buf,buf.length,'length')
+    // const ab = new ArrayBuffer(buf.length);
+    // const view = new Uint8Array(ab);
+    // for (let i = 0; i < buf.length; ++i) {
+    //     view[i] = buf[i];
+    // }
+    // return ab;
+    // 方法2
+    return new Int8Array(buf)
+}
   },
 };
 </script>
 
 <style lang="scss" scoped>
+::v-deep.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+ ::v-deep .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+ ::v-deep .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 52px;
+    height: 52px;
+    line-height: 52px;
+    text-align: center;
+  }
+ ::v-deep .avatar {
+    width: 52px;
+    height: 52px;
+    display: block;
+  }
 </style>

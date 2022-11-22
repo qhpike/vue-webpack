@@ -9,7 +9,8 @@
               
             <el-dropdown class="avatar-container" trigger="click">
                 <div class="avatar-wrapper">
-                <img :src="avatar" class="user-avatar">
+                <video v-if="avatar.split('.')[1] === 'mp4'" :src="baseUrl + avatar" autoplay  class="user-avatar"></video>
+                <img v-else :src="baseUrl + avatar" class="user-avatar">
                 <i class="el-icon-caret-bottom" />
                 </div>
                 <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -38,6 +39,11 @@
         components: {
             Hamburger:()=> import('@/components/Hamburger'),
             breadcrumb: () => import( '@/components/breadcrumb')
+        },
+        data() {
+          return {
+            baseUrl: MYURL.CUSTOMER_SERVER,
+          }
         },
         computed:{
             ...mapGetters([

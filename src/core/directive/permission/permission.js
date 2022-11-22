@@ -25,6 +25,7 @@ function checkPermission(el, binding) {
     let hasPermission = false
     if (isOrMode) {
         hasPermission = isOrContain(perms, userPerms)
+
     } else {
         hasPermission = isAndContain(perms, userPerms)
     }

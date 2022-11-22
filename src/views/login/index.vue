@@ -6,7 +6,7 @@
             <img src="@/assets/image/art.svg" alt="">
         </div>
         <div class="login-box">
-            <form action="">
+            <form @submit="login">
                 <img src="@/assets/image/avatar2.svg" alt="" class="avatar">
                 <h2>登录</h2>
                 <div class="input-group" :class="{'focus':input1}">
@@ -29,11 +29,12 @@
                 </div>
                
                 <!-- <a href="#">忘记密码</a> -->
-                <input type="submit" class="btn" @click="login" value="Login">
+                <input  class="btn" type="submit" @click="login" value="Login">
             </form>
+            
         </div>
     </div>
-    <!-- <a href="https://www.cqbegin.com" target="_blank" class="copyright">&copy; Ramostear</a> -->
+    <!-- <a href="https://www.cqbegin.com" target="_blank" class="copyright">&copy; cqbegin</a> -->
     </div>
 </template>
 <script>
@@ -69,7 +70,6 @@
                 }).then(res=>{
                     if(res.code===200) {
                         this.$message.success('登录成功')
-                        console.log(this.redirect,'this.redirect')
                         this.$router.push({ path: this.redirect || '/' })
                     } else {
                         this.$message.error(res.message)
