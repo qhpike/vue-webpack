@@ -103,11 +103,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["areaId"]),
+    ...mapGetters(["areaId","isRoot"]),
   },
 
   mounted() {
     this.getAreaList();
+    console.log(this.isRoot,'isRoot');
     this.getList();
     this.$nextTick(()=>{
       this.tableHeight = getTableHeight(this.$refs.form)
@@ -130,7 +131,11 @@ export default {
     },
     async getAreaList() {
       const { code, data } = await this.$service.area.list();
-      this.areaTree = formatToAreaTree(data,this.areaId);
+      if(this.isRoot) {
+          this.areaTree = formatToAreaTree(data);
+        }else {
+          this.areaTree = formatToAreaTree(data,this.areaId,'self');
+        }
     },
     handleSizeChange(val) {
       this.params.pageSize = Number(val);

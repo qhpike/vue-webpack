@@ -1,9 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="query" label-width="80px" inline size="small" ref="form">
-      <!-- <el-form-item label="姓名">
-        <el-input v-model="query.name" @change="getList"></el-input>
-      </el-form-item> -->
       <el-form-item label="部门:">
         <el-cascader
           v-model="query.areaId"
@@ -37,7 +34,7 @@
       :header-cell-style="headClass"
     >
       <el-table-column label="ID" align="center" prop="id" />
-      <el-table-column label="部门" align="center" prop="areaId" />
+      <el-table-column label="部门" align="center" prop="areaName" />
       <el-table-column label="角色名" align="center" prop="name" />
       <el-table-column label="姓名" align="center" prop="label" />
       <el-table-column label="备注" align="center" prop="remark"> </el-table-column>
@@ -90,7 +87,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["areaId"]),
+    ...mapGetters(["areaId","isRoot"]),
   },
 
   mounted() {
@@ -115,7 +112,11 @@ export default {
     },
     async getAreaList() {
       const { code, data } = await this.$service.area.list();
-      this.deptList = formatToAreaTree(data,this.areaId);
+      if(this.isRoot) {
+          this.deptList = formatToAreaTree(data);
+        }else {
+          this.deptList = formatToAreaTree(data,this.areaId,'self');
+        }
     },
     /**部门筛选 */
     areaChange(val) {

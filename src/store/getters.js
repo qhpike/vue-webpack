@@ -7,5 +7,6 @@ const getters = {
     sidebar: state => state.app.sidebar,
     areaId: state => state.user.areaId,
     perms: state => state.user.perms,
+    isRoot: state => state.user.isRoot,
 }
 export default getters

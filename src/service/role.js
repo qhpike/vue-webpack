@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 import { Btn } from '@/core/decorator/service'
+import qs from 'qs'
 class SysRoleService {
-    list(id) {
+    list(params) {
         return request({
-            url: '/api/v1/role/list',
+            url: `/api/v1/role/list?${qs.stringify({...params})}`,
             method: 'get',
         })
     }

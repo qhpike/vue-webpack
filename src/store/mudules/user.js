@@ -12,6 +12,7 @@ const getDefaultState = () => {
         perms: [],
         routes:[],
         areaId: 0,
+        isRoot:0,
     }
 }
 const state = getDefaultState()
@@ -34,6 +35,9 @@ const mutations = {
     },
     SET_AVATAR: (state, avatar) => {
         state.avatar = avatar
+    },
+    SET_ISROOT: (state, isRoot) => {
+        state.isRoot = isRoot
     },
     SET_ROLES: (state, roles) => {
         state.roles = roles
@@ -85,7 +89,7 @@ const actions = {
                         reject('Verification failed, please Login again.')
                     }
     
-                    const { name, avatar, areaId } = data
+                    const { name, avatar, areaId, isRoot } = data
                     // 取回的权限数组转为树型
                     const _perms = JSON.parse(JSON.stringify(data.roles))
                     const perms = _perms.filter(item => item.type === 2).map(menu => {
@@ -105,6 +109,7 @@ const actions = {
                     commit('SET_NAME', name)
                     commit('SET_AREAID', areaId)
                     commit('SET_AVATAR', avatar)
+                    commit('SET_ISROOT', isRoot)
                     commit('SET_ROUTES',acccessRoutes)
                     resolve(acccessRoutes)
                 }).catch(error => {

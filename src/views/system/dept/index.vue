@@ -39,7 +39,7 @@
         <el-table-column
           label="操作">
           <template  v-slot="{ row }">
-            <template v-if="row.parentId!==0">  
+            <template v-if="row.id!==areaId && row.parentId!==0">  
               <!-- 顶级部门不可修改，删除 -->
               <el-button type="text" @click="handleEdit(row)">编辑</el-button>
           <el-button type="text" @click="handleDelete(row)">删除</el-button>
@@ -79,14 +79,19 @@ export default {
     this.getList()
   },
    computed: {
-    ...mapGetters(["areaId"]),
+    ...mapGetters(["areaId","isRoot"]),
   },
   methods: {
     async getList() {
         this.loading = true;
         const {code,data} = await this.$service.area.list();
         if(code!==200) return;
-        this.deptList = formatToAreaTree(data,this.areaId);
+        if(this.isRoot) {
+          this.deptList = formatToAreaTree(data);
+        }else {
+          this.deptList = formatToAreaTree(data,this.areaId,'self');
+        }
+        
         const expend = this.deptList.map(item=>item.id)
         this.loading = false;
 

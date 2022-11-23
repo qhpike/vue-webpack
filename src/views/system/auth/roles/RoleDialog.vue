@@ -42,7 +42,7 @@
         <el-form-item label="说明：" prop="label">
           <el-input v-model="roleForm.label"></el-input>
         </el-form-item>
-        <el-form-item label="备注：" size="normal">
+        <el-form-item label="备注：" prop="remark">
           <el-input v-model="roleForm.remark"></el-input>
         </el-form-item>
         
