@@ -50,10 +50,10 @@ const actions = {
     login({ commit },userInfo) {
         return new Promise((resolve,reject)=>{
             login(userInfo).then(res=>{
-                const {code,token} = res
+                const {code,data} = res
                 if(code===200) {
-                    commit('SET_TOKEN',token)
-                    setToken(token)
+                    commit('SET_TOKEN',data)
+                    setToken(data)
                 }
                 resolve(res)
             }).catch(error=>{

@@ -12,33 +12,40 @@
         label-width="100px"
         label-position="right"
         size="small"
-        :model="deptForm"
+        :model="roleForm"
         :rules="rules"
-        ref="deptForm"
+        ref="roleForm"
         :validate-on-rule-change="false"
       >
-        <el-form-item label="上级部门：" prop="parentId">
+        <el-form-item label="部门：" prop="areaId">
           <el-cascader
             placeholder="请选择部门"
             :options="deptList"
-            v-model="deptForm.parentId"
+            v-model="roleForm.areaId"
             ref="areaTree"
-            :disabled="Boolean(id)"
             :props="{
               checkStrictly: true,
               label: 'name',
               value: 'id',
-              emitPath: true,
+              emitPath: false,
               multiple: false,
             }"
+            @change="deptChange"
             :show-all-levels="false"
             clearable
           ></el-cascader>
         </el-form-item>
 
-        <el-form-item label="部门名称：" size="small" prop="name">
-          <el-input v-model="deptForm.name"></el-input>
+        <el-form-item label="名称："  prop="name">
+          <el-input v-model="roleForm.name"></el-input>
         </el-form-item>
+        <el-form-item label="说明：" prop="label">
+          <el-input v-model="roleForm.label"></el-input>
+        </el-form-item>
+        <el-form-item label="备注：" size="normal">
+          <el-input v-model="roleForm.remark"></el-input>
+        </el-form-item>
+        
       </el-form>
     </el-modal>
   </div>
@@ -46,7 +53,7 @@
 
 <script>
 export default {
-  name: "dept-dialog",
+  name: "role-dialog",
   props: {
     visible: false,
     id: "",
@@ -54,14 +61,15 @@ export default {
   },
   data() {
     return {
-      deptForm: {
-        parentId: [1],
-        name: "",
-        ancestors: "",
+      roleForm: {
+        areaId: 1,
+        name: '',
+        label: '',
+        remark: ''
       },
       rules: {
-        parentId: [
-          { required: true, message: "请选择上级部门", trigger: "change" },
+        areaId: [
+          { required: true, message: "请选择部门", trigger: "change" },
         ],
         name: [{ required: true, message: "请输入部门名称", trigger: "blur" }],
       },
@@ -75,19 +83,16 @@ export default {
   },
   methods: {
     async submit() {
-      await this.$refs.deptForm.validate();
-      const deptData = JSON.parse(JSON.stringify(this.deptForm));
-      console.log(this.deptForm, "deptForm");
+      await this.$refs.roleForm.validate();
+      const roleData = JSON.parse(JSON.stringify(this.roleForm));
+      console.log(this.roleForm, "roleForm");
 
       try {
         if (this.id) {
-          await this.$service.area.update(deptData);
+          await this.$service.role.update(roleData);
           this.$message.success("修改成功");
         } else {
-          deptData.ancestors = "0," + deptData.parentId.join(",");
-          deptData.parentId = deptData.parentId.pop();
-          console.log(deptData,'data-after')
-          await this.$service.area.create(deptData);
+          await this.$service.role.create(roleData);
           this.$message.success("添加成功");
         }
         this.$emit("success");
@@ -102,10 +107,13 @@ export default {
       Object.assign(this.$data, this.$options.data());
     },
     async getDetail(id) {
-      const { code, data } = await this.$service.area.detail(id);
+      const { code, data } = await this.$service.role.detail(id);
       if (code !== 200) return;
-      this.deptForm = data;
+      this.roleForm = data;
     },
+    deptChange(val) {
+      console.log(val,'valxx');
+    }
   },
 };
 </script>

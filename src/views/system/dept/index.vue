@@ -9,7 +9,7 @@
       fit
       :data="deptList"
       row-key="id"
-      size="small"
+      size="mini"
       :height="tableHeight"
       align="center"
       :header-cell-style="headClass"

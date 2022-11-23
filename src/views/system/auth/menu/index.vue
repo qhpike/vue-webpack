@@ -15,7 +15,7 @@
         fit
         :data="menuall"
         row-key="id"
-        size="small"
+        size="mini"
         :height="tableHeight"
         :header-cell-style="headClass"
         :expand-row-keys="menuall.map(item=>item.id + '')"

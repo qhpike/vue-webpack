@@ -31,7 +31,7 @@
       :data="tableData"
       style="width: 100%; margin-top: 30px"
       fit
-      size="small"
+      size="mini"
       :height="tableHeight"
       align="center"
       :header-cell-style="headClass"
