@@ -52,16 +52,20 @@
 
       <el-table-column label="操作" align="center">
         <template v-slot="{ row }">
-          <el-button size="small" type="text" icon="el-icon-edit" @click="handleEdit(row)"
+          <el-button v-permission="'api:v1:role:menu'" size="small" type="text" icon="el-icon-setting" @click="handlePerms(row)"
+            >权限设置</el-button
+          >
+          <el-button v-permission="'api:v1:role:update'" size="small" type="text" icon="el-icon-edit" @click="handleEdit(row)"
             >编辑</el-button
           >
-          <el-button size="small" type="text" icon="el-icon-delete" @click="handleDelete(row)"
+          <el-button v-permission="'api:v1:role:delete'" size="small" type="text" icon="el-icon-delete" @click="handleDelete(row)"
             >删除</el-button
           >
         </template>
       </el-table-column>
     </el-table>
     <role-dialog :visible.sync="visible" :deptList="deptList" :id.sync="id" @success="getList"></role-dialog>
+    <perm-dialog :visible.sync="visiblePerm"  :id.sync="id" @success="getList"></perm-dialog>
   </div>
 </template>
 
@@ -71,18 +75,21 @@ import { formatToAreaTree } from "@/utils/index";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    RoleDialog: () => import('./RoleDialog.vue')
+    RoleDialog: () => import('./RoleDialog.vue'),
+    PermDialog: () => import('./PermDialog.vue')
   },
   data() {
     return {
       id:undefined,
       deptList: [],
+      permsList: [],
       query: {
         areaId: undefined,
       },
       tableData: [],
       tableHeight:0,
       visible:false,
+      visiblePerm:false,
     };
   },
 
@@ -145,6 +152,11 @@ export default {
       }
       this.$message.success('删除成功')
       this.getList()
+    },
+    handlePerms({id}) {
+      this.id = id;
+      this.visiblePerm = true;
+      
     }
   },
 };

@@ -14,6 +14,14 @@ class SysRoleService {
             method: 'get'
         })
     }
+    @Btn('api/v1/role/menu')
+    saveMenu(data,id) {
+        return request({
+            url: `/api/v1/menu/saveRoleMenu/${id}`,
+            method: 'post',
+            data
+        })
+    }
     @Btn('api/v1/role/update')
     update(data) {
         return request({

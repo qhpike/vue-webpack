@@ -71,7 +71,14 @@
         />
       </el-form-item>
       <el-form-item label="角色：" prop="roleList">
-        <el-input v-model.trim="userForm.name" placeholder="请输入姓名" />
+        <el-select v-model="userForm.role" multiple placeholder="请选择">
+            <el-option
+              v-for="item in roleListFilter"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+      </el-select>
       </el-form-item>
 
       <el-form-item label="姓名：">
@@ -176,6 +183,7 @@ export default {
         nickName: undefined,
         remark: undefined,
         avatar:undefined,
+        role:undefined,
       },
       rules: {
         areaId: [{ required: true, message: "请选择部门", trigger: "blur" }],
@@ -191,13 +199,25 @@ export default {
       headers:{
         Authorization:'Bearer ' + getToken(),
         responseType : 'blob'
-      }
+      },
+      roleList:[],
     };
   },
   watch: {
     visible(val) {
       val && this.id && this.getDetail(this.id);
+      val && this.getRoleList();
     },
+    'userForm.areaId': {
+      handler(val) {
+        console.log(val,'areaid--change');
+      }
+    }
+  },
+  computed: {
+    roleListFilter() {
+     return (this.roleList || []).filter(item=>item.areaId === this.userForm.areaId )
+    }
   },
   methods: {
     close() {
@@ -223,12 +243,22 @@ export default {
       this.$emit('success')
       this.close();
     },
+    async getRoleList() {
+      const query = {
+        createTime : '2022-02-02'
+      }
+      const {code,data} = await this.$service.role.list({query});
+      if(code!==200) return;
+      this.roleList = data;
+    },
     /**部门选择 */
     areaChange(val) {
       // this.$refs.areaTree.toggleDropDownVisible();
+      this.userForm.role = [];
     },
     async getDetail(id) {
       const { code, data } = await this.$service.user.detail(id);
+      data.role = data.role.map(item=>item.roleId);
       this.userForm = data;
       this.imageUrl = data.avatar
     },

@@ -8,6 +8,13 @@ class SysMenuService {
             method: 'get'
         })
     }
+    findOne(id) {
+        return request({
+            url: `/api/v1/menu/findOne/${id}`,
+            method: 'get'
+        })
+    }
+    
     info(id) {
         return request({
             url: `/api/v1/menu/list/${id}`,

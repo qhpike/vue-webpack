@@ -163,7 +163,7 @@ export default {
       svgIcons,
       parentNodeName: "根目录",
       menuForm: {
-        id: -1,
+        id: undefined,
         parentId: 0,
         perms: "",
         hidden: 0,
@@ -226,7 +226,6 @@ export default {
   },
   watch: {
     visible(val) {
-      console.log(this.id,'tis.id')
       val && this.initPerms();
       val && this.id && this.getDetail(this.id);
 
