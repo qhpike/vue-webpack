@@ -6,7 +6,8 @@
             <img src="@/assets/image/art.svg" alt="">
         </div>
         <div class="login-box">
-            <form @submit="login">
+            <!-- <form @submit="login"> -->
+                <el-form >
                 <img src="@/assets/image/avatar2.svg" alt="" class="avatar">
                 <h2>登录</h2>
                 <div class="input-group" :class="{'focus':input1}">
@@ -24,13 +25,14 @@
                     </div>
                     <div>
                         <h5>密码</h5>
-                        <input type="password" v-model="password" @focus="input2=true" @blur="input2= password ? true:false" class="input" >
+                        <input type="password" v-model="password" @focus="input2=true" autocomplete="false" @blur="input2= password ? true:false" class="input" >
                     </div>
                 </div>
                
                 <!-- <a href="#">忘记密码</a> -->
-                <input  class="btn" type="submit" @click="login" value="Login">
-            </form>
+                <el-button class="btn" @click="login" >登录</el-button>
+            <!-- </form> -->
+            </el-form>
             
         </div>
     </div>

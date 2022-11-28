@@ -20,8 +20,9 @@ router.beforeEach((to,from,next)=>{
             next()
         } else {
             store.dispatch('user/getInfo').then(accessRoutes=>{
-                // accessRoutes.push( {path:'*',component: () => import('@/views/404')})
-                router.addRoutes(accessRoutes)
+                accessRoutes.forEach(item=>{
+                    router.addRoute(item)
+                })
                 next({ ...to, replace: true })
             }).catch(error=>{
                 Message.error(error || 'Has Error')
