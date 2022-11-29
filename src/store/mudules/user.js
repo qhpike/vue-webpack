@@ -68,16 +68,12 @@ const actions = {
     },
     logout({ commit, state }) {
         return new Promise((resolve, reject) => {
-            logout().then(() => {
                 removeToken() // must remove  token  first
                 resetRouter()
                 commit('RESET_STATE')
                 commit('SET_TOKEN', '')
                 commit('SET_PERMS', [])
                 resolve()
-            }).catch(error => {
-                reject(error)
-            })
         })
     },
         // get user info
