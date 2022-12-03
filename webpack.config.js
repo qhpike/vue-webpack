@@ -111,24 +111,6 @@ module.exports = env => {
           ]
         },
         {
-          test:/\.less$/i,
-          use:[
-            
-            {
-              loader: env.development ? 'style-loader' : MiniCssExtractPlugin.loader,
-            },
-            {
-              loader:'css-loader',
-              options:{
-                importLoaders:2,
-                esModule:false,
-              }
-            },
-            'postcss-loader',
-            'less-loader',
-          ]
-        },
-        {
           test: /\.(png|svg|jpg|jpeg|gif)$/i,
           type: 'asset/resource',
           generator: {

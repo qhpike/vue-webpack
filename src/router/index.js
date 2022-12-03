@@ -42,6 +42,9 @@ export const asyncRoutesMap = {
     '用户日志': '/system/logo',
     '部门管理': '/system/dept',
     '角色管理': '/system/auth/roles',
+    '商品分类': '/product/category',
+    '商品组': '/product/productSpu',
+    '商品管理': '/product/productSku',
     
 }
 const createRouter = () => new VueRouter({

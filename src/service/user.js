@@ -47,6 +47,13 @@ class SysUserService {
             }
         })
     }
+    multiple(data) {
+        return request({
+            url: '/api/v1/user/multiple',
+            method: 'post',
+            data,
+        })
+    }
 }
 export default SysUserService
 
