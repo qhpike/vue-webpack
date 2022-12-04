@@ -198,7 +198,6 @@ export default {
       imageUrl:'',
       headers:{
         Authorization:'Bearer ' + getToken(),
-        responseType : 'blob'
       },
       roleList:[],
     };

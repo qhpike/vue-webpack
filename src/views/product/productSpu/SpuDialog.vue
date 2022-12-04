@@ -42,7 +42,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="图片">
+      <el-form-item label="图片：">
         <multiple-upload
           limit="10"
           @success="uploadSuccess"
@@ -122,13 +122,14 @@ export default {
       });
     },
     async handleSubmit() {
+      this.spuForm.imgUrl = this.imgList.join(',')
       const spuForm = JSON.parse(JSON.stringify(this.spuForm));
       delete spuForm.checkPass;
       if (this.id) {
         const { code, data } = await this.$service.spu.update(spuForm);
         if (code !== 200) return;
       } else {
-        const { code, data } = await this.$service.spu.add(spuForm);
+        const { code, data } = await this.$service.spu.create(spuForm);
         if (code !== 200) return;
       }
       this.$message.success(this.id ? "修改成功" : "添加成功");
@@ -147,8 +148,8 @@ export default {
     },
     async getDetail(id) {
       const { code, data } = await this.$service.spu.detail(id);
-      data.role = data.role.map((item) => item.roleId);
       this.spuForm = data;
+      this.imgList = data.imgUrl.split(',')
     },
     handleAvatarSuccess(res, file) {
       console.log(res, file, this.fileList);

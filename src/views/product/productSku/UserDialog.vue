@@ -7,7 +7,7 @@
     :close-on-click-modal="false"
     btn
     width="40%"
-    :title="this.id ? '编辑用户' : '新增用户'"
+    :title="this.id ? '编辑规格' : '新增规格'"
   >
     <el-form
       inline
@@ -20,101 +20,17 @@
       label-width="100px"
       label-position="right"
     >
-      <el-form-item label="用户账号：" prop="username">
-        <el-input
-          :disabled="Boolean(id)"
-          v-model="userForm.username"
-          placeholder="请输入账号"
-        />
-      </el-form-item>
-      <el-form-item label="部门：" prop="areaId">
-        <el-cascader
-          v-model="userForm.areaId"
-          placeholder="请选择部门"
-          :options="areaTree"
-          ref="areaTree"
-          :props="{
-            checkStrictly: true,
-            label: 'name',
-            value: 'id',
-            emitPath: false,
-            multiple: false,
-          }"
-          :show-all-levels="false"
-          @change="areaChange"
-          clearable
-        ></el-cascader>
-      </el-form-item>
-
-      <el-form-item v-if="!this.id" label="用户密码：" prop="password">
-        <el-input
-          v-model.trim="userForm.password"
-          type="password"
-          clearable
-          placeholder="请输入密码"
-        />
-      </el-form-item>
-      <el-form-item v-if="!this.id" label="确认密码：" prop="checkPass">
-        <el-input
-          v-model.trim="userForm.checkPass"
-          type="password"
-          clearable
-          placeholder="请再次输入密码"
-        />
-      </el-form-item>
-      <el-form-item label="手机：" prop="phone">
-        <el-input
-          ref="phone"
-          v-model.trim="userForm.phone"
-          clearable
-          placeholder="请输入手机号"
-        />
-      </el-form-item>
-      <el-form-item label="角色：" prop="roleList">
-        <el-select v-model="userForm.role" multiple placeholder="请选择">
-            <el-option
-              v-for="item in roleListFilter"
+      <el-form-item label="选择商品：" prop="productSpuId">
+        <el-select placeholder="请选择商品">
+          <el-option
+              v-for="item in spuList"
               :key="item.id"
               :label="item.name"
               :value="item.id">
             </el-option>
-      </el-select>
+        </el-select>
       </el-form-item>
-
-      <el-form-item label="姓名：">
-        <el-input v-model.trim="userForm.name" placeholder="请输入姓名" />
-      </el-form-item>
-      <el-form-item label="昵称：">
-        <el-input v-model.trim="userForm.nickName" placeholder="请输入昵称" />
-      </el-form-item>
-
-      <el-form-item label="备注：">
-        <el-input v-model.trim="userForm.remark" placeholder="请输入备注" />
-      </el-form-item>
-      <el-form-item v-if="this.id" label="状态">
-        <el-radio-group v-model="userForm.status">
-          <el-radio :label="1">启用</el-radio>
-          <el-radio :label="0">禁用</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="头像">
-        <el-upload
-          class="avatar-uploader"
-          action="http://localhost:3000/api/v1/user/upload"
-          :show-file-list="false"
-          :headers="headers"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <template v-if="imageUrl">
-            <video v-if="imageUrl.split('.')[1] === 'mp4'" :src="baseUrl + imageUrl" autoplay  class="avatar"></video>
-            <img v-else :src="baseUrl + imageUrl" class="avatar" />
-          </template>
-          
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          
-        </el-upload>
-      </el-form-item>
+  
     </el-form>
   </el-modal>
 </template>
@@ -132,81 +48,25 @@ export default {
     id: undefined,
   },
   data() {
-    const validateUsername = async (rule, value, callback) => {
-      if (value && value.length < 6) {
-        callback(new Error("用户名必须6位以上"));
-      } else if (!value) {
-        callback(new Error("请输入用户名"));
-      } else {
-        const result = await this.$service.user.vlidateUser(value);
-        if (!result.data) {
-          callback();
-        } else {
-          callback(new Error("用户名已存在"));
-        }
-      }
-    };
-    const validatePass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入密码"));
-      } else {
-        if (this.userForm.checkPass !== "") {
-          this.$refs.userForm.validateField("checkPass");
-        }
-        callback();
-      }
-    };
-    const validatePass2 = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.userForm.password) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
-    const validatePhone = (rule, value, callback) => {
-      if (validPhone(value)) {
-        callback();
-      } else {
-        callback(new Error("手机号格式不正确"));
-      }
-    };
+   
     return {
       userForm: {
-        areaId: undefined,
-        username: undefined,
-        password: undefined,
-        checkPass: undefined,
-        phone: undefined,
-        name: undefined,
-        nickName: undefined,
-        remark: undefined,
-        avatar:undefined,
-        role:undefined,
+        
       },
       rules: {
-        areaId: [{ required: true, message: "请选择部门", trigger: "blur" }],
-        username: [
-          { required: true, validator: validateUsername, trigger: "blur" },
-        ],
-        password: [{required: true, validator: validatePass, trigger: 'blur'}],
-        checkPass:[{required: true, validator: validatePass2, trigger: 'blur'}],
-        phone: [{ required: true, validator: validatePhone, trigger: 'blur' }]
+        
       },
-      baseUrl: MYURL.CUSTOMER_SERVER,
       imageUrl:'',
       headers:{
         Authorization:'Bearer ' + getToken(),
-        responseType : 'blob'
       },
-      roleList:[],
+      spuList:[],
     };
   },
   watch: {
     visible(val) {
       val && this.id && this.getDetail(this.id);
-      val && this.getRoleList();
+      val && this.getSpuList();
     },
     'userForm.areaId': {
       handler(val) {
@@ -243,13 +103,10 @@ export default {
       this.$emit('success')
       this.close();
     },
-    async getRoleList() {
-      const query = {
-        createTime : '2022-02-02'
-      }
-      const {code,data} = await this.$service.role.list({query});
+    async getSpuList() {
+      const {code,data} = await this.$service.spu.list()
       if(code!==200) return;
-      this.roleList = data;
+      this.spuList = data;
     },
     /**部门选择 */
     areaChange(val) {

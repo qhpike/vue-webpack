@@ -38,18 +38,10 @@
       align="center"
       :header-cell-style="headClass"
     >
-      <el-table-column label="用户名" align="center" prop="username" />
-      <el-table-column label="电话" align="center" prop="phone" />
-      <el-table-column label="姓名" align="center" prop="name" />
-      <el-table-column label="部门" align="center" prop="areaName"> </el-table-column>
-      <el-table-column label="部门次序" align="center" prop="ancestors" />
-      <el-table-column prop="status" align="center" label="状态">
-        <template v-slot="{ row }">
-          <span>{{ row.status === 1 ? "启用" : "禁用" }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column prop="remark" align="center" label="备注"> </el-table-column>
+      <el-table-column label="名称" align="center" prop="name" />
+      <el-table-column label="副标题" align="center" prop="subtitle" />
+      <el-table-column label="分类" align="center" prop="categoryId" />
+      <el-table-column label="关键字" align="center" prop="keywords"> </el-table-column>
 
       <el-table-column label="操作" align="center">
         <template v-slot="{ row }">
@@ -128,8 +120,9 @@ export default {
       }
       const { code, data } = await this.$service.spu.list(query);
       if (code !== 200) return;
-      this.tableData = data.result;
-      this.total = data.total;
+      // this.tableData = data.result;
+      // this.total = data.total;
+      this.tableData = data;
     },
     async getAreaList() {
       const { code, data } = await this.$service.area.list();
