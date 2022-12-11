@@ -66,7 +66,7 @@
     >
     </el-pagination>
     </div>
-    <spu-dialog :visible.sync="visible" :areaTree="areaTree" :id.sync="id" @success="getList"></spu-dialog>
+    <spu-dialog :visible.sync="visible"  :id.sync="id" @success="getList"></spu-dialog>
   </div>
 </template>
 

@@ -107,14 +107,10 @@ export default {
     fileList(val) {
       console.log(val, "list-change");
     },
-    imgList(val) {
-      console.log(val, "图片改变");
-    },
   },
   methods: {
     close() {
       this.$emit("update:visible", false);
-      // Object.assign(this.$data.spuForm, this.$options.data().spuForm);
       Object.assign(this.$data, this.$options.data());
       this.$emit("update:id", undefined);
       this.$nextTick(() => {
@@ -151,31 +147,6 @@ export default {
       this.spuForm = data;
       this.imgList = data.imgUrl.split(',')
     },
-    handleAvatarSuccess(res, file) {
-      console.log(res, file, this.fileList);
-      // res.data.status = true;
-      // this.fileList.push(res.data);
-    },
-    beforeAvatarUpload(file) {
-      console.log(file, "file");
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
-      return true;
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
     uploadSuccess(res) {
       console.log(res, "上传成功");
     },
@@ -184,28 +155,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-::v-deep .avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-::v-deep .avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 52px;
-  height: 52px;
-  line-height: 52px;
-  text-align: center;
-  display: inline-flex;
-}
-::v-deep .avatar {
-  width: 52px;
-  height: 52px;
-  display: inline-flex;
-}
 </style>
