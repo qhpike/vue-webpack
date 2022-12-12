@@ -45,7 +45,6 @@
       <el-form-item label="图片：">
         <multiple-upload
           limit="10"
-          @success="uploadSuccess"
           v-model="imgList"
           :headers="headers"
           action="http://localhost:3000/api/v1/user/multiple"
@@ -67,13 +66,8 @@ export default {
       type: Boolean,
       default: false,
     },
-    areaTree: [],
+    categoryList: [],
     id: undefined,
-  },
-  watch: {
-    fileList(val) {
-      console.log(val, "pic-val");
-    },
   },
   data() {
     return {
@@ -82,7 +76,6 @@ export default {
         subtitle: "",
         keywords: "",
       },
-      categoryList: [],
       rules: {
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
         categoryId: [
@@ -90,22 +83,15 @@ export default {
         ],
       },
       baseUrl: MYURL.CUSTOMER_SERVER,
-      imageUrl: "",
       imgList: [],
-      fileList: [],
       headers: {
         Authorization: "Bearer " + getToken(),
       },
-      categoryList: [],
     };
   },
   watch: {
     visible(val) {
       val && this.id && this.getDetail(this.id);
-      val && this.getCategoryList();
-    },
-    fileList(val) {
-      console.log(val, "list-change");
     },
   },
   methods: {
@@ -132,11 +118,6 @@ export default {
       this.$emit("success");
       this.close();
     },
-    async getCategoryList() {
-      const { code, data } = await this.$service.category.list();
-      if (code !== 200) return;
-      this.categoryList = data;
-    },
     /**部门选择 */
     areaChange(val) {
       // this.$refs.areaTree.toggleDropDownVisible();
@@ -145,10 +126,7 @@ export default {
     async getDetail(id) {
       const { code, data } = await this.$service.spu.detail(id);
       this.spuForm = data;
-      this.imgList = data.imgUrl.split(',')
-    },
-    uploadSuccess(res) {
-      console.log(res, "上传成功");
+     if (data.imgUrl) this.imgList = data.imgUrl.split(',')
     },
   },
 };

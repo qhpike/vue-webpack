@@ -67,7 +67,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button @click="getList" type="primary">搜索</el-button>
+            <el-button @click="getList" type="primary" plain>搜索</el-button>
           </el-form-item>
         </div>
         <div style="float: left">
@@ -89,7 +89,8 @@
       :header-cell-style="headClass"
     >
       <el-table-column label="规格" align="center" prop="name" />
-      <el-table-column label="商品" align="center" prop="spuName.name" />
+      <el-table-column label="商品" align="center" prop="spuObj.name" />
+      <el-table-column label="分类" align="center" prop="categoryObj.name" />
       <el-table-column
         label="售价"
         align="center"
@@ -108,7 +109,7 @@
         prop="stock"
         align="center"
       ></el-table-column>
-    
+
       <el-table-column prop="isHot" align="center" label="热销">
         <template v-slot="{ row }">
           <span>{{ row.isHot === 1 ? "是" : "否" }}</span>
@@ -120,7 +121,7 @@
         </template>
       </el-table-column>
 
-        <el-table-column prop="isOnsale" align="center" label="状态">
+      <el-table-column prop="isOnsale" align="center" label="状态">
         <template v-slot="{ row }">
           <el-tag
             size="small"
@@ -171,6 +172,7 @@
     <sku-dialog
       :visible.sync="visible"
       :id.sync="id"
+      :spu-list="spuList"
       @success="getList"
     ></sku-dialog>
   </div>
@@ -217,7 +219,7 @@ export default {
       return "text-align: center;background:#eef1f6;";
     },
     async getSpuList() {
-      const { code, data } = await this.$service.spu.list();
+      const { code, data } = await this.$service.spu.select();
       if (code !== 200) return;
       this.spuList = data;
     },

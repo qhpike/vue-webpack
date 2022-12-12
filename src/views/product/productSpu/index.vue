@@ -1,37 +1,57 @@
 <template>
   <div class="app-container">
-    
     <el-form :model="query" label-width="80px" inline size="small" ref="form">
       <h5>商品组管理</h5>
-      <!-- <el-form-item label="姓名">
-        <el-input v-model="query.name" @change="getList"></el-input>
-      </el-form-item> -->
-      <el-form-item label="部门:">
-        <el-cascader
-          v-model="query.areaId"
-          placeholder="请选择部门"
-          :options="areaTree"
-          ref="areaTree"
-          :props="{
-            checkStrictly: true,
-            label: 'name',
-            value: 'id',
-            emitPath: false,
-            multiple: false,
-          }"
-          :show-all-levels="false"
-          @change="areaChange"
-          clearable
-        ></el-cascader>
-      </el-form-item>
-      <el-form-item label="">
-        <el-button type="primary" @click="handleAdd">新增商品</el-button>
-      </el-form-item>
+      <div></div>
+      <div class="form-box">
+        <div>
+          <el-form-item label="创建日期：">
+            <date-range
+              v-model="query.createTime"
+              @change="getList"
+            ></date-range>
+          </el-form-item>
+          <el-form-item prop="categoryId">
+            <el-select
+              v-model="query.categoryId"
+              placeholder="请选择分类"
+              style="width: 150px"
+              clearable
+              @change="getList"
+            >
+              <el-option
+                v-for="item in categoryList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-input
+              placeholder="名称、关键字"
+              prefix-icon="el-icon-search"
+              @change="getList"
+              v-model="custQuery"
+              clearable
+            >
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" plain @click="getList">搜索</el-button>
+          </el-form-item>
+        </div>
+        <div>
+          <el-form-item label="">
+            <el-button type="primary" @click="handleAdd">新增商品</el-button>
+          </el-form-item>
+        </div>
+      </div>
     </el-form>
 
     <el-table
       :data="tableData"
-      style="width: 100%; margin-top: 30px"
+      style="width: 100%"
       fit
       size="mini"
       :height="tableHeight"
@@ -40,135 +60,169 @@
     >
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="副标题" align="center" prop="subtitle" />
-      <el-table-column label="分类" align="center" prop="categoryId" />
-      <el-table-column label="关键字" align="center" prop="keywords"> </el-table-column>
-
+      <el-table-column label="图片" show-overflow-tooltip="">
+        <template v-slot="{ row }" >
+          <span v-if="row.imgUrl">
+            <el-avatar v-for="(img,index) in row.imgUrl.split(',').slice(0,5)" :key="index" shape="square" size="small" style="margin-left:5px;overflow:hidden;" :src="baseUrl+img"></el-avatar>
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column label="分类" align="center" prop="categoryObj.name" />
+      <el-table-column label="关键字" align="center" prop="keywords">
+      </el-table-column>
+      <el-table-column label="创建日期" prop="createTime" align="center">
+        <template v-slot="{ row }">
+          {{row.createTime | onlyDate }}
+        </template> 
+      </el-table-column>
       <el-table-column label="操作" align="center">
         <template v-slot="{ row }">
-          <el-button size="small" type="text" icon="el-icon-edit" @click="handleEdit(row)"
+          <el-button
+            size="small"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleEdit(row)"
             >编辑</el-button
           >
-          <el-button size="small" type="text" icon="el-icon-delete" @click="handleDelete(row)"
+          <el-button
+            size="small"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(row)"
             >删除</el-button
           >
         </template>
       </el-table-column>
     </el-table>
-    <div style="text-align:right;margin-top:20px;">
+    <div style="text-align: right; margin-top: 20px">
       <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page.sync="params.page"
-      :page-sizes="[2,5,10,20,50,100]"
-      :page-size="params.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    >
-    </el-pagination>
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="params.page"
+        :page-sizes="[2, 5, 10, 20, 50, 100]"
+        :page-size="params.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
+      </el-pagination>
     </div>
-    <spu-dialog :visible.sync="visible"  :id.sync="id" @success="getList"></spu-dialog>
+    <spu-dialog
+      :visible.sync="visible"
+      :id.sync="id"
+      :category-list="categoryList"
+      @success="getList"
+    ></spu-dialog>
   </div>
 </template>
 
 <script>
-import { parseTime, deepClone,getTableHeight } from "@/utils/index";
-import { formatToAreaTree } from "@/utils/index";
+import {  getTableHeight } from "@/utils/index";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    SpuDialog: () => import('./SpuDialog.vue')
+    SpuDialog: () => import("./SpuDialog.vue"),
   },
   data() {
     return {
-      id:undefined,
-      areaTree: [],
+      id: undefined,
+      categoryList: [],
+      custQuery: undefined,
       query: {
-        areaId: undefined,
+        createTime: "",
+        categoryId: undefined,
       },
-      tableData: [],
-      total: 100,
       params: {
         page: 1,
         pageSize: 5,
       },
-      tableHeight:0,
-      visible:false,
+      tableData: [],
+
+      total: 0,
+      baseUrl:MYURL.CUSTOMER_SERVER,
+
+      tableHeight: 0,
+      visible: false,
     };
   },
 
   computed: {
-    ...mapGetters(["areaId","isRoot"]),
+    ...mapGetters(["areaId", "isRoot"]),
   },
 
   mounted() {
-    this.getAreaList();
-    console.log(this.isRoot,'isRoot');
+    this.getCategoryList();
     this.getList();
-    this.$nextTick(()=>{
-      this.tableHeight = getTableHeight(this.$refs.form)
-    })
+    this.$nextTick(() => {
+      this.tableHeight = getTableHeight(this.$refs.form);
+    });
   },
   methods: {
     headClass() {
       return "text-align: center;background:#eef1f6;";
     },
     async getList() {
-      this.query.createTime ='2022-02-02';
-      const query = {
-        query:this.query,
-        params:this.params,
+       for (const key in this.query) {
+        if (Object.hasOwnProperty.call(this.query, key)) {
+          if (!this.query[key] && this.query[key] !== 0) {
+            this.query[key] = undefined;
+          }
+        }
       }
+      const query = {
+        query: this.query,
+        params: this.params,
+        custQuery: this.custQuery || undefined,
+      };
       const { code, data } = await this.$service.spu.list(query);
       if (code !== 200) return;
-      // this.tableData = data.result;
-      // this.total = data.total;
-      this.tableData = data;
+      this.tableData = data.result;
+      this.total = data.total;
     },
-    async getAreaList() {
-      const { code, data } = await this.$service.area.list();
-      if(this.isRoot) {
-          this.areaTree = formatToAreaTree(data);
-        }else {
-          this.areaTree = formatToAreaTree(data,this.areaId,'self');
-        }
+    async getCategoryList() {
+      const { code, data } = await this.$service.category.select();
+      if (code !== 200) return;
+      this.categoryList = data;
     },
     handleSizeChange(val) {
       this.params.pageSize = Number(val);
-      this.getList()
+      this.getList();
     },
     handleCurrentChange(val) {
       this.params.page = Number(val);
-      this.getList()
-    },
-    /**部门筛选 */
-    areaChange(val) {
-      this.$refs.areaTree.toggleDropDownVisible();
       this.getList();
     },
     handleAdd() {
       this.visible = true;
     },
-    handleEdit({id}) {
+    handleEdit({ id }) {
       this.id = id;
       this.visible = true;
     },
-    async handleDelete({id}) {
+    async handleDelete({ id }) {
       try {
-        await this.$confirm('此操作将永久删除，是否继续','提示',{
-        confirmButtonText:'确定',
-        cancelButtonText:'取消',
-      })
+        await this.$confirm("此操作将永久删除，是否继续", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+        });
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
-      const {code,msg} = await this.$service.spu.delete(id)
-      if(code!==200) {
-        this.$message.warning(msg)
+      const { code, msg } = await this.$service.spu.delete(id);
+      if (code !== 200) {
+        this.$message.warning(msg);
       }
-      this.$message.success('删除成功')
-      this.getList()
+      this.$message.success("删除成功");
+      this.getList();
     },
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.form-box {
+  display: flex;
+  justify-content: space-between;
+}
+.block {
+  display: flex;
+}
+</style>

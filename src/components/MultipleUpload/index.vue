@@ -3,7 +3,7 @@
     <div class="upload-tip">
       <slot>只能上传最多{{ limit }}jpg/png文件，且不超过500kb</slot>
     </div>
-    <div class="img-container" v-for="(item, index) of fileList" :key="item.id">
+    <div class="img-container" v-for="(item, index) of fileList" :key="item.uid">
       <img class="img" :src="item.blob || baseUrl + item.url" />
       <div class="del-icon-container" tabindex="1">
         <i class="el-icon-delete del-icon" @click="deleteImg(index)"></i>
@@ -45,10 +45,15 @@ export default {
   },
   watch: {
     imgList(val) {
-      if (this.fileList && this.fileList.length) return;
+      console.log(val,'val-img');
+      if(val.length===0) {
+        this.fileList =[]
+      }
+      if (this.fileList && this.fileList.length) return; //返回，避免请求图片
       this.fileList = val.map((item, index) => {
+        const uid = Date.now()+''+Math.ceil(Math.random()*1000)+''
         return {
-          id: index + 1,
+          uid,
           url: item,
           blob: "",
         };
@@ -80,8 +85,9 @@ export default {
       const body = await res.json();
       const fileList = body.data.map((item, index) => {
         //上传返回列表
+        const uid = Date.now()+''+Math.ceil(Math.random()*1000)+''
         return {
-          id: this.fileList.length + index + 1,
+          uid,
           url: item.url,
           blob: this.generateLocalUrl(files[index]),
         };

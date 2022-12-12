@@ -8,6 +8,18 @@ class ProductMenuService {
             method: 'get'
         })
     }
+    listAll() {
+        return request({
+            url: `/api/v1/category/listAll`,
+            method: 'get'
+        })
+    }
+    select() {
+        return request({
+            url:'/api/v1/category/select',
+            method:'get'
+        })
+    }
     detail(id) {
         return request({
             url: `/api/v1/category/list/${id}`,

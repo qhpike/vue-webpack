@@ -50,7 +50,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    areaTree: [],
     id: undefined,
   },
   data() {

@@ -106,6 +106,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    spuList:[],
     id: undefined,
   },
   data() {
@@ -128,25 +129,11 @@ export default {
         price: [{ required: true, message: "请输入价格", trigger: "blur" }],
         stock: [{ required: true, message: "请输入库存", trigger: "blur" }],
       },
-      spuList: [],
     };
   },
   watch: {
     visible(val) {
       val && this.id && this.getDetail(this.id);
-      val && this.getSpuList();
-    },
-    "skuForm.areaId": {
-      handler(val) {
-        console.log(val, "areaid--change");
-      },
-    },
-  },
-  computed: {
-    roleListFilter() {
-      return (this.roleList || []).filter(
-        (item) => item.areaId === this.skuForm.areaId
-      );
     },
   },
   methods: {
@@ -159,7 +146,7 @@ export default {
       });
     },
     async handleSubmit() {
-      const validate = await this.$refs.skuForm.validate();
+       await this.$refs.skuForm.validate();
       const skuForm = JSON.parse(JSON.stringify(this.skuForm));
       delete skuForm.checkPass;
       if (!skuForm.origPrice) {
@@ -169,24 +156,20 @@ export default {
         skuForm.price = undefined; //划线价判空
       }
       if (this.id) {
-        const { code, data } = await this.$service.sku.update(
+        const { code } = await this.$service.sku.update(
           this.skuForm.id,
           skuForm
         );
         if (code !== 200) return;
       } else {
-        const { code, data } = await this.$service.sku.create(skuForm);
+        const { code } = await this.$service.sku.create(skuForm);
         if (code !== 200) return;
       }
       this.$message.success(this.id ? "修改成功" : "添加成功");
       this.$emit("success");
       this.close();
     },
-    async getSpuList() {
-      const { code, data } = await this.$service.spu.list();
-      if (code !== 200) return;
-      this.spuList = data;
-    },
+  
     async getDetail(id) {
       const { code, data } = await this.$service.sku.detail(id);
       this.skuForm = data;

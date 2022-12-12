@@ -8,6 +8,12 @@ class SpuService {
             method: 'get'
         })
     }
+    select() {
+        return request({
+            url:'/api/v1/spu/select',
+            method: 'get'
+        })
+    }
     detail(id) {
         return request({
             url: `/api/v1/spu/list/${id}`,

@@ -1,37 +1,20 @@
 <template>
   <div class="app-container">
     
-    <el-form :model="query" label-width="80px" inline size="small" ref="form">
+    <el-form :model="query" label-width="80px"   size="small" ref="form">
       <h5>商品分类</h5>
       <!-- <el-form-item label="姓名">
         <el-input v-model="query.name" @change="getList"></el-input>
       </el-form-item> -->
-      <el-form-item label="部门:">
-        <el-cascader
-          v-model="query.areaId"
-          placeholder="请选择部门"
-          :options="areaTree"
-          ref="areaTree"
-          :props="{
-            checkStrictly: true,
-            label: 'name',
-            value: 'id',
-            emitPath: false,
-            multiple: false,
-          }"
-          :show-all-levels="false"
-          @change="areaChange"
-          clearable
-        ></el-cascader>
-      </el-form-item>
-      <el-form-item label="">
-        <el-button type="primary" @click="handleAdd">新增商品</el-button>
+      <el-form-item style="text-align:right;">
+        <el-button  type="primary" @click="handleAdd">新增分类</el-button>
+        <!-- <el-input></el-input> -->
       </el-form-item>
     </el-form>
 
     <el-table
       :data="tableData"
-      style="width: 100%; margin-top: 30px"
+      style="width: 100%;"
       fit
       size="mini"
       :height="tableHeight"
@@ -65,13 +48,12 @@
         </template>
       </el-table-column>
     </el-table>
-    <category-dialog :visible.sync="visible" :areaTree="areaTree" :id.sync="id" @success="getList"></category-dialog>
+    <category-dialog :visible.sync="visible" :id.sync="id" @success="getList"></category-dialog>
   </div>
 </template>
 
 <script>
-import { parseTime, deepClone,getTableHeight } from "@/utils/index";
-import { formatToAreaTree } from "@/utils/index";
+import { getTableHeight } from "@/utils/index";
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -80,23 +62,17 @@ export default {
   data() {
     return {
       id:undefined,
-      areaTree: [],
-      query: {
-        areaId: undefined,
-      },
       tableData: [],
       tableHeight:0,
       visible:false,
+      query:{
+
+      }
     };
   },
 
-  computed: {
-    ...mapGetters(["areaId","isRoot"]),
-  },
 
   mounted() {
-    this.getAreaList();
-    console.log(this.isRoot,'isRoot');
     this.getList();
     this.$nextTick(()=>{
       this.tableHeight = getTableHeight(this.$refs.form)
@@ -110,19 +86,6 @@ export default {
       const { code, data } = await this.$service.category.list(this.query);
       if (code !== 200) return;
       this.tableData = data;
-    },
-    async getAreaList() {
-      const { code, data } = await this.$service.area.list();
-      if(this.isRoot) {
-          this.areaTree = formatToAreaTree(data);
-        }else {
-          this.areaTree = formatToAreaTree(data,this.areaId,'self');
-        }
-    },
-    /**部门筛选 */
-    areaChange(val) {
-      this.$refs.areaTree.toggleDropDownVisible();
-      this.getList();
     },
     handleAdd() {
       this.visible = true;
