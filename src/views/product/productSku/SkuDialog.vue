@@ -49,14 +49,15 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="是否上架：" prop="isOnsale">
-        <el-switch
-          v-model="skuForm.isOnsale"
-          :active-value="1"
-          :inactive-value="0"
-        >
-        </el-switch>
+      <el-form-item label="单位：" prop="unit">
+        <el-input
+          v-model="skuForm.unit"
+          placeholder="单位"
+          clearable
+        ></el-input>
       </el-form-item>
+
+      
 
       <el-form-item label="划线价：" prop="origPrice">
         <el-input
@@ -67,16 +68,7 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="是否热门：" prop="isHot">
-        <el-switch
-          v-model="skuForm.isHot"
-          :active-value="1"
-          :inactive-value="0"
-        >
-        </el-switch>
-      </el-form-item>
-
-      <el-form-item label="库存：" prop="stock">
+       <el-form-item label="库存：" prop="stock">
         <el-input
           v-model.number="skuForm.stock"
           placeholder="库存"
@@ -85,7 +77,30 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="是否新品：" prop="isNew">
+      <el-form-item label="是否上架：" prop="isOnsale" style="width:315px;">
+        <el-switch
+          v-model="skuForm.isOnsale"
+          :active-value="1"
+          :inactive-value="0"
+        >
+        </el-switch>
+      </el-form-item>
+
+      <el-form-item label="是否热门：" prop="isHot">
+        <div style="width:215px;">
+          <el-switch
+          v-model="skuForm.isHot"
+          :active-value="1"
+          :inactive-value="0"
+        >
+        </el-switch>
+        </div>
+        
+      </el-form-item>
+
+     
+
+      <el-form-item label="是否新品：" prop="isNew" style="width:315px;">
         <el-switch
           v-model="skuForm.isNew"
           :active-value="1"
@@ -114,6 +129,7 @@ export default {
       skuForm: {
         productSpuId: undefined,
         name: "",
+        unit: '',
         price: "",
         origPrice: "",
         stock: 0,
@@ -126,6 +142,7 @@ export default {
           { required: true, message: "必须选择商品", trigger: "change" },
         ],
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        unit: [{ required: true, message: "请输单位", trigger: "blur" }],
         price: [{ required: true, message: "请输入价格", trigger: "blur" }],
         stock: [{ required: true, message: "请输入库存", trigger: "blur" }],
       },
