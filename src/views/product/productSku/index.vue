@@ -73,6 +73,7 @@
         <div style="float: left">
           <el-form-item label="">
             <el-button type="primary" @click="handleAdd">新增规格</el-button>
+            <el-button type="primary" @click="getList('export')">导出</el-button>
           </el-form-item>
         </div>
       </div>
@@ -179,7 +180,8 @@
 </template>
 
 <script>
-import { getTableHeight } from "@/utils/index";
+import { getTableHeight, downloadBuffer } from "@/utils/index";
+
 export default {
   components: {
     SkuDialog: () => import("./SkuDialog.vue"),
@@ -223,7 +225,7 @@ export default {
       if (code !== 200) return;
       this.spuList = data;
     },
-    async getList() {
+    async getList(type) {
       this.loading = true;
       for (const key in this.query) {
         if (Object.hasOwnProperty.call(this.query, key)) {
@@ -236,10 +238,17 @@ export default {
         query: this.query,
         params: this.params,
       };
-      const { code, data } = await this.$service.sku.list(params);
+      if(type==='export') {
+        const result = await this.$service.sku.export(params)
+        downloadBuffer(res.data.data)
+	    
+      } else {
+        const { code, data } = await this.$service.sku.list(params);
       if (code !== 200) return;
       this.tableData = data.result;
       this.total = data.total;
+      }
+      
       this.loading = false;
     },
     handleSizeChange(val) {

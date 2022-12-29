@@ -157,3 +157,14 @@ export function formatToAreaTree(list, myid = 0,tree) {
     })
 }
 
+export function downloadBuffer(data,name='我的表格') {
+    const blob = new Blob([new Int8Array(data)], { type: 'application/vnd.ms-excel' });
+        const href =  URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.style.display = 'none';
+        a.href = href;
+        a.download = `${name}.xlsx`
+        a.click();
+        URL.revokeObjectURL(a.href); // 释放URL对象
+}
+

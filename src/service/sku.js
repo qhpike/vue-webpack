@@ -1,3 +1,8 @@
+/*
+ * @Author: akexian
+ * @Date: 2022-12-15
+ * @Description: 
+ */
 import request from '@/utils/request'
 import { Btn } from '@/core/decorator/service'
 import qs from 'qs'
@@ -6,6 +11,12 @@ class SkuService {
         return request({
             url: `/api/v1/sku/list?${qs.stringify({...query})}`,
             method: 'get'
+        })
+    }
+    export(query) {
+        return request({
+            url: `/api/v1/sku/list/export?${qs.stringify({...query})}`,
+            method: 'get',
         })
     }
     detail(id) {
