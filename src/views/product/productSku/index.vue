@@ -239,7 +239,7 @@ export default {
         params: this.params,
       };
       if(type==='export') {
-        const result = await this.$service.sku.export(params)
+        const res = await this.$service.sku.export(params)
         downloadBuffer(res.data.data)
 	    
       } else {

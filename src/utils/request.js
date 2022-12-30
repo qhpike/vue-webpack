@@ -6,7 +6,7 @@
 import axios from 'axios'
 import store from '../store'
 import { getToken } from './auth'
-import { Message  } from 'element-ui'
+import { Message, MessageBox  } from 'element-ui'
 import qs from 'qs'
 
 const instance = axios.create({
@@ -48,15 +48,7 @@ instance.interceptors.response.use(function (response) {
       
       if (res.code === 401) {
         // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
+        
       }
     } else {
       return res
@@ -65,14 +57,27 @@ instance.interceptors.response.use(function (response) {
   
     
   }, function (error) {
-    console.log(error)
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    
+    if(error.response.status === 401) {
+      MessageBox.confirm('鉴权失败，请重新登录', '确定退出', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        store.dispatch('user/resetToken').then(() => {
+          location.reload()
+        })
+      })
+    } else {
+      Message({
+        message: error.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+    }
+    
     return Promise.reject(error);
   });
 

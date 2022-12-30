@@ -158,7 +158,8 @@ export function formatToAreaTree(list, myid = 0,tree) {
 }
 
 export function downloadBuffer(data,name='我的表格') {
-    const blob = new Blob([new Int8Array(data)], { type: 'application/vnd.ms-excel' });
+    console.log(data,'data-type');
+    const blob = new Blob([new Int8Array(data)], { type: 'application/vnd.ms-excel;charset=utf-8' });
         const href =  URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.style.display = 'none';

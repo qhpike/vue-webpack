@@ -76,6 +76,16 @@ const actions = {
                 resolve()
         })
     },
+    resetToken({ commit, state }) {
+        return new Promise((resolve, reject) => {
+            removeToken() // must remove  token  first
+            resetRouter()
+            commit('RESET_STATE')
+            commit('SET_TOKEN', '')
+            commit('SET_PERMS', [])
+            resolve()
+    })
+    },
         // get user info
         getInfo({ commit, state }) {
             return new Promise((resolve, reject) => {
