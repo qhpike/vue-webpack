@@ -45,7 +45,7 @@ export function parseTime(time, cFormat) {
     const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
         const value = formatObj[key]
         // Note: getDay() returns 0 on Sunday
-        if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+        if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
         return value.toString().padStart(2, '0')
     })
     return time_str
@@ -70,7 +70,7 @@ export function formatTime(time, option) {
     if (diff < 30) {
         return '刚刚'
     } else if (diff < 3600) {
-    // less 1 hour
+        // less 1 hour
         return Math.ceil(diff / 60) + '分钟前'
     } else if (diff < 3600 * 24) {
         return Math.ceil(diff / 3600) + '小时前'
@@ -82,14 +82,14 @@ export function formatTime(time, option) {
     } else {
         return (
             d.getMonth() +
-      1 +
-      '月' +
-      d.getDate() +
-      '日' +
-      d.getHours() +
-      '时' +
-      d.getMinutes() +
-      '分'
+            1 +
+            '月' +
+            d.getDate() +
+            '日' +
+            d.getHours() +
+            '时' +
+            d.getMinutes() +
+            '分'
         )
     }
 }
@@ -115,7 +115,7 @@ export function param2Obj(url) {
     })
     return obj
 }
-export 	 function deepClone(origin, target) {
+export function deepClone(origin, target) {
     const tar = target || {}
     // const arrtype = '[object Array]'
     // const tostr = Object.prototype.toString
@@ -136,36 +136,54 @@ export 	 function deepClone(origin, target) {
 }
 
 export function getTableHeight(el) {
-    return document.body.offsetHeight - el.$el.offsetHeight -50 -40 -47 -30
-    
+    return document.body.offsetHeight - el.$el.offsetHeight - 50 - 40 - 47 - 30
+
 }
-export function formatToAreaTree(list, myid = 0,tree) {
+export function formatToAreaTree(list, myid = 0, tree) {
     // 遍历整个列表
     return list.filter(cur => {
-    // 获取当前节点的子节点
+        // 获取当前节点的子节点
         const children = list.filter(item => item.parentId === cur.id)
         if (children.length > 0) {
             cur.children = children
         }
         // 只返回顶级节点
-        if(tree==='self') {
+        if (tree === 'self') {
             return cur.id === myid;
         } else {
             return cur.parentId === myid
         }
-        
+
     })
 }
 
-export function downloadBuffer(data,name='我的表格') {
-    console.log(data,'data-type');
+export function downloadBuffer(data, name = '我的表格') {
+    console.log(data, 'data-type');
     const blob = new Blob([new Int8Array(data)], { type: 'application/vnd.ms-excel;charset=utf-8' });
-        const href =  URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.style.display = 'none';
-        a.href = href;
-        a.download = `${name}.xlsx`
-        a.click();
-        URL.revokeObjectURL(a.href); // 释放URL对象
+    const href = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.style.display = 'none';
+    a.href = href;
+    a.download = `${name}.xlsx`
+    a.click();
+    URL.revokeObjectURL(a.href); // 释放URL对象
+}
+export function dataURLtoBlobUrl(dataUrl) {
+
+    const arr = dataUrl.split(','),
+        mine = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]);
+    let n = bstr.length;
+    const ab = new ArrayBuffer(n);
+
+    const u8Arr = new Uint8Array(ab);
+
+    while (n--) {
+        u8Arr[n] = bstr.charCodeAt(n)
+    }
+    const blob = new Blob([u8Arr], { type: mine })
+    const url = URL.createObjectURL(blob)
+    return url;
+
 }
 
