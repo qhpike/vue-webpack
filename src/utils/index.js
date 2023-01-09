@@ -187,3 +187,18 @@ export function dataURLtoBlobUrl(dataUrl) {
 
 }
 
+export function dataURLtoBlobUrlByFetch(dataUrl) {
+
+    return new Promise((resolve,reject)=>{
+      fetch(dataUrl).then(r=>{
+      return  r.blob()
+    }).then(b=>{
+      const url = URL.createObjectURL(b)
+      resolve(url)
+    }).catch(err=>{
+      reject(err)
+    })
+    })
+
+  }
+
