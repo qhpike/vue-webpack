@@ -8,6 +8,7 @@
  * @param {string} cFormat
  * @returns {string | null}
  */
+ import axios from 'axios'
 export function parseTime(time, cFormat) {
     if (arguments.length === 0 || !time) {
         return null
@@ -158,8 +159,11 @@ export function formatToAreaTree(list, myid = 0, tree) {
 }
 
 export function downloadBuffer(data, name = '我的表格') {
-    console.log(data, 'data-type');
+    const ar = new ArrayBuffer(1024)
+    console.log(Object.prototype.toString.call(ar),'ar');
+    console.log(Object.prototype.toString.call(data),'data');
     const blob = new Blob([new Int8Array(data)], { type: 'application/vnd.ms-excel;charset=utf-8' });
+   
     const href = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.style.display = 'none';
@@ -202,3 +206,25 @@ export function dataURLtoBlobUrlByFetch(dataUrl) {
 
   }
 
+  export function dataURLtoBlobUrlByAxios(dataUrl) {
+
+    return new Promise((resolve,reject)=>{
+
+      fetch(dataUrl).then(r=>{
+        console.log(r,'来的');
+      return r.arrayBuffer()
+    }).then(b=>{
+        
+        return new Uint8Array(b)
+    }).then(bl=>{
+        console.log(ArrayBuffer.isView(bl),'b-sview');
+        console.log(Object.prototype.toString.call(bl),'b-sview');
+        console.log(bl,'length-offset');
+        const blob = new Blob([bl])
+        console.log(blob,'blob');
+        const url = URL.createObjectURL(blob)
+        resolve(url)
+    })
+    })
+
+  }
