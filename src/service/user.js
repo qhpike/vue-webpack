@@ -1,3 +1,8 @@
+/*
+ * @Author: akexian
+ * @Date: 2022-09-15
+ * @Description: 
+ */
 import request from '@/utils/request'
 import { Btn } from '@/core/decorator/service'
 import qs from 'qs'
@@ -50,6 +55,13 @@ class SysUserService {
     multiple(data) {
         return request({
             url: '/api/v1/user/multiple',
+            method: 'post',
+            data,
+        })
+    }
+    merge(data) {
+        return request({
+            url: '/api/v1/user/merge',
             method: 'post',
             data,
         })

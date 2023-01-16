@@ -106,7 +106,9 @@
           limit="1"
           v-model="imgList"
           :headers="headers"
-          action="http://localhost:3000/api/v1/user/multiple"
+          :fileMaxSize="0.01"
+          action="http://localhost:3000/api/v1/user/chunk"
+          merge="http://localhost:3000/api/v1/user/merge"
           >最多十张图片，每张不超过2M</chunk-upload
         >
   </div>

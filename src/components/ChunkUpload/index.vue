@@ -3,8 +3,8 @@
     <div class="upload-tip">
       <slot>只能上传最多{{ limit }}jpg/png文件，且不超过500kb</slot>
     </div>
-    <div class="img-container" v-for="item of fileList" :key="item.uid">
-      <img class="img" :src="item.blob || baseUrl + item.url" />
+    <div class="img-container" >
+      <img class="img" :src="baseUrl + imgUrl" />
       <div class="del-icon-container" tabindex="1">
         <i class="el-icon-delete del-icon" ></i>
       </div>
@@ -17,10 +17,8 @@
       type="file"
       ref="file"
       style="display: none"
-      :accept="accept"
       id="input"
       @change="uploadFile"
-      multiple="multiple"
     />
   </div>
 </template>
@@ -32,6 +30,11 @@ export default {
     action: "",
     headers: "",
     imgList: [], //用于回显
+    imgUrl:'',
+    fileMaxSize:{
+      type:Number,
+      default:0.01 //切片大小，MB
+    }
   },
   model: {
     prop: "imgList",
@@ -45,7 +48,6 @@ export default {
   },
   watch: {
     imgList(val) {
-      console.log(val,'val-img');
       if(val.length===0) {
         this.fileList =[]
       }
@@ -67,15 +69,13 @@ export default {
     },
   },
   methods: {
-    //分割成切
-    createChunks(files,size=1) {
-      console.log(files,'filesxx');
+    //分割切片
+    createChunks(files,size) {
       const chunkSize = parseInt(size*1024*1024)
       let start =0,
       chunksList = [] ;
       while (start < files.size) {
         const chunkItem = files.slice(start,start + chunkSize)
-        console.log(start,start+ chunkSize,'begin-end');
         chunksList.push(chunkItem)
         start+= chunkSize
       }
@@ -86,17 +86,15 @@ export default {
     createFormData(list,fileName) {
       const formDataList = list.map((chunkItem,index)=>{
         const formData = new FormData()
-        formData.append('file',chunkItem)
+        formData.append('file',chunkItem,fileName.split('.')[0]+'-'+index+'.'+fileName.split('.')[1])
         formData.append('fileName',fileName)
         formData.append('chunkName',index)
-        console.log(formData.keys(),'single-file');
         return formData
       })
-      console.log('return');
       return formDataList
     },
     //批量上传切片
-    async uploadChunks(list) {
+    async uploadChunks(list,name,size) {
       const requestAll = list.map(item=>{
         return fetch(this.action,{
           method: "post",
@@ -104,15 +102,23 @@ export default {
           headers: this.headers,
         })
       })
-      const result = await Promise.all(requestAll)
-      console.log(result,'requewstAll');
+      await Promise.all(requestAll)
+      const data ={
+        chunkSize: parseInt(size*1024*1024),
+        fileName: name,
+
+      }
+      //合并切片
+      const result = await this.$service.user.merge(data) 
+      this.imgUrl = result.data;
     },
     async uploadFile(val) {
+      console.log(this.fileMaxSize,'文件大小');
       const files = val.target.files; //原始文件
-      console.log(files,'filesxxyy');
-      const allChunkList = this.createChunks(files[0],0.01)
+      
+      const allChunkList = this.createChunks(files[0],this.fileMaxSize)
       const allFormData = this.createFormData(allChunkList,files[0].name)
-      this.uploadChunks(allFormData)
+      this.uploadChunks(allFormData,files[0].name,this.fileMaxSize)
     
     },
     deleteImg(index) {
