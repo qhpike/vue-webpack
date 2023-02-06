@@ -102,21 +102,11 @@
       </el-pagination>
     </div>
     <sku-dialog :visible.sync="visible" :id.sync="id" :spu-list="spuList" @success="getList"></sku-dialog>
-    <chunk-upload
-          limit="1"
-          v-model="imgList"
-          :headers="headers"
-          :fileMaxSize="0.01"
-          action="http://localhost:3000/api/v1/user/chunk"
-          merge="http://localhost:3000/api/v1/user/merge"
-          >最多十张图片，每张不超过2M</chunk-upload
-        >
   </div>
 </template>
 
 <script>
 import { getTableHeight, downloadBuffer } from "@/utils/index";
-import { getToken } from '@/utils/auth'
 
 export default {
   components: {
@@ -145,10 +135,6 @@ export default {
       loading: false,
       myUrl: '',
       msg: '',
-      imgList: [],
-      headers: {
-        Authorization: "Bearer " + getToken(),
-      },
     };
   },
 
@@ -183,7 +169,6 @@ export default {
       };
       if (type === 'export') {
         const res = await this.$service.sku.export(params)
-        console.log(res.data.data,typeof res.data.data,'res.data.data');
         downloadBuffer(res.data.data)
 
       } else {
