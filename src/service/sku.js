@@ -13,6 +13,12 @@ class SkuService {
             method: 'get'
         })
     }
+    select(id) {
+        return request({
+            url: `/api/v1/sku/select/${id}`,
+            method:'get'
+        })
+    }
     export(query) {
         return request({
             url: `/api/v1/sku/list/export?${qs.stringify({...query})}`,
