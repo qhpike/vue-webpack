@@ -9,7 +9,7 @@
       <el-form-item style="text-align:right;">
         <el-button  type="primary" @click="handleAdd">新增Banner</el-button>
         <!-- <el-input></el-input> -->
-      </el-form-item>
+      </el-form-item >
     </el-form>
 
     <el-table
@@ -20,11 +20,14 @@
       :height="tableHeight"
       align="center"
       :header-cell-style="headClass"
+      :cell-style="classChange"
     >
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="图片" align="center" prop="imgUrl">
             <template v-slot="{ row }" >
-            <img :src="baseUrl+row.imgUrl" style="height:60px;width:180px;" alt="">
+            <div style="display:flex;">
+              <img :src="baseUrl+row.imgUrl" class="banner" alt="">
+            </div>
         </template>
       </el-table-column>
 
@@ -88,6 +91,14 @@ export default {
     headClass() {
       return "text-align: center;background:#eef1f6;";
     },
+    classChange({ row, column, rowIndex, columnIndex }) {
+      if(columnIndex===1) {
+        return  'padding:0px ;'
+      } else {
+        return ''
+      }
+      
+    },
     async getList() {
       const { code, data } = await this.$service.banner.list(this.query);
       if (code !== 200) return;
@@ -116,12 +127,14 @@ export default {
       this.$message.success('删除成功')
       this.getList()
     },
+
   },
 };
 </script>
 <style lang="scss" scoped>
->>> .el-table--mini .el-table__cell{
-  padding: 0;
+.banner {
+  height:70px;
+  width:210px;
 }
 
 </style>
