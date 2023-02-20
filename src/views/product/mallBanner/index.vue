@@ -2,7 +2,7 @@
   <div class="app-container">
     
     <el-form :model="query" label-width="80px"   size="small" ref="form">
-      <h5>商城banner</h5>
+      <p>商城banner</p>
       <!-- <el-form-item label="姓名">
         <el-input v-model="query.name" @change="getList"></el-input>
       </el-form-item> -->
@@ -25,9 +25,7 @@
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="图片" align="center" prop="imgUrl">
             <template v-slot="{ row }" >
-            <div style="display:flex;">
               <img :src="baseUrl+row.imgUrl" class="banner" alt="">
-            </div>
         </template>
       </el-table-column>
 
@@ -38,7 +36,7 @@
          {{ row.createTime | onlyDate }}
         </template>   
        </el-table-column>
-      <el-table-column prop="updateTime" align="center" label="修改时间"> 
+       <el-table-column prop="updateTime" align="center" label="修改时间"> 
 
         <template v-slot="{ row }">
          {{ row.updateTime | onlyDate }}
@@ -135,6 +133,8 @@ export default {
 .banner {
   height:70px;
   width:210px;
+  border-radius: 2px;
+  vertical-align: middle;
 }
 
 </style>

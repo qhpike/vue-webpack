@@ -64,6 +64,9 @@
           
         </el-upload>
       </el-form-item>
+      <el-form-item label="排序">
+        <el-input-number v-model="bannerForm.order" :controls="false"></el-input-number>
+      </el-form-item>
       
     </el-form>
   </el-modal>
@@ -75,6 +78,7 @@ const bannerForm = {
         productSpuId:'',
         productSkuId:'',
         imgUrl:'',
+        order:0,
       }
 import {getToken} from '@/utils/auth'
 export default {

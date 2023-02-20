@@ -62,9 +62,9 @@
       <el-table-column label="副标题" align="center" prop="subtitle" />
       <el-table-column label="图片" show-overflow-tooltip="">
         <template v-slot="{ row }" >
-          <span v-if="row.imgUrl">
-            <el-avatar v-for="(img,index) in row.imgUrl.split(',').slice(0,5)" :key="index" shape="square" size="small" style="margin-left:5px;overflow:hidden;" :src="baseUrl+img"></el-avatar>
-          </span>
+          <!-- <span v-if="row.imgUrl"> -->
+            <el-avatar v-for="(img,index) in row.imgUrl.split(',').slice(0,5)" :key="index" shape="square" size="small" style="margin-left:5px;overflow:hidden;vertical-align: middle;" :src="baseUrl+img"></el-avatar>
+          <!-- </span> -->
         </template>
       </el-table-column>
       <el-table-column label="分类" align="center" prop="categoryObj.name" />
