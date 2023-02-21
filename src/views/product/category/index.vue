@@ -110,6 +110,7 @@ export default {
       this.$message.success('删除成功')
       this.getList()
     },
+   
   },
 };
 </script>

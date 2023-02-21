@@ -56,14 +56,16 @@
       size="mini"
       :height="tableHeight"
       align="center"
+      :cell-style="classChange"
       :header-cell-style="headClass"
     >
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="副标题" align="center" prop="subtitle" />
-      <el-table-column label="图片" show-overflow-tooltip="">
+      <el-table-column label="图片" >
         <template v-slot="{ row }" >
           <!-- <span v-if="row.imgUrl"> -->
-            <el-avatar v-for="(img,index) in row.imgUrl.split(',').slice(0,5)" :key="index" shape="square" size="small" style="margin-left:5px;overflow:hidden;vertical-align: middle;" :src="baseUrl+img"></el-avatar>
+            <!-- <el-avatar v-for="(img,index) in row.imgUrl.split(',').slice(0,5)" :key="index" shape="square" size="small" style="overflow:hidden;vertical-align: middle;" :src="baseUrl+img"></el-avatar> -->
+            <img  v-for="(img,index) in row.imgUrl.split(',').slice(0,5)" :key="index" class="img-list"  :src="baseUrl+img" alt="">
           <!-- </span> -->
         </template>
       </el-table-column>
@@ -157,6 +159,14 @@ export default {
     });
   },
   methods: {
+      classChange({ row, column, rowIndex, columnIndex }) {
+      if(columnIndex===2) {
+        return  'padding:0px ;'
+      } else {
+        return ''
+      }
+      
+    },
     headClass() {
       return "text-align: center;background:#eef1f6;";
     },
@@ -224,5 +234,12 @@ export default {
 }
 .block {
   display: flex;
+}
+.img-list {
+  width:30px;
+  height:30px;
+  margin-left:5px;
+  border-radius:5px;
+  vertical-align: middle;
 }
 </style>
