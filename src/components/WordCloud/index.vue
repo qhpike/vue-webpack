@@ -16,140 +16,140 @@ import "echarts-wordcloud/dist/echarts-wordcloud";
 import "echarts-wordcloud/dist/echarts-wordcloud.min";
 import { blobToDataURI } from '@/utils/index'
 const data = [{
-  name: '新零售',
-  value: 810,
+  name: '岔路口',
+  value: 1000,
   textStyle: {
     color: '#86D4FF'
   }
 }, {
-  name: '云计算',
-  value: 520,
+  name: '汉渝路',
+  value: 998,
   textStyle: {
     color: '#FF8F6C'
   }
 }, {
-  name: "人工智能",
-  value: 928,
+  name: "杨九路",
+  value: 910,
   textStyle: {
     color: '#2CF263'
   }
 }, {
-  name: "大数据",
+  name: "沙中路",
   value: 906,
   textStyle: {
     color: '#9FA8F7'
   }
 }, {
-  name: "互联网",
-  value: 825,
+  name: "红鼎国际",
+  value: 888,
   textStyle: {
     color: '#1274FF'
   }
 }, {
-  name: "数据可视化",
-  value: 486,
+  name: "盒子炮",
+  value: 850,
   textStyle: {
     color: '#FFC629'
   }
 }, {
-  name: "数据只能",
-  value: 53,
+  name: "南滨路",
+  value: 800,
   textStyle: {
     color: '#FFAB2E'
   }
 }, {
-  name: "机器学习",
-  value: 927,
+  name: "九街",
+  value: 780,
   textStyle: {
     color: '#86D4FF'
   }
 }, {
-  name: "零售行业",
-  value: 1308,
+  name: "北滨路",
+  value: 750,
   textStyle: {
     color: '#F78289'
   }
 }, {
-  name: "供应链",
-  value: 693,
+  name: "观音桥",
+  value: 700,
   textStyle: {
     color: '#FF6C96'
   }
 }, {
-  name: "智慧门店",
-  value: 611,
+  name: "磁器中",
+  value: 650,
   textStyle: {
     color: '#45BFD4'
   }
 }, {
-  name: "数据服务",
-  value: 312,
+  name: "观音桥",
+  value: 610,
   textStyle: {
     color: '#4E31FF'
   }
 }, {
-  name: "关联分析",
-  value: 941,
+  name: "上清寺",
+  value: 580,
   textStyle: {
     color: '#31FBFB'
   }
 }, {
-  name: "应用层",
-  value: 358,
+  name: "上新街",
+  value: 550,
   textStyle: {
     color: '#86D4FF'
   }
 }, {
-  name: "网络层",
-  value: 246,
+  name: "华新街",
+  value: 500,
   textStyle: {
     color: '#BF8AFD'
   }
 }, {
-  name: "数据层",
-  value: 207,
+  name: "炒油场",
+  value: 450,
   textStyle: {
     color: '#FFF500'
   }
 }, {
-  name: "基础层",
-  value: 194,
+  name: "杨家坪",
+  value: 400,
   textStyle: {
     color: '#DE58FF'
   }
 }, {
-  name: "可视化",
-  value: 211,
+  name: "李子坝",
+  value: 350,
   textStyle: {
     color: '#72ED7C'
   }
 }, {
-  name: "数据挖掘",
-  value: 1309,
+  name: "牛角沱",
+  value: 300,
   textStyle: {
     color: '#0BEEB8'
   }
 }, {
-  name: '云计算',
-  value: 52,
+  name: '黄桷坪',
+  value: 250,
   textStyle: {
     color: '#931CFF'
   }
 }, {
-  name: "人工智能",
-  value: 92,
+  name: "二厂",
+  value: 200,
   textStyle: {
     color: '#3D25F2'
   }
 }, {
-  name: "大数据",
-  value: 90,
+  name: "马沙鸡",
+  value: 150,
   textStyle: {
     color: '#F995C8'
   }
 }, {
-  name: "互联网",
-  value: 82,
+  name: "路边摊",
+  value: 100,
   textStyle: {
     color: '#FBE9B4'
   }
