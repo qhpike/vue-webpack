@@ -53,6 +53,8 @@
     "@vue/babel-preset-jsx": "^1.4.0",
     "amfe-flexible": "^2.2.1",
     "axios": "^0.27.2",
+    "echarts": "^5.4.1",
+    "echarts-wordcloud": "^2.1.0",
     "element-ui": "^2.15.9",
     "js-cookie": "^3.0.1",
     "moment": "^2.29.4",
@@ -62,6 +64,7 @@
     "qs": "^6.11.0",
     "vue": "^2.6.14",
     "vue-router": "^3.6.5",
+    "vue-seamless-scroll": "^1.1.23",
     "vuex": "^3.6.2"
   }
 }
