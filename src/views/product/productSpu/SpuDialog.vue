@@ -47,7 +47,7 @@
           limit="10"
           v-model="imgList"
           :headers="headers"
-          action="http://localhost:3000/api/v1/user/multiple"
+          :action="`${baseUrl}/api/v1/user/multiple`"
           >最多十张图片，每张不超过2M</multiple-upload
         >
       </el-form-item>
@@ -104,7 +104,7 @@ export default {
       });
     },
     async handleSubmit() {
-      this.spuForm.imgUrl = this.imgList.join(',')
+      this.spuForm.imgUrl = this.imgList.join(",");
       const spuForm = JSON.parse(JSON.stringify(this.spuForm));
       delete spuForm.checkPass;
       if (this.id) {
@@ -126,7 +126,7 @@ export default {
     async getDetail(id) {
       const { code, data } = await this.$service.spu.detail(id);
       this.spuForm = data;
-     if (data.imgUrl) this.imgList = data.imgUrl.split(',')
+      if (data.imgUrl) this.imgList = data.imgUrl.split(",");
     },
   },
 };

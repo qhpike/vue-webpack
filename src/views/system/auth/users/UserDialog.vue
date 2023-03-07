@@ -72,13 +72,14 @@
       </el-form-item>
       <el-form-item label="角色：" prop="roleList">
         <el-select v-model="userForm.role" multiple placeholder="请选择">
-            <el-option
-              v-for="item in roleListFilter"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-      </el-select>
+          <el-option
+            v-for="item in roleListFilter"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
 
       <el-form-item label="姓名：">
@@ -100,19 +101,23 @@
       <el-form-item label="头像">
         <el-upload
           class="avatar-uploader"
-          action="http://localhost:3000/api/v1/user/upload"
+          :action="`${baseUrl}/api/v1/user/upload`"
           :show-file-list="false"
           :headers="headers"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
         >
           <template v-if="imageUrl">
-            <video v-if="imageUrl.split('.')[1] === 'mp4'" :src="baseUrl + imageUrl" autoplay  class="avatar"></video>
+            <video
+              v-if="imageUrl.split('.')[1] === 'mp4'"
+              :src="baseUrl + imageUrl"
+              autoplay
+              class="avatar"
+            ></video>
             <img v-else :src="baseUrl + imageUrl" class="avatar" />
           </template>
-          
+
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          
         </el-upload>
       </el-form-item>
     </el-form>
@@ -120,8 +125,8 @@
 </template>
 
 <script>
-import {getToken} from '@/utils/auth'
-import { validPhone } from '@/utils/validate'
+import { getToken } from "@/utils/auth";
+import { validPhone } from "@/utils/validate";
 export default {
   props: {
     visible: {
@@ -130,6 +135,7 @@ export default {
     },
     areaTree: [],
     id: undefined,
+    baseUrl: MYURL.CUSTOMER_SERVER,
   },
   data() {
     const validateUsername = async (rule, value, callback) => {
@@ -182,24 +188,28 @@ export default {
         name: undefined,
         nickName: undefined,
         remark: undefined,
-        avatar:undefined,
-        role:undefined,
+        avatar: undefined,
+        role: undefined,
       },
       rules: {
         areaId: [{ required: true, message: "请选择部门", trigger: "blur" }],
         username: [
           { required: true, validator: validateUsername, trigger: "blur" },
         ],
-        password: [{required: true, validator: validatePass, trigger: 'blur'}],
-        checkPass:[{required: true, validator: validatePass2, trigger: 'blur'}],
-        phone: [{ required: true, validator: validatePhone, trigger: 'blur' }]
+        password: [
+          { required: true, validator: validatePass, trigger: "blur" },
+        ],
+        checkPass: [
+          { required: true, validator: validatePass2, trigger: "blur" },
+        ],
+        phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
       },
       baseUrl: MYURL.CUSTOMER_SERVER,
-      imageUrl:'',
-      headers:{
-        Authorization:'Bearer ' + getToken(),
+      imageUrl: "",
+      headers: {
+        Authorization: "Bearer " + getToken(),
       },
-      roleList:[],
+      roleList: [],
     };
   },
   watch: {
@@ -207,22 +217,24 @@ export default {
       val && this.id && this.getDetail(this.id);
       val && this.getRoleList();
     },
-    'userForm.areaId': {
+    "userForm.areaId": {
       handler(val) {
-        console.log(val,'areaid--change');
-      }
-    }
+        console.log(val, "areaid--change");
+      },
+    },
   },
   computed: {
     roleListFilter() {
-     return (this.roleList || []).filter(item=>item.areaId === this.userForm.areaId )
-    }
+      return (this.roleList || []).filter(
+        (item) => item.areaId === this.userForm.areaId
+      );
+    },
   },
   methods: {
     close() {
       this.$emit("update:visible", false);
       // Object.assign(this.$data.userForm, this.$options.data().userForm);
-      Object.assign(this.$data,this.$options.data())
+      Object.assign(this.$data, this.$options.data());
       this.$emit("update:id", undefined);
       this.$nextTick(() => {
         this.$refs.userForm.clearValidate();
@@ -239,15 +251,15 @@ export default {
         if (code !== 200) return;
       }
       this.$message.success(this.id ? "修改成功" : "添加成功");
-      this.$emit('success')
+      this.$emit("success");
       this.close();
     },
     async getRoleList() {
       const query = {
-        createTime : '2022-02-02'
-      }
-      const {code,data} = await this.$service.role.list({query});
-      if(code!==200) return;
+        createTime: "2022-02-02",
+      };
+      const { code, data } = await this.$service.role.list({ query });
+      if (code !== 200) return;
       this.roleList = data;
     },
     /**部门选择 */
@@ -257,17 +269,16 @@ export default {
     },
     async getDetail(id) {
       const { code, data } = await this.$service.user.detail(id);
-      data.role = data.role.map(item=>item.roleId);
+      data.role = data.role.map((item) => item.roleId);
       this.userForm = data;
-      this.imageUrl = data.avatar
+      this.imageUrl = data.avatar;
     },
-    handleAvatarSuccess(res,file) {
+    handleAvatarSuccess(res, file) {
       // const arrayBuffer = this.toArrayBuffer(file.response.file.buffer.data)
       // const blob2 = new Blob([arrayBuffer])
       // this.imageUrl = URL.createObjectURL(blob2)
       this.userForm.avatar = res.data.url;
       this.imageUrl = res.data.url;
-
     },
     beforeAvatarUpload(file) {
       //  const isJPG = file.type === 'image/jpeg';
@@ -284,42 +295,42 @@ export default {
     },
     toArrayBuffer(buf) {
       // 方法1
-    //   console.log(buf,buf.length,'length')
-    // const ab = new ArrayBuffer(buf.length);
-    // const view = new Uint8Array(ab);
-    // for (let i = 0; i < buf.length; ++i) {
-    //     view[i] = buf[i];
-    // }
-    // return ab;
-    // 方法2
-    return new Int8Array(buf)
-}
+      //   console.log(buf,buf.length,'length')
+      // const ab = new ArrayBuffer(buf.length);
+      // const view = new Uint8Array(ab);
+      // for (let i = 0; i < buf.length; ++i) {
+      //     view[i] = buf[i];
+      // }
+      // return ab;
+      // 方法2
+      return new Int8Array(buf);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 ::v-deep.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
- ::v-deep .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
- ::v-deep .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 52px;
-    height: 52px;
-    line-height: 52px;
-    text-align: center;
-  }
- ::v-deep .avatar {
-    width: 52px;
-    height: 52px;
-    display: block;
-  }
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+::v-deep .avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+::v-deep .avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 52px;
+  height: 52px;
+  line-height: 52px;
+  text-align: center;
+}
+::v-deep .avatar {
+  width: 52px;
+  height: 52px;
+  display: block;
+}
 </style>

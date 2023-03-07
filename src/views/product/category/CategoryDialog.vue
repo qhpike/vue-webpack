@@ -20,49 +20,39 @@
       label-position="right"
     >
       <el-form-item label="分类编号：" prop="id" v-if="this.id">
-        <el-input
-          :disabled="Boolean(id)"
-          v-model="categoryForm.id"
-        />
+        <el-input :disabled="Boolean(id)" v-model="categoryForm.id" />
       </el-form-item>
       <el-form-item label="分类名称：" prop="name">
-        <el-input
-          v-model="categoryForm.name"
-          placeholder="请输入名称"
-        />
-      </el-form-item >
+        <el-input v-model="categoryForm.name" placeholder="请输入名称" />
+      </el-form-item>
       <el-form-item label="图标" prop="imgUrl">
-         <el-upload
+        <el-upload
           class="avatar-uploader"
-          action="http://localhost:3000/api/v1/banner/upload"
+          :action="`${baseUrl}/api/v1/banner/upload`"
           :show-file-list="false"
           :headers="headers"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
         >
           <template v-if="categoryForm.imgUrl">
-            <video v-if="categoryForm.imgUrl.split('.')[1] === 'mp4'" :src="baseUrl + categoryForm.imgUrl" autoplay  class="avatar"></video>
+            <video
+              v-if="categoryForm.imgUrl.split('.')[1] === 'mp4'"
+              :src="baseUrl + categoryForm.imgUrl"
+              autoplay
+              class="avatar"
+            ></video>
             <img v-else :src="baseUrl + categoryForm.imgUrl" class="avatar" />
           </template>
-          
+
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          
         </el-upload>
       </el-form-item>
-      
-
-      
-  
-    
-
-      
-  
     </el-form>
   </el-modal>
 </template>
 
 <script>
-import {getToken} from '@/utils/auth'
+import { getToken } from "@/utils/auth";
 export default {
   props: {
     visible: {
@@ -74,21 +64,24 @@ export default {
   data() {
     return {
       categoryForm: {
-        name:'',
-        subtitle:'',
-        keywords:'',
-        imgUrl:'',
+        name: "",
+        subtitle: "",
+        keywords: "",
+        imgUrl: "",
+        baseUrl: MYURL.CUSTOMER_SERVER,
       },
-      categoryList:[],
+      categoryList: [],
       rules: {
-        name:[{required:true,message:'请输入名称',trigger:'blur'}],
-        categoryId:[{required:true,message:'请选择分类',trigger:'change'}]
+        name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        categoryId: [
+          { required: true, message: "请选择分类", trigger: "change" },
+        ],
       },
       baseUrl: MYURL.CUSTOMER_SERVER,
-      imageUrl:'',
-      headers:{
-        Authorization:'Bearer ' + getToken(),
-        responseType : 'blob'
+      imageUrl: "",
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        responseType: "blob",
       },
     };
   },
@@ -101,7 +94,7 @@ export default {
     close() {
       this.$emit("update:visible", false);
       // Object.assign(this.$data.categoryForm, this.$options.data().categoryForm);
-      Object.assign(this.$data,this.$options.data())
+      Object.assign(this.$data, this.$options.data());
       this.$emit("update:id", undefined);
       this.$nextTick(() => {
         this.$refs.categoryForm.clearValidate();
@@ -111,53 +104,55 @@ export default {
       const categoryForm = JSON.parse(JSON.stringify(this.categoryForm));
       delete categoryForm.checkPass;
       if (this.id) {
-        const { code, data } = await this.$service.category.update(categoryForm);
+        const { code, data } = await this.$service.category.update(
+          categoryForm
+        );
         if (code !== 200) return;
       } else {
-        const { code, data } = await this.$service.category.create(categoryForm);
+        const { code, data } = await this.$service.category.create(
+          categoryForm
+        );
         if (code !== 200) return;
       }
       this.$message.success(this.id ? "修改成功" : "添加成功");
-      this.$emit('success')
+      this.$emit("success");
       this.close();
     },
     async getDetail(id) {
       const { code, data } = await this.$service.category.detail(id);
       this.categoryForm = data;
-      this.imageUrl = data.avatar
+      this.imageUrl = data.avatar;
     },
-    handleAvatarSuccess(res,file) {
+    handleAvatarSuccess(res, file) {
       this.categoryForm.avatar = res.data.url;
       this.imageUrl = res.data.url;
-
     },
     beforeAvatarUpload(file) {
-       const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     },
-        handleAvatarSuccess(res,file) {
+    handleAvatarSuccess(res, file) {
       this.categoryForm.imgUrl = res.data.url;
-
     },
     beforeAvatarUpload(file) {
-       const isJPG = ['image/jpeg'].includes(file.type);
-        const isLt2M = file.size / 1024 / 1024 < 2;
+      const isJPG = ["image/jpeg"].includes(file.type);
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     },
   },
 };
@@ -165,26 +160,26 @@ export default {
 
 <style lang="scss" scoped>
 ::v-deep.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
- ::v-deep .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
- ::v-deep .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 52px;
-    height: 52px;
-    line-height: 52px;
-    text-align: center;
-  }
- ::v-deep .avatar {
-    width: 52px;
-    height: 52px;
-    display: block;
-  }
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+::v-deep .avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+::v-deep .avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 52px;
+  height: 52px;
+  line-height: 52px;
+  text-align: center;
+}
+::v-deep .avatar {
+  width: 52px;
+  height: 52px;
+  display: block;
+}
 </style>
