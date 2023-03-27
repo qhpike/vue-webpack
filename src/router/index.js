@@ -45,6 +45,7 @@ export const asyncRoutesMap = {
   商品组: "/product/productSpu",
   商品管理: "/product/productSku",
   轮播图: "/product/mallBanner",
+  订单管理: "/orderManager",
 };
 const createRouter = () =>
   new VueRouter({
