@@ -7,8 +7,8 @@
 }
 
   .main-container {
-    flex: 1;
-    flex-basis: 0;
+    // flex: 1;
+    // flex-basis: 0;
     width: calc(100% - $sideBarWidth);
     height: 100%;
   }

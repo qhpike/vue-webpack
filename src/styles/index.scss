@@ -65,8 +65,8 @@ body {
   .app-container {
     
     // width: 100%;
-    height: calc(100vh - 98px);
-  max-height: calc(100vh - 98px);
+    height: 100%;
+  max-height: 100%;
   overflow: auto;
   padding: 0 15px;
   }
@@ -78,6 +78,9 @@ body {
     .el-input {
       width: 150px !important;
     }
+  }
+  .el-table__body-wrapper::-webkit-scrollbar{
+    width: 0;
   }
 
   .box-show {
