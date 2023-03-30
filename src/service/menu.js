@@ -1,5 +1,9 @@
+/*
+ * @Author: akexian
+ * @Date: 2022-09-15
+ * @Description: 
+ */
 import request from '@/utils/request'
-import { Btn } from '@/core/decorator/service'
 
 class SysMenuService {
     list() {
@@ -14,14 +18,13 @@ class SysMenuService {
             method: 'get'
         })
     }
-    
+
     info(id) {
         return request({
             url: `/api/v1/menu/list/${id}`,
             method: 'get',
         })
     }
-    @Btn('api/v1/menu/update')
     update(data) {
         return request({
             url: '/api/v1/menu/list',
@@ -29,7 +32,6 @@ class SysMenuService {
             data
         })
     }
-    @Btn('api/v1/menu/create')
     create(data) {
         return request({
             url: '/api/v1/menu/list',
@@ -37,7 +39,6 @@ class SysMenuService {
             data
         })
     }
-    @Btn('api/v1/menu/delete')
     delete(id) {
         return request({
             url: `/api/v1/menu/list/${id}`,

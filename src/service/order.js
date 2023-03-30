@@ -1,10 +1,15 @@
+/*
+ * @Author: akexian
+ * @Date: 2023-03-30
+ * @Description: 
+ */
 import request from "@/utils/request";
-import qs from "qs";
 class OrderService {
-  list(query) {
+  list(data) {
     return request({
-      url: `/api/v1/order/manager?${qs.stringify({ ...query })}`,
+      url: `/api/v1/order/manager`,
       method: "get",
+      data
     });
   }
 

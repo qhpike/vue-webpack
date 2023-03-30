@@ -1,40 +1,23 @@
 <template>
-  <div class="app-container">
+  <div class="container">
     <el-form :model="query" label-width="80px" inline size="small" ref="form">
       <h5>商品组管理</h5>
       <div></div>
       <div class="form-box">
         <div>
           <el-form-item label="创建日期：">
-            <date-range
-              v-model="query.createTime"
-              @change="getList"
-            ></date-range>
+            <date-range v-model="query.createTime" @change="getList"></date-range>
           </el-form-item>
           <el-form-item prop="categoryId">
-            <el-select
-              v-model="query.categoryId"
-              placeholder="请选择分类"
-              style="width: 150px"
-              clearable
-              @change="getList"
-            >
-              <el-option
-                v-for="item in categoryList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
+            <el-select v-model="query.categoryId" placeholder="请选择分类" style="width: 150px" clearable
+              @change="getList">
+              <el-option v-for="item in categoryList" :key="item.id" :label="item.name"
+                :value="item.id"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input
-              placeholder="名称、关键字"
-              prefix-icon="el-icon-search"
-              @change="getList"
-              v-model="custQuery"
-              clearable
-            >
+            <el-input placeholder="名称、关键字" prefix-icon="el-icon-search" @change="getList"
+              v-model="custQuery" clearable>
             </el-input>
           </el-form-item>
           <el-form-item>
@@ -49,76 +32,52 @@
       </div>
     </el-form>
 
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      fit
-      size="mini"
-      :height="tableHeight"
-      align="center"
-      :cell-style="classChange"
-      :header-cell-style="headClass"
-    >
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="副标题" align="center" prop="subtitle" />
-      <el-table-column label="图片" >
-        <template v-slot="{ row }" >
-          <!-- <span v-if="row.imgUrl"> -->
-            <!-- <el-avatar v-for="(img,index) in row.imgUrl.split(',').slice(0,5)" :key="index" shape="square" size="small" style="overflow:hidden;vertical-align: middle;" :src="baseUrl+img"></el-avatar> -->
-            <img  v-for="(img,index) in row.imgUrl.split(',').slice(0,5)" :key="index" class="img-list"  :src="baseUrl+img" alt="">
-          <!-- </span> -->
-        </template>
-      </el-table-column>
-      <el-table-column label="分类" align="center" prop="categoryObj.name" />
-      <el-table-column label="关键字" align="center" prop="keywords">
-      </el-table-column>
-      <el-table-column label="创建日期" prop="createTime" align="center">
-        <template v-slot="{ row }">
-          {{row.createTime | onlyDate }}
-        </template> 
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template v-slot="{ row }">
-          <el-button
-            size="small"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleEdit(row)"
-            >编辑</el-button
-          >
-          <el-button
-            size="small"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(row)"
-            >删除</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
-    <div style="text-align: right; margin-top: 20px">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="params.page"
-        :page-sizes="[2, 5, 10, 20, 50, 100]"
-        :page-size="params.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      >
-      </el-pagination>
+    <div class="box-show">
+      <el-table :data="tableData" style="width: 100%" fit size="mini" :height="tableHeight"
+        align="center" :cell-style="classChange" :header-cell-style="headClass">
+        <el-table-column label="名称" align="center" prop="name" />
+        <el-table-column label="副标题" align="center" prop="subtitle" />
+        <el-table-column label="图片">
+          <template v-slot="{ row }">
+            <viewer :images="row.imgUrl.split(',').map(item=>baseUrl+item)">
+              <img v-for="(img,index) in row.imgUrl.split(',').slice(0,5)" :key="index"
+                class="img-list" :src="baseUrl+img" alt="">
+            </viewer>
+          </template>
+        </el-table-column>
+        <el-table-column label="分类" align="center" prop="categoryObj.name" />
+        <el-table-column label="关键字" align="center" prop="keywords">
+        </el-table-column>
+        <el-table-column label="创建日期" prop="createTime" align="center">
+          <template v-slot="{ row }">
+            {{row.createTime | onlyDate }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template v-slot="{ row }">
+            <el-button size="small" type="text" icon="el-icon-edit"
+              @click="handleEdit(row)">编辑</el-button>
+            <el-button size="small" type="text" icon="el-icon-delete"
+              @click="handleDelete(row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div style="text-align: right; margin-top: 20px">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+          :current-page.sync="params.page" :page-sizes="[2, 5, 10, 20, 50, 100]"
+          :page-size="params.pageSize" layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
+      </div>
     </div>
-    <spu-dialog
-      :visible.sync="visible"
-      :id.sync="id"
-      :category-list="categoryList"
-      @success="getList"
-    ></spu-dialog>
+
+    <spu-dialog :visible.sync="visible" :id.sync="id" :category-list="categoryList"
+      @success="getList"></spu-dialog>
   </div>
 </template>
 
 <script>
-import {  getTableHeight } from "@/utils/index";
+import { getTableHeight } from "@/utils/index";
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -140,7 +99,7 @@ export default {
       tableData: [],
 
       total: 0,
-      baseUrl:MYURL.CUSTOMER_SERVER,
+      baseUrl: MYURL.CUSTOMER_SERVER,
 
       tableHeight: 0,
       visible: false,
@@ -159,19 +118,19 @@ export default {
     });
   },
   methods: {
-      classChange({ row, column, rowIndex, columnIndex }) {
-      if(columnIndex===2) {
-        return  'padding:0px ;'
+    classChange({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 2) {
+        return 'padding:0px ;'
       } else {
         return ''
       }
-      
+
     },
     headClass() {
       return "text-align: center;background:#eef1f6;";
     },
     async getList() {
-       for (const key in this.query) {
+      for (const key in this.query) {
         if (Object.hasOwnProperty.call(this.query, key)) {
           if (!this.query[key] && this.query[key] !== 0) {
             this.query[key] = undefined;
@@ -236,10 +195,10 @@ export default {
   display: flex;
 }
 .img-list {
-  width:30px;
-  height:30px;
-  margin-left:5px;
-  border-radius:5px;
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  border-radius: 5px;
   vertical-align: middle;
 }
 </style>

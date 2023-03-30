@@ -1,6 +1,4 @@
 import request from '@/utils/request'
-import { Btn } from '@/core/decorator/service'
-import qs from 'qs'
 class BannerService {
     list() {
         return request({
@@ -8,14 +6,14 @@ class BannerService {
             method: 'get'
         })
     }
-   
+
     detail(id) {
         return request({
             url: `/api/v1/banner/list/${id}`,
             method: 'get',
         })
     }
-    update(id,data) {
+    update(id, data) {
         return request({
             url: `/api/v1/banner/list/${id}`,
             method: 'put',

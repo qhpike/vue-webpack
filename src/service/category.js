@@ -1,11 +1,10 @@
 import request from '@/utils/request'
-import { Btn } from '@/core/decorator/service'
-import qs from 'qs'
 class ProductMenuService {
-    list(query) {
+    list(data) {
         return request({
-            url: `/api/v1/category/list?${qs.stringify({...query})}`,
-            method: 'get'
+            url: `/api/v1/category/list`,
+            method: 'get',
+            data
         })
     }
     listAll() {
@@ -16,8 +15,8 @@ class ProductMenuService {
     }
     select() {
         return request({
-            url:'/api/v1/category/select',
-            method:'get'
+            url: '/api/v1/category/select',
+            method: 'get'
         })
     }
     detail(id) {
@@ -33,7 +32,6 @@ class ProductMenuService {
             data
         })
     }
-    @Btn('api/v1/category/create')
     create(data) {
         return request({
             url: '/api/v1/category/list',
@@ -41,7 +39,6 @@ class ProductMenuService {
             data
         })
     }
-    @Btn('api/v1/category/delete')
     delete(id) {
         return request({
             url: `/api/v1/category/list/${id}`,

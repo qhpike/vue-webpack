@@ -4,17 +4,14 @@
  * @Description: 
  */
 import request from '@/utils/request'
-import { Btn } from '@/core/decorator/service'
-import qs from 'qs'
 
 class SysUserService {
     list(params) {
         return request({
-            url: `/api/v1/user/list?${qs.stringify(params)}`,
+            url: `/api/v1/user/list`,
             method: 'get',
         })
     }
-    @Btn('api/v1/user/update')
     update(data) {
         return request({
             url: '/api/v1/user/list',
@@ -22,7 +19,6 @@ class SysUserService {
             data,
         })
     }
-    @Btn('api/v1/user/create')
     add(data) {
         return request({
             url: '/api/v1/user/list',
@@ -30,7 +26,6 @@ class SysUserService {
             data
         })
     }
-    @Btn('api/v1/user/delete')
     delete(id) {
         return request({
             url: `/api/v1/user/list/${id}`,

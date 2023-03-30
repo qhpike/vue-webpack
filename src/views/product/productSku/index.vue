@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="container">
     <el-form :model="query" label-width="80px" inline size="small" ref="form">
       <h5>规格管理</h5>
       <div class="form-box">

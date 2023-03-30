@@ -1,12 +1,20 @@
+<!--
+ * @Author: akexian
+ * @Date: 2023-03-30
+ * @Description: 
+-->
 <template>
-  <div class="app-container">
-    <div class="card">
-      <el-table :data="list" fit>
-        <el-table-column prop="id" label="订单ID"> </el-table-column>
+  <div class="container">
+    <el-form ref="form">
+      <el-form-item>
+        <el-input></el-input>
+      </el-form-item>
+    </el-form>
+    <div class="box-show margin-top">
+      <el-table :data="list" fit :height="tableHeight">
+        <el-table-column prop="orderId" label="订单号"> </el-table-column>
         <el-table-column prop="userObj.nickName" label="用户">
         </el-table-column>
-        <el-table-column prop="userObj.phone" label="订单ID"> </el-table-column>
-        <el-table-column prop="orderId" label="订单号"> </el-table-column>
         <el-table-column prop="receivAble" label="订单金额"> </el-table-column>
         <el-table-column prop="actualAmount" label="实收"> </el-table-column>
         <el-table-column prop="address" label="地址" show-overflow-tooltip="">
@@ -14,9 +22,7 @@
         <el-table-column prop="invoiceStatus" label="支付状态">
           <template v-slot="{ row }">
             <span
-              :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'"
-              >{{ row.invoiceStatus === 0 ? "待支付" : "已支付" }}</span
-            >
+              :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'">{{ row.invoiceStatus === 0 ? "待支付" : "已支付" }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="status" label="订单状态">
@@ -32,21 +38,17 @@
       </el-table>
     </div>
     <div style="text-align: right; margin-top: 20px">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="params.page"
-        :page-sizes="[2, 5, 10, 20, 50, 100]"
-        :page-size="params.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        :current-page.sync="params.page" :page-sizes="[2, 5, 10, 20, 50, 100]"
+        :page-size="params.pageSize" layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
       </el-pagination>
     </div>
   </div>
 </template>
 
 <script>
+import { parseTime, deepClone, getTableHeight } from "@/utils/index";
 const status = new Map()
   .set(0, "待付款")
   .set(1, "待发货")
@@ -63,10 +65,12 @@ export default {
         pageSize: 20,
       },
       total: 0,
+      tableHeight: undefined,
     };
   },
   mounted() {
     this.getData();
+    this.tableHeight = getTableHeight(this.$refs.form)
   },
   methods: {
     async getData() {
@@ -79,8 +83,8 @@ export default {
     getStatus(val) {
       return status.get(val);
     },
-    handleSizeChange() {},
-    handleCurrentChange() {},
+    handleSizeChange() { },
+    handleCurrentChange() { },
   },
 };
 </script>

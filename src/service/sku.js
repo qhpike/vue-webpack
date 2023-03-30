@@ -4,25 +4,25 @@
  * @Description: 
  */
 import request from '@/utils/request'
-import { Btn } from '@/core/decorator/service'
-import qs from 'qs'
 class SkuService {
-    list(query) {
+    list(data) {
         return request({
-            url: `/api/v1/sku/list?${qs.stringify({...query})}`,
-            method: 'get'
+            url: `/api/v1/sku/list`,
+            method: 'get',
+            data
         })
     }
     select(id) {
         return request({
             url: `/api/v1/sku/select/${id}`,
-            method:'get'
+            method: 'get'
         })
     }
-    export(query) {
+    export(data) {
         return request({
-            url: `/api/v1/sku/list/export?${qs.stringify({...query})}`,
+            url: `/api/v1/sku/list/export`,
             method: 'get',
+            data
         })
     }
     detail(id) {
@@ -31,7 +31,7 @@ class SkuService {
             method: 'get',
         })
     }
-    update(id,data) {
+    update(id, data) {
         return request({
             url: `/api/v1/sku/list/${id}`,
             method: 'put',

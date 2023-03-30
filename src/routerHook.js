@@ -1,37 +1,42 @@
+/*
+ * @Author: akexian
+ * @Date: 2022-07-18
+ * @Description: 
+ */
 import router from './router'
-import {getToken,removeToken} from './utils/auth'
+import { getToken, removeToken } from './utils/auth'
 import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 NProgress.configure({ showSpinner: true }) // NProgress Configuration
-const whiteList =['/login','/404']
-router.beforeEach((to,from,next)=>{
+const whiteList = ['/login', '/404']
+router.beforeEach((to, from, next) => {
     NProgress.start()
     const hasToken = getToken()
     const hasRoles = store.getters.roles && store.getters.roles.length
-    if(hasToken) {
-        if(to.path==='/login') {
-            next({path:'/'})
+    if (hasToken) {
+        if (to.path === '/login') {
+            next({ path: '/' })
             NProgress.done()
             Message.warning('请勿重复登录')
         }
-        if(hasRoles) {
+        if (hasRoles) {
             next()
         } else {
-            store.dispatch('user/getInfo').then(accessRoutes=>{
-                accessRoutes.forEach(item=>{
+            store.dispatch('user/getInfo').then(accessRoutes => {
+                accessRoutes.forEach(item => {
                     router.addRoute(item)
                 })
                 next({ ...to, replace: true })
-            }).catch(error=>{
+            }).catch(error => {
                 Message.error(error || 'Has Error')
                 removeToken()
                 next(`/login?redirect=${to.path}`)
             })
         }
     } else {
-        if(whiteList.includes(to.path)) {
+        if (whiteList.includes(to.path)) {
             next()
         } else {
             next(`/login?redirect=${to.path}`)

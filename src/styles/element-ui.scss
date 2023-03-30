@@ -61,6 +61,19 @@
 .el-table thead {
   background: #e6e6e6;
 }
+.el-table--fit {
+  border: 1px solid #ebeef5;
+}
+.el-table.table-border {
+  border: 1px solid #ebeef5;
+  td {
+    border-bottom: 1px solid #ebeef5;
+  }
+  tbody tr:last-of-type td {
+    border-bottom: none;
+  }
+}
+
 .el-table__header tr,
 .el-table__header th {
   padding: 0;

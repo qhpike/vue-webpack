@@ -4,32 +4,31 @@
  * @Description: 
 -->
 <template>
-    <div class="app-main">
-        <transition name="fade-transform" mode="out-in">
+  <div class="app-container">
+    <transition name="fade-transform" mode="out-in">
 
-        <router-view></router-view>
+      <router-view></router-view>
 
-        </transition>
-    </div>
+    </transition>
+  </div>
 </template>
 
 
 <script>
-    export default {
-        data() {
-            return {
+export default {
+  data() {
+    return {
 
-            }
-        },
-        methods: {
-        }
     }
+  },
+  methods: {
+  }
+}
 </script>
 <style lang="scss" scoped>
 .app-main {
-    height: calc(100% - 50px);
-     
-    width: 100%;
+  height: calc(100% - 50px);
+
+  width: 100%;
 }
-    
 </style>
