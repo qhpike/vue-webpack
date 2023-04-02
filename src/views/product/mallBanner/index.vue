@@ -1,50 +1,69 @@
 <template>
   <div class="container">
-
     <el-form :model="query" label-width="80px" size="small" ref="form">
-      <p>商城banner</p>
-      <!-- <el-form-item label="姓名">
-        <el-input v-model="query.name" @change="getList"></el-input>
-      </el-form-item> -->
-      <el-form-item style="text-align:right;">
+      <h5>商城banner</h5>
+      <el-form-item style="text-align: right">
         <el-button type="primary" @click="handleAdd">新增Banner</el-button>
-        <!-- <el-input></el-input> -->
       </el-form-item>
     </el-form>
+    <div class="box-show">
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        fit
+        size="mini"
+        :height="tableHeight"
+        align="center"
+        :header-cell-style="headClass"
+        :cell-style="classChange"
+      >
+        <el-table-column label="名称" align="center" prop="name" />
+        <el-table-column label="图片" align="center" prop="imgUrl">
+          <template v-slot="{ row }">
+            <viewer :images="[baseUrl + row.imgUrl]">
+              <img :src="baseUrl + row.imgUrl" class="banner" alt="" />
+            </viewer>
+          </template>
+        </el-table-column>
 
-    <el-table :data="tableData" style="width: 100%;" fit size="mini" :height="tableHeight"
-      align="center" :header-cell-style="headClass" :cell-style="classChange">
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="图片" align="center" prop="imgUrl">
-        <template v-slot="{ row }">
-          <img :src="baseUrl+row.imgUrl" class="banner" alt="">
-        </template>
-      </el-table-column>
+        <el-table-column label="商品" align="center" prop="productSpuName" />
+        <el-table-column label="规格" align="center" prop="productSkuName" />
+        <el-table-column prop="createTime" align="center" label="创建时间">
+          <template v-slot="{ row }">
+            {{ row.createTime | onlyDate }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="updateTime" align="center" label="修改时间">
+          <template v-slot="{ row }">
+            {{ row.updateTime | onlyDate }}
+          </template>
+        </el-table-column>
 
-      <el-table-column label="商品" align="center" prop="productSpuName" />
-      <el-table-column label="规格" align="center" prop="productSkuName" />
-      <el-table-column prop="createTime" align="center" label="创建时间">
-        <template v-slot="{ row }">
-          {{ row.createTime | onlyDate }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="updateTime" align="center" label="修改时间">
-
-        <template v-slot="{ row }">
-          {{ row.updateTime | onlyDate }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="操作" align="center">
-        <template v-slot="{ row }">
-          <el-button size="small" type="text" icon="el-icon-edit"
-            @click="handleEdit(row)">编辑</el-button>
-          <el-button size="small" type="text" icon="el-icon-delete"
-            @click="handleDelete(row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <banner-dialog :visible.sync="visible" :id.sync="id" @success="getList"></banner-dialog>
+        <el-table-column label="操作" align="center">
+          <template v-slot="{ row }">
+            <el-button
+              size="small"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleEdit(row)"
+              >编辑</el-button
+            >
+            <el-button
+              size="small"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(row)"
+              >删除</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <banner-dialog
+      :visible.sync="visible"
+      :id.sync="id"
+      @success="getList"
+    ></banner-dialog>
   </div>
 </template>
 
@@ -53,27 +72,24 @@ import { getTableHeight } from "@/utils/index";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    BannerDialog: () => import('./BannerDialog.vue')
+    BannerDialog: () => import("./BannerDialog.vue"),
   },
   data() {
     return {
       id: undefined,
       tableData: [],
-      tableHeight: 0,
+      tableHeight: undefined,
       visible: false,
       baseUrl: MYURL.CUSTOMER_SERVER,
-      query: {
-
-      }
+      query: {},
     };
   },
-
 
   mounted() {
     this.getList();
     this.$nextTick(() => {
-      this.tableHeight = getTableHeight(this.$refs.form)
-    })
+      this.tableHeight = getTableHeight(this.$refs.form) - 20 - 40 - 30;
+    });
   },
   methods: {
     headClass() {
@@ -81,11 +97,10 @@ export default {
     },
     classChange({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 1) {
-        return 'padding:0px ;'
+        return "padding:0px ;";
       } else {
-        return ''
+        return "";
       }
-
     },
     async getList() {
       const { code, data } = await this.$service.banner.list(this.query);
@@ -101,21 +116,20 @@ export default {
     },
     async handleDelete({ id }) {
       try {
-        await this.$confirm('此操作将永久删除，是否继续', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        })
+        await this.$confirm("此操作将永久删除，是否继续", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+        });
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
-      const { code, msg } = await this.$service.banner.delete(id)
+      const { code, msg } = await this.$service.banner.delete(id);
       if (code !== 200) {
-        this.$message.warning(msg)
+        this.$message.warning(msg);
       }
-      this.$message.success('删除成功')
-      this.getList()
+      this.$message.success("删除成功");
+      this.getList();
     },
-
   },
 };
 </script>

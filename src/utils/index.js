@@ -8,7 +8,6 @@
  * @param {string} cFormat
  * @returns {string | null}
  */
-import axios from "axios";
 export function parseTime(time, cFormat) {
   if (arguments.length === 0 || !time) {
     return null;
@@ -139,11 +138,12 @@ export function deepClone(origin, target) {
 }
 
 export function getTableHeight(el) {
-  const myid = document.getElementById("app");
-  console.log(myid, "elxx");
-  //   const top = el.$el.offsetHeight || el.offsetHeight;
-  //   console.log(document.body.offsetHeight, top, "offsetheigthj");
-  return document.body.offsetHeight - el.$el.offsetHeight - 50;
+  if (el.$el) {
+    return document.body.offsetHeight - el.$el.offsetHeight - 50;
+  } else {
+    const computedStyle = document.defaultView.getComputedStyle(el);
+    return document.body.offsetHeight - parseInt(computedStyle.height) - 50;
+  }
 }
 export function formatToAreaTree(list, myid = 0, tree) {
   // 遍历整个列表

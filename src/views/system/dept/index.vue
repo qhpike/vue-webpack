@@ -1,54 +1,70 @@
 <template>
   <div class="container">
-    <el-form ref="form">
-      <el-button @click="handleCreate">新增</el-button>
+    <el-form ref="form" style="text-align: right">
+      <el-button @click="handleCreate" type="primary" plain>新增</el-button>
     </el-form>
-    <el-table ref="menuTable" v-loading="loading" fit :data="deptList" row-key="id" size="mini"
-      :height="tableHeight" align="center" :header-cell-style="headClass"
-      :expand-row-keys="deptList.map(item=>item.id + '')"
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-      @row-click="handleRowClick">
-      <el-table-column label="id" prop="id" align="left" />
-      <el-table-column prop="name" align="left" label="部门">
-      </el-table-column>
+    <div class="box-show">
+      <el-table
+        ref="menuTable"
+        v-loading="loading"
+        fit
+        :data="deptList"
+        row-key="id"
+        size="mini"
+        :height="tableHeight"
+        align="center"
+        :header-cell-style="headClass"
+        :expand-row-keys="deptList.map((item) => item.id + '')"
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        @row-click="handleRowClick"
+      >
+        <el-table-column label="id" prop="id" align="left" />
+        <el-table-column prop="name" align="left" label="部门">
+        </el-table-column>
 
-      <el-table-column label="父级id" prop="parentId" align="center" />
-      <el-table-column label="次序" prop="ancestors" align="center"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" align="center">
-        <template v-slot="{ row }">
-          {{row.createTime | onlyDate }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" align="center">
-        <template v-slot="{ row }">
-          {{row.updateTime | onlyDate }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作">
-        <template v-slot="{ row }">
-          <template v-if="row.id!==areaId && row.parentId!==0">
-            <!-- 顶级部门不可修改，删除 -->
-            <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-            <el-button type="text" @click="handleDelete(row)">删除</el-button>
+        <el-table-column label="父级id" prop="parentId" align="center" />
+        <el-table-column
+          label="次序"
+          prop="ancestors"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="createTime" label="创建时间" align="center">
+          <template v-slot="{ row }">
+            {{ row.createTime | onlyDate }}
           </template>
-        </template>
-
-      </el-table-column>
-
-    </el-table>
-
-    <dept-dialog :id.sync="deptId" :visible.sync="visible" :deptList="deptList"
-      @success="getList" />
+        </el-table-column>
+        <el-table-column prop="updateTime" label="更新时间" align="center">
+          <template v-slot="{ row }">
+            {{ row.updateTime | onlyDate }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template v-slot="{ row }">
+            <template v-if="row.id !== areaId && row.parentId !== 0">
+              <!-- 顶级部门不可修改，删除 -->
+              <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+              <el-button type="text" @click="handleDelete(row)">删除</el-button>
+            </template>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <dept-dialog
+      :id.sync="deptId"
+      :visible.sync="visible"
+      :deptList="deptList"
+      @success="getList"
+    />
   </div>
 </template>
 
 <script>
-import { getTableHeight, formatToAreaTree } from '@/utils/index'
-import { mapGetters } from 'vuex'
-import DeptDialog from './DeptDialog.vue'
+import { getTableHeight, formatToAreaTree } from "@/utils/index";
+import { mapGetters } from "vuex";
+import DeptDialog from "./DeptDialog.vue";
 export default {
   components: {
-    DeptDialog
+    DeptDialog,
   },
   data() {
     return {
@@ -57,14 +73,14 @@ export default {
       deptList: [],
       loading: false,
       tableHeight: undefined,
-      expendKeyList: []
-    }
+      expendKeyList: [],
+    };
   },
   mounted() {
     this.$nextTick(() => {
-      this.tableHeight = getTableHeight(this.$refs.form) + 48;
+      this.tableHeight = getTableHeight(this.$refs.form) - 20 - 40 - 20;
     });
-    this.getList()
+    this.getList();
   },
   computed: {
     ...mapGetters(["areaId", "isRoot"]),
@@ -77,12 +93,11 @@ export default {
       if (this.isRoot) {
         this.deptList = formatToAreaTree(data);
       } else {
-        this.deptList = formatToAreaTree(data, this.areaId, 'self');
+        this.deptList = formatToAreaTree(data, this.areaId, "self");
       }
 
-      const expend = this.deptList.map(item => item.id)
+      const expend = this.deptList.map((item) => item.id);
       this.loading = false;
-
     },
     handleRowClick(row, index, e) {
       this.$refs.menuTable.toggleRowExpansion(row);
@@ -98,14 +113,14 @@ export default {
       this.visible = true;
     },
     async handleDelete({ id }) {
-      await this.$confirm('此操作将永久删除，是否继续', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-      })
-      await this.$service.area.delete(id)
-      this.getList()
-      this.$message.success('删除成功')
-    }
+      await this.$confirm("此操作将永久删除，是否继续", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+      });
+      await this.$service.area.delete(id);
+      this.getList();
+      this.$message.success("删除成功");
+    },
   },
 };
 </script>

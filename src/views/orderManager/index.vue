@@ -5,13 +5,11 @@
 -->
 <template>
   <div class="container">
-    <div ref="form">
-      <el-form>
-        <el-form-item>
-          <el-input></el-input>
-        </el-form-item>
-      </el-form>
-    </div>
+    <el-form ref="form">
+      <el-form-item>
+        <el-input></el-input>
+      </el-form-item>
+    </el-form>
     <div class="box-show">
       <el-table :data="list" fit :height="tableHeight">
         <el-table-column prop="orderId" label="订单号"> </el-table-column>
@@ -78,8 +76,12 @@ export default {
     };
   },
   mounted() {
+    this.has = false;
     this.getData();
-    this.tableHeight = getTableHeight(this.$refs.form) - 52 - 20 - 40;
+
+    this.$nextTick(() => {
+      this.tableHeight = getTableHeight(this.$refs.form) - 52 - 20 - 40;
+    });
   },
   methods: {
     async getData() {
