@@ -55,7 +55,7 @@ export default {
   },
   data() {
     return {
-      baseUrl: MYURL.CUSTOMER_SERVER,
+      baseUrl: MYURL.BASE_SERVER,
     };
   },
   computed: {

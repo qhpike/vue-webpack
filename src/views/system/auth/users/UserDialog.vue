@@ -135,7 +135,6 @@ export default {
     },
     areaTree: [],
     id: undefined,
-    baseUrl: MYURL.CUSTOMER_SERVER,
   },
   data() {
     const validateUsername = async (rule, value, callback) => {
@@ -204,7 +203,7 @@ export default {
         ],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
       },
-      baseUrl: MYURL.CUSTOMER_SERVER,
+      baseUrl: MYURL.BASE_SERVER,
       imageUrl: "",
       headers: {
         Authorization: "Bearer " + getToken(),
