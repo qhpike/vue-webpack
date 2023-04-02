@@ -68,7 +68,7 @@ export default {
         subtitle: "",
         keywords: "",
         imgUrl: "",
-        baseUrl: MYURL.CUSTOMER_SERVER,
+        baseUrl: MYURL.BASE_SERVER,
       },
       categoryList: [],
       rules: {
@@ -77,7 +77,7 @@ export default {
           { required: true, message: "请选择分类", trigger: "change" },
         ],
       },
-      baseUrl: MYURL.CUSTOMER_SERVER,
+      baseUrl: MYURL.BASE_SERVER,
       imageUrl: "",
       headers: {
         Authorization: "Bearer " + getToken(),

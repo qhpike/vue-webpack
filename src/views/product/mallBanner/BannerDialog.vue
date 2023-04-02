@@ -87,7 +87,7 @@ const bannerForm = {
   productSkuId: "",
   imgUrl: "",
   order: 0,
-  baseUrl: MYURL.CUSTOMER_SERVER,
+  baseUrl: MYURL.BASE_SERVER,
 };
 import { getToken } from "@/utils/auth";
 export default {
@@ -116,7 +116,7 @@ export default {
           { required: true, message: "请选择规格", trigger: "change" },
         ],
       },
-      baseUrl: MYURL.CUSTOMER_SERVER,
+      baseUrl: MYURL.BASE_SERVER,
       headers: {
         Authorization: "Bearer " + getToken(),
       },
