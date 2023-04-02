@@ -149,7 +149,7 @@ export default {
       tableData: [],
 
       total: 0,
-      baseUrl: MYURL.CUSTOMER_SERVER,
+      baseUrl: MYURL.BASE_SERVER,
 
       tableHeight: 0,
       visible: false,

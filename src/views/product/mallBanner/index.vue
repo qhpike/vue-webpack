@@ -80,7 +80,7 @@ export default {
       tableData: [],
       tableHeight: undefined,
       visible: false,
-      baseUrl: MYURL.CUSTOMER_SERVER,
+      baseUrl: MYURL.BASE_SERVER,
       query: {},
     };
   },
