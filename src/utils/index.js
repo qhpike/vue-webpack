@@ -236,7 +236,113 @@ export function dataURLtoBlobUrlByAxios(dataUrl) {
 export function blobToDataURI(blob, callback) {
   var reader = new FileReader();
   reader.readAsDataURL(blob);
-  reader.onload = function (e) {
+  reader.onload = function (e, f) {
+    console.log(e, f, "e.xx");
+    const img = new Image();
+    img.src = e.target.result;
+    console.log(img.naturalWidth, "原始的数据");
+    img.onload = (res) => {
+      console.log(res, "rexx,img loadding");
+    };
+
+    console.log(img.width, "生成的img");
     callback(e.target.result);
   };
+}
+
+// 根据buffer中的文件头信息判断图片类型
+export function getImageType(buffer) {
+  let fileType = "";
+  if (buffer) {
+    const view = new DataView(buffer);
+    const first4Byte = view.getUint32(0, false);
+    const hexValue = Number(first4Byte).toString(16).toUpperCase();
+    switch (hexValue) {
+      case "FFD8FFDB":
+        fileType = "JPG";
+        break;
+      case "FFD8FFE0":
+      case "FFD8FFE1":
+      case "FFD8FFE2":
+      case "FFD8FFE3":
+        fileType = "JPEG";
+        break;
+      case "89504E47":
+        fileType = "PNG";
+        break;
+      case "47494638":
+        fileType = "GIF";
+        break;
+      case "52494646":
+        fileType = "WEBP";
+        break;
+      default:
+        break;
+    }
+  }
+  return fileType;
+}
+export function getNatural(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.addEventListener("load", () => {
+      const imgObj = {
+        naturalWidth: img.naturalWidth,
+        naturalHeight: img.naturalHeight,
+      };
+      resolve(imgObj);
+    });
+    img.addEventListener("error", () => reject());
+    img.src = url;
+  });
+}
+// 获取图片二进制数据
+export function getCanvasImgData(imgUrl, width = 0, height = 0) {
+  if (imgUrl && width && height) {
+    const img = new Image();
+    img.src = imgUrl;
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(img, 0, 0, width, height);
+    const imageData = ctx.getImageData(0, 0, width, height);
+    return imageData;
+  }
+  return null;
+}
+
+export function getImgInfo(file, callback) {
+  const { type } = file;
+  const typeArr = type.split("/");
+  if (typeArr[0] !== "image") return;
+  let fileType = typeArr[1].toUpperCase();
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const buffer = e.target.result;
+    const imageType = getImageType(buffer);
+    if (imageType) {
+      fileType = imageType;
+    }
+    const blob = new Blob([buffer]);
+    const dataUrl = URL.createObjectURL(blob);
+    const { width, height } = await getNatural(dataUrl);
+    const imageData = getCanvasImgData(dataUrl, width, height);
+    if (imageData) {
+      const imgInfo = {
+        name: file.name,
+        fileType,
+        size: file.size,
+        width,
+        height,
+        imgUrl: dataUrl,
+        imageData,
+        blob,
+      };
+      callback(imgInfo);
+    } else {
+      callback(null);
+    }
+  };
+  reader.readAsArrayBuffer(file);
 }

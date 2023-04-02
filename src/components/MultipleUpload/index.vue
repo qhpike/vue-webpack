@@ -3,7 +3,11 @@
     <div class="upload-tip">
       <slot>只能上传最多{{ limit }}jpg/png文件，且不超过500kb</slot>
     </div>
-    <div class="img-container" v-for="(item, index) of fileList" :key="item.uid">
+    <div
+      class="img-container"
+      v-for="(item, index) of fileList"
+      :key="item.uid"
+    >
       <img class="img" :src="item.blob || baseUrl + item.url" />
       <div class="del-icon-container" tabindex="1">
         <i class="el-icon-delete del-icon" @click="deleteImg(index)"></i>
@@ -26,6 +30,7 @@
 </template>
 
 <script>
+import { blobToDataURI, getImgInfo } from "@/utils/index";
 export default {
   props: {
     limit: 0,
@@ -45,13 +50,13 @@ export default {
   },
   watch: {
     imgList(val) {
-      console.log(val,'val-img');
-      if(val.length===0) {
-        this.fileList =[]
+      console.log(val, "val-img");
+      if (val.length === 0) {
+        this.fileList = [];
       }
       if (this.fileList && this.fileList.length) return; //返回，避免请求图片
       this.fileList = val.map((item, index) => {
-        const uid = Date.now()+''+Math.ceil(Math.random()*1000)+''
+        const uid = Date.now() + "" + Math.ceil(Math.random() * 1000) + "";
         return {
           uid,
           url: item,
@@ -69,6 +74,14 @@ export default {
   methods: {
     async uploadFile(val) {
       const files = val.target.files; //原始文件
+      // blobToDataURI(files[0], (res) => {
+      //   console.log(res, "woderesxx");
+      // });
+      console.log(files, "files");
+      getImgInfo(files[0], (res) => {
+        console.log(res, "我的文件");
+      });
+
       const form = new FormData();
       for (const key in files) {
         if (Object.hasOwnProperty.call(files, key)) {
@@ -85,7 +98,7 @@ export default {
       const body = await res.json();
       const fileList = body.data.map((item, index) => {
         //上传返回列表
-        const uid = Date.now()+''+Math.ceil(Math.random()*1000)+''
+        const uid = Date.now() + "" + Math.ceil(Math.random() * 1000) + "";
         return {
           uid,
           url: item.url,
