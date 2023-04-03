@@ -8,6 +8,8 @@
  * @param {string} cFormat
  * @returns {string | null}
  */
+
+import UPNG from './UPNG.js'
 export function parseTime(time, cFormat) {
   if (arguments.length === 0 || !time) {
     return null;
@@ -287,8 +289,8 @@ export function getNatural(url) {
     const img = new Image();
     img.addEventListener("load", () => {
       const imgObj = {
-        naturalWidth: img.naturalWidth,
-        naturalHeight: img.naturalHeight,
+        width: img.naturalWidth,
+        height: img.naturalHeight,
       };
       resolve(imgObj);
     });
@@ -298,28 +300,31 @@ export function getNatural(url) {
 }
 // 获取图片二进制数据
 export function getCanvasImgData(imgUrl, width = 0, height = 0) {
-  if (imgUrl && width && height) {
-    const img = new Image();
-    img.src = imgUrl;
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = width;
-    canvas.height = height;
-    ctx.drawImage(img, 0, 0, width, height);
-    const imageData = ctx.getImageData(0, 0, width, height);
-    return imageData;
-  }
-  return null;
+  return new Promise((resolve, reject) => {
+    if (imgUrl && width && height) {
+      const img = new Image();
+      img.src = imgUrl;
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+      const imageData = ctx.getImageData(0, 0, width, height);
+      console.log(`imageData`, imageData);
+      resolve(imageData);
+    }
+    reject()
+  })
+
 }
 
-export function getImgInfo(file, callback) {
-  const { type } = file;
-  const typeArr = type.split("/");
-  if (typeArr[0] !== "image") return;
-  let fileType = typeArr[1].toUpperCase();
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const buffer = e.target.result;
+export function getImgInfo(file) {
+  return new Promise(async (resolve, reject) => {
+    const { type } = file;
+    const typeArr = type.split("/");
+    if (typeArr[0] !== "image") return;
+    let fileType = typeArr[1].toUpperCase();
+    const buffer = await file.arrayBuffer()
     const imageType = getImageType(buffer);
     if (imageType) {
       fileType = imageType;
@@ -327,7 +332,8 @@ export function getImgInfo(file, callback) {
     const blob = new Blob([buffer]);
     const dataUrl = URL.createObjectURL(blob);
     const { width, height } = await getNatural(dataUrl);
-    const imageData = getCanvasImgData(dataUrl, width, height);
+    const imageData = await getCanvasImgData(dataUrl, width, height);
+    console.log(`imageData`, imageData);
     if (imageData) {
       const imgInfo = {
         name: file.name,
@@ -339,10 +345,58 @@ export function getImgInfo(file, callback) {
         imageData,
         blob,
       };
-      callback(imgInfo);
+      console.log(`imgInfo`, imgInfo);
+      console.log(`imgInfo.`, buffer);
+      resolve(imgInfo);
     } else {
-      callback(null);
+      reject(null);
     }
-  };
-  reader.readAsArrayBuffer(file);
-}
+  })
+};
+// 图片压缩
+export function compression(imageUrl, width, height, imageType, compressionDegree,) {
+  return new Promise((resolve, reject) => {
+    if (imageUrl && imageType) {
+      const degree = compressionDegree / 100;
+      if (["JPG", "JPEG"].includes(imageType.toUpperCase())) {
+        const img = new Image();
+        img.src = imageUrl
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(
+          (blob) => {
+            resolve(blob)
+          },
+          `image/jpeg`,
+          degree
+        );
+      } else {
+        const bit = Math.floor(degree * 256);
+        const png = UPNG.encode(
+          [imageUrl.data.buffer],
+          width,
+          height,
+          bit
+        );
+        const blob = new Blob([png]);
+        resolve(blob)
+      }
+    } else {
+      reject();
+    }
+  })
+};
+
+// 将文件字节大小转成带单位的文件大小
+export const sizeTostr = (size, decimals = 2) => {
+  if (size === 0) return "0 Bytes";
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  const i = Math.floor(Math.log(size) / Math.log(k));
+  return parseFloat((size / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+};
+

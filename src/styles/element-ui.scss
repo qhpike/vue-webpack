@@ -39,6 +39,12 @@
     }
   }
 }
+.el-form-item--small.el-form-item {
+  margin-bottom: 10px !important;
+}
+.el-input {
+  width: 150px !important;
+}
 
 // dropdown
 .el-dropdown-menu {

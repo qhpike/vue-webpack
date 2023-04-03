@@ -2,12 +2,9 @@
   <div>
     <div class="upload-tip">
       <slot>只能上传最多{{ limit }}jpg/png文件，且不超过500kb</slot>
+
     </div>
-    <div
-      class="img-container"
-      v-for="(item, index) of fileList"
-      :key="item.uid"
-    >
+    <div class="img-container" v-for="(item, index) of fileList" :key="item.uid">
       <img class="img" :src="item.blob || baseUrl + item.url" />
       <div class="del-icon-container" tabindex="1">
         <i class="el-icon-delete del-icon" @click="deleteImg(index)"></i>
@@ -16,27 +13,27 @@
     <div class="upload-icon-container" @click="$refs.file.click()">
       <i v-if="fileList.length < limit" class="el-icon-plus upload-icon"></i>
     </div>
+    <div>
+      <span>压缩比例:</span>
+      <el-input v-model="compressionDegree" style="width:135px !important;margin-left:15px;"
+        label="描述文字" @change="degreeChange"></el-input>
+      <span>%</span>
+    </div>
+    <input type="file" ref="file" style="display: none" :accept="accept" id="input"
+      @change="uploadFile" multiple="multiple" />
 
-    <input
-      type="file"
-      ref="file"
-      style="display: none"
-      :accept="accept"
-      id="input"
-      @change="uploadFile"
-      multiple="multiple"
-    />
   </div>
 </template>
 
 <script>
-import { blobToDataURI, getImgInfo } from "@/utils/index";
+import { blobToDataURI, getImgInfo, compression, sizeTostr } from "@/utils/index";
 export default {
   props: {
     limit: 0,
     action: "",
     headers: "",
-    imgList: [], //用于回显
+    imgList: [], //用于回显 
+
   },
   model: {
     prop: "imgList",
@@ -46,11 +43,11 @@ export default {
     return {
       fileList: [],
       accept: "image/*",
+      compressionDegree: localStorage.getItem('degree') ? localStorage.getItem('degree') : 100
     };
   },
   watch: {
     imgList(val) {
-      console.log(val, "val-img");
       if (val.length === 0) {
         this.fileList = [];
       }
@@ -74,18 +71,17 @@ export default {
   methods: {
     async uploadFile(val) {
       const files = val.target.files; //原始文件
-      // blobToDataURI(files[0], (res) => {
-      //   console.log(res, "woderesxx");
-      // });
-      console.log(files, "files");
-      getImgInfo(files[0], (res) => {
-        console.log(res, "我的文件");
-      });
-
       const form = new FormData();
       for (const key in files) {
         if (Object.hasOwnProperty.call(files, key)) {
-          form.append("file", files[key]);
+          if (Number(this.compressionDegree) < 100) {
+            const file = await this.makeCompression(files[key])
+            const hiFile = new File([file], files[key].name, { type: 'text/html' })
+            form.append("file", hiFile);
+          } else {
+            form.append("file", files[key]);
+          }
+
         }
       }
       const options = {
@@ -109,6 +105,24 @@ export default {
       const relativePath = this.fileList.map((item) => item.url);
       this.$emit("change", relativePath);
     },
+    /**图片压缩 */
+    async makeCompression(file) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const { imgUrl, width, height, fileType, imageData } = await getImgInfo(file);
+          if (["JPG", "JPEG"].includes(fileType)) {
+            const result = await compression(imgUrl, width, height, fileType, 20)
+            if (result) resolve(result)
+          } else {
+            const result = await compression(imageData, width, height, fileType, 20)
+            if (result) resolve(result)
+          }
+        } catch (error) {
+          reject(error)
+        }
+
+      })
+    },
     deleteImg(index) {
       this.fileList.splice(index, 1);
       const relativePath = this.fileList.map((item) => item.url);
@@ -118,6 +132,9 @@ export default {
       const url = URL.createObjectURL(file);
       return url;
     },
+    degreeChange(val) {
+      localStorage.setItem('degree', val)
+    }
   },
 };
 </script>
