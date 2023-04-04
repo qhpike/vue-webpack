@@ -87,9 +87,8 @@ export default {
       const files = val.target.files; //原始文件
       const form = new FormData();
       for await (let item of files) {
-        console.log(item, "itemxx0");
         if (Number(this.compressionDegree) < 100) {
-          const file = await this.makeCompression(item);
+          const file = await this.makeCompression(item, this.compressionDegree);
           const hiFile = new File([file], item.name, {
             type: item.type,
           });
@@ -123,20 +122,23 @@ export default {
       this.$emit("change", relativePath);
     },
     /**图片压缩 */
-    async makeCompression(file) {
+    async makeCompression(file, degree) {
       return new Promise(async (resolve, reject) => {
         try {
+          console.time("one");
           const { imgUrl, width, height, fileType, imageData } =
             await getImgInfo(file);
-          console.log(imgUrl, fileType, "url-type");
+          console.timeEnd("one");
           if (["JPG", "JPEG"].includes(fileType)) {
+            console.time("two");
             const result = await compression(
               imgUrl,
               width,
               height,
               fileType,
-              20
+              degree
             );
+            console.timeEnd("two");
             if (result) resolve(result);
           } else {
             const result = await compression(
@@ -144,7 +146,7 @@ export default {
               width,
               height,
               fileType,
-              20
+              degree
             );
             if (result) resolve(result);
           }

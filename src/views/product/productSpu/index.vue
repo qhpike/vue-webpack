@@ -63,17 +63,19 @@
         <el-table-column label="副标题" align="center" prop="subtitle" />
         <el-table-column label="图片">
           <template v-slot="{ row }">
-            <viewer
-              :images="row.imgUrl.split(',').map((item) => baseUrl + item)"
-            >
-              <img
-                v-for="(img, index) in row.imgUrl.split(',').slice(0, 5)"
-                :key="index"
-                class="img-list"
-                :src="baseUrl + img"
-                alt=""
-              />
-            </viewer>
+            <template v-if="row.imgUrl">
+              <viewer
+                :images="row.imgUrl.split(',').map((item) => baseUrl + item)"
+              >
+                <img
+                  v-for="(img, index) in row.imgUrl.split(',').slice(0, 5)"
+                  :key="index"
+                  class="img-list"
+                  :src="baseUrl + img"
+                  alt=""
+                />
+              </viewer>
+            </template>
           </template>
         </el-table-column>
         <el-table-column label="分类" align="center" prop="categoryObj.name" />

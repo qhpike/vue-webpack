@@ -9,7 +9,7 @@
  * @returns {string | null}
  */
 
-import UPNG from './UPNG.js'
+import UPNG from "./UPNG.js";
 export function parseTime(time, cFormat) {
   if (arguments.length === 0 || !time) {
     return null;
@@ -166,8 +166,6 @@ export function formatToAreaTree(list, myid = 0, tree) {
 
 export function downloadBuffer(data, name = "我的表格") {
   const ar = new ArrayBuffer(1024);
-  console.log(Object.prototype.toString.call(ar), "ar");
-  console.log(Object.prototype.toString.call(data), "data");
   const blob = new Blob([new Int8Array(data)], {
     type: "application/vnd.ms-excel;charset=utf-8",
   });
@@ -217,18 +215,13 @@ export function dataURLtoBlobUrlByAxios(dataUrl) {
   return new Promise((resolve, reject) => {
     fetch(dataUrl)
       .then((r) => {
-        console.log(r, "来的");
         return r.arrayBuffer();
       })
       .then((b) => {
         return new Uint8Array(b);
       })
       .then((bl) => {
-        console.log(ArrayBuffer.isView(bl), "b-sview");
-        console.log(Object.prototype.toString.call(bl), "b-sview");
-        console.log(bl, "length-offset");
         const blob = new Blob([bl]);
-        console.log(blob, "blob");
         const url = URL.createObjectURL(blob);
         resolve(url);
       });
@@ -239,15 +232,10 @@ export function blobToDataURI(blob, callback) {
   var reader = new FileReader();
   reader.readAsDataURL(blob);
   reader.onload = function (e, f) {
-    console.log(e, f, "e.xx");
     const img = new Image();
     img.src = e.target.result;
-    console.log(img.naturalWidth, "原始的数据");
-    img.onload = (res) => {
-      console.log(res, "rexx,img loadding");
-    };
+    img.onload = (res) => {};
 
-    console.log(img.width, "生成的img");
     callback(e.target.result);
   };
 }
@@ -305,27 +293,23 @@ function loadImage(url) {
     img.onload = () => resolve(img);
     img.onerror = reject;
     img.src = url;
-  })
+  });
 }
 // 获取图片二进制数据
 export function getCanvasImgData(imgUrl, width = 0, height = 0) {
   return new Promise(async (resolve, reject) => {
     if (imgUrl && width && height) {
-      // const img = new Image();
-      // img.src = imgUrl;
-      const img = await loadImage(imgUrl)
+      const img = await loadImage(imgUrl);
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       canvas.width = width;
       canvas.height = height;
       ctx.drawImage(img, 0, 0, width, height);
       const imageData = ctx.getImageData(0, 0, width, height);
-      console.log(`imageData`, imageData);
       resolve(imageData);
     }
-    reject()
-  })
-
+    reject();
+  });
 }
 
 export function getImgInfo(file) {
@@ -334,7 +318,7 @@ export function getImgInfo(file) {
     const typeArr = type.split("/");
     if (typeArr[0] !== "image") return;
     let fileType = typeArr[1].toUpperCase();
-    const buffer = await file.arrayBuffer()
+    const buffer = await file.arrayBuffer();
     const imageType = getImageType(buffer);
     if (imageType) {
       fileType = imageType;
@@ -343,7 +327,6 @@ export function getImgInfo(file) {
     const dataUrl = URL.createObjectURL(blob);
     const { width, height } = await getNatural(dataUrl);
     const imageData = await getCanvasImgData(dataUrl, width, height);
-    console.log(`imageData`, imageData);
     if (imageData) {
       const imgInfo = {
         name: file.name,
@@ -355,50 +338,48 @@ export function getImgInfo(file) {
         imageData,
         blob,
       };
-      console.log(`imgInfo`, imgInfo);
-      console.log(`imgInfo.`, buffer);
       resolve(imgInfo);
     } else {
       reject(null);
     }
-  })
-};
+  });
+}
 // 图片压缩
-export function compression(imageUrl, width, height, imageType, compressionDegree,) {
-  return new Promise((resolve, reject) => {
+export function compression(
+  imageUrl,
+  width,
+  height,
+  imageType,
+  compressionDegree
+) {
+  return new Promise(async (resolve, reject) => {
     if (imageUrl && imageType) {
       const degree = compressionDegree / 100;
       if (["JPG", "JPEG"].includes(imageType.toUpperCase())) {
-        const img = new Image();
-        img.src = imageUrl
-        const canvas = document.createElement("canvas")
-        const ctx = canvas.getContext("2d")
+        const img = await loadImage(imageUrl);
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
         canvas.width = width;
         canvas.height = height;
         ctx.drawImage(img, 0, 0, width, height);
         canvas.toBlob(
           (blob) => {
-            resolve(blob)
+            resolve(blob);
           },
           `image/jpeg`,
           degree
         );
       } else {
         const bit = Math.floor(degree * 256);
-        const png = UPNG.encode(
-          [imageUrl.data.buffer],
-          width,
-          height,
-          bit
-        );
+        const png = UPNG.encode([imageUrl.data.buffer], width, height, bit);
         const blob = new Blob([png]);
-        resolve(blob)
+        resolve(blob);
       }
     } else {
       reject();
     }
-  })
-};
+  });
+}
 
 // 将文件字节大小转成带单位的文件大小
 export const sizeTostr = (size, decimals = 2) => {
@@ -409,4 +390,3 @@ export const sizeTostr = (size, decimals = 2) => {
   const i = Math.floor(Math.log(size) / Math.log(k));
   return parseFloat((size / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 };
-
