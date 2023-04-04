@@ -298,12 +298,22 @@ export function getNatural(url) {
     img.src = url;
   });
 }
+// 预加载图片
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    let img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = url;
+  })
+}
 // 获取图片二进制数据
 export function getCanvasImgData(imgUrl, width = 0, height = 0) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     if (imgUrl && width && height) {
-      const img = new Image();
-      img.src = imgUrl;
+      // const img = new Image();
+      // img.src = imgUrl;
+      const img = await loadImage(imgUrl)
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       canvas.width = width;
