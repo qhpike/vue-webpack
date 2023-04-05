@@ -19,12 +19,13 @@
         <el-table-column prop="actualAmount" label="实收"> </el-table-column>
         <el-table-column prop="address" label="地址" show-overflow-tooltip="">
         </el-table-column>
-        <el-table-column prop="invoiceStatus" label="支付状态">
+        <el-table-column prop="invoiceStatus" label="支付状态" align="center">
           <template v-slot="{ row }">
-            <span
+            <div
               :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'"
-              >{{ row.invoiceStatus === 0 ? "待支付" : "已支付" }}</span
             >
+              {{ row.invoiceStatus === 0 ? "待支付" : "已支付" }}
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="status" label="订单状态">
@@ -106,12 +107,12 @@ export default {
   background: #ffffff;
   box-shadow: 0px 1px 13px 1px rgba(62, 72, 160, 0.1);
   border-radius: 20px 20px 20px 20px;
-  opacity: 1;
+  opacity: 0.1;
 }
-.success-text {
-  color: $green;
-}
-.error-text {
-  color: $red;
-}
+// .success-text {
+//   color: $green;
+// }
+// .error-text {
+//   color: $menuActiveText;
+// }
 </style>

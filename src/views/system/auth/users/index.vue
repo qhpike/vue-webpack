@@ -4,27 +4,31 @@
       <!-- <el-form-item label="姓名">
         <el-input v-model="query.name" @change="getList"></el-input>
       </el-form-item> -->
-      <el-form-item label="部门:">
-        <el-cascader
-          v-model="query.areaId"
-          placeholder="请选择部门"
-          :options="areaTree"
-          ref="areaTree"
-          :props="{
-            checkStrictly: true,
-            label: 'name',
-            value: 'id',
-            emitPath: false,
-            multiple: false,
-          }"
-          :show-all-levels="false"
-          @change="areaChange"
-          clearable
-        ></el-cascader>
-      </el-form-item>
-      <el-form-item label="">
-        <el-button type="primary" @click="handleAdd">新增用户</el-button>
-      </el-form-item>
+      <div class="form-container">
+        <el-form-item label="部门:">
+          <el-cascader
+            v-model="query.areaId"
+            placeholder="请选择部门"
+            :options="areaTree"
+            ref="areaTree"
+            :props="{
+              checkStrictly: true,
+              label: 'name',
+              value: 'id',
+              emitPath: false,
+              multiple: false,
+            }"
+            :show-all-levels="false"
+            @change="areaChange"
+            clearable
+          ></el-cascader>
+        </el-form-item>
+        <el-form-item label="">
+          <el-button type="primary" class="pan-btn" @click="handleAdd"
+            >新增用户</el-button
+          >
+        </el-form-item>
+      </div>
     </el-form>
     <div class="box-show">
       <el-table
@@ -44,7 +48,9 @@
         <el-table-column label="部门次序" align="center" prop="ancestors" />
         <el-table-column prop="status" align="center" label="状态">
           <template v-slot="{ row }">
-            <span>{{ row.status === 1 ? "启用" : "禁用" }}</span>
+            <div :class="row.status === 1 ? 'primary-text' : 'info-text'">
+              {{ row.status === 1 ? "启用" : "禁用" }}
+            </div>
           </template>
         </el-table-column>
 
@@ -192,4 +198,9 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.form-container {
+  display: flex;
+  justify-content: space-between;
+}
+</style>

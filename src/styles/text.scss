@@ -1,0 +1,30 @@
+@mixin colorText($fontColor) {
+  color: $fontColor;
+  font-size: 12px;
+  font-family: PingFang SC-Medium, PingFang SC;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+  -webkit-background-clip: text;
+  width: 64px;
+  height: 24px;
+  border-radius: 5px 5px 5px 5px;
+  background: rgba($fontColor, 0.05);
+}
+
+.error-text {
+  @include colorText($textError);
+}
+.warning-text {
+  @include colorText($textWarning);
+}
+
+.info-text {
+  @include colorText($textInfo);
+}
+.success-text {
+  @include colorText($textSuccess);
+}
+.primary-text {
+    @include colorText($textPrimary);
+  }

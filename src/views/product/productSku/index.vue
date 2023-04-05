@@ -126,12 +126,9 @@
 
         <el-table-column prop="isOnsale" align="center" label="状态">
           <template v-slot="{ row }">
-            <el-tag
-              size="small"
-              effect="dark"
-              :type="row.isOnsale === 1 ? 'primary' : 'info'"
-              >{{ row.isOnsale === 1 ? "上架" : "下架" }}</el-tag
-            >
+            <div :class="row.isOnsale === 1 ? 'primary-text' : 'info-text'">
+              {{ row.isOnsale === 1 ? "上架" : "下架" }}
+            </div>
           </template>
         </el-table-column>
 
