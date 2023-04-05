@@ -55,9 +55,7 @@ export default {
     return {
       fileList: [],
       accept: "image/*",
-      compressionDegree: localStorage.getItem("degree")
-        ? localStorage.getItem("degree")
-        : 100,
+      compressionDegree: localStorage.getItem("degree") || 100,
     };
   },
   watch: {

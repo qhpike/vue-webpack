@@ -4,19 +4,25 @@
       <div :class="styles['drop']">
         <div :class="styles['contentBox']">
           <h2>Sign in</h2>
-          <form @submit="login">
+          <form @submit.prevent="login">
             <div :class="styles['inputBox']">
-              <input type="text" placeholder="Username" v-model="username" />
+              <input
+                type="text"
+                placeholder="Username"
+                v-model="username"
+                autocomplete="off"
+              />
             </div>
             <div :class="styles['inputBox']">
               <input
                 type="password"
                 placeholder="Password"
+                autocomplete="off"
                 v-model="password"
               />
             </div>
             <div :class="styles['inputBox']">
-              <input type="submit" value="Login" />
+              <input type="submit" value="Login" autocomplete="off" />
             </div>
           </form>
         </div>
@@ -51,7 +57,9 @@ export default {
       immediate: true,
     },
   },
-  mounted() {},
+  mounted() {
+    console.log(styles, "styles");
+  },
 
   methods: {
     async login() {
