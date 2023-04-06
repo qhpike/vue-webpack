@@ -11,7 +11,7 @@
       </el-form-item>
     </el-form>
     <div class="box-show">
-      <el-table :data="list" fit :height="tableHeight">
+      <el-table :data="list" fit :height="tableHeight" size="mini">
         <el-table-column prop="orderId" label="订单号"> </el-table-column>
         <el-table-column prop="userObj.nickName" label="用户">
         </el-table-column>
@@ -21,9 +21,7 @@
         </el-table-column>
         <el-table-column prop="invoiceStatus" label="支付状态" align="center">
           <template v-slot="{ row }">
-            <div
-              :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'"
-            >
+            <div :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'">
               {{ row.invoiceStatus === 0 ? "待支付" : "已支付" }}
             </div>
           </template>
@@ -40,15 +38,10 @@
         </el-table-column>
       </el-table>
       <div style="text-align: right; margin-top: 20px">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="params.page"
-          :page-sizes="[2, 5, 10, 20, 50, 100]"
-          :page-size="params.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        >
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+          :current-page.sync="params.page" :page-sizes="[2, 5, 10, 20, 50, 100]"
+          :page-size="params.pageSize" layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
         </el-pagination>
       </div>
     </div>
@@ -95,8 +88,8 @@ export default {
     getStatus(val) {
       return status.get(val);
     },
-    handleSizeChange() {},
-    handleCurrentChange() {},
+    handleSizeChange() { },
+    handleCurrentChange() { },
   },
 };
 </script>
