@@ -17,6 +17,7 @@ import store from "@/store";
 import "./routerHook";
 import "./icons";
 import "@/core/index";
+import 'default-passive-events';//去除touchstart谷歌提示
 Vue.use(ElementUI, { size: "small", zIndex: 3000 });
 Vue.use(VueViewer, {
   defaultOptions: {
