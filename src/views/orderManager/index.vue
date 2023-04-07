@@ -5,12 +5,24 @@
 -->
 <template>
   <div class="container">
+    <h5>订单管理</h5>
     <el-form ref="form" inline>
-      <el-form-item>
-        <el-input prefix-icon="el-icon-search" placeholder="订单号" clearable></el-input>
+      <el-form-item label="下单日期：">
+        <date-range v-model="query.createTime" @change="createTimeChange"></date-range>
       </el-form-item>
       <el-form-item>
-        <el-input></el-input>
+        <el-input v-model="query.orderId" style="width:210px !important;"
+          prefix-icon="el-icon-search" placeholder="订单号" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="query.nickName" style="width:210px !important;"
+          prefix-icon="el-icon-search" placeholder="用户名" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model="query.invoiceStatus" @change="getData" placeholder="请选择支付状态" clearable>
+          <el-option label="已付款" :value="1" />
+          <el-option label="未付款" :value="0" />
+        </el-select>
       </el-form-item>
       <div>
         <el-form-item>
@@ -27,7 +39,7 @@
       </div>
     </el-form>
     <div class="box-show">
-      <el-table :data="list" fit :height="tableHeight" tooltip-effect="light">
+      <el-table :data="list" fit :height="tableHeight" tooltip-effect="light" v-loading="loading">
         <el-table-column prop="orderId" label="订单号"> </el-table-column>
         <el-table-column prop="userObj.nickName" label="用户">
         </el-table-column>
@@ -76,10 +88,18 @@ const status = new Map()
 export default {
   data() {
     return {
+      loading: false,
       list: [],
       params: {
         page: 1,
         pageSize: 20,
+      },
+      custQuery: '',//模糊查询
+      query: {
+        createTime: '',
+        orderId: '',
+        nickName: '',
+        invoiceStatus: '',
       },
       form: {
         status: 99
@@ -89,7 +109,6 @@ export default {
     };
   },
   mounted() {
-    this.has = false;
     this.getData();
 
     this.$nextTick(() => {
@@ -98,10 +117,12 @@ export default {
   },
   methods: {
     async getData() {
+      this.loading = true;
       const { code, data } = await this.$service.order.list();
       if (code !== 200) return;
       this.list = data.result;
       this.total = data.total;
+      this.loading = false;
       console.log(code, data);
     },
     getStatus(val) {
@@ -111,6 +132,9 @@ export default {
     handleCurrentChange() { },
     statusChange(val) {
       console.log(val, 'status-tab-change');
+    },
+    createTimeChange(val) {
+      console.log(val, 'time==change');
     }
   },
 };

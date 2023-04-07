@@ -91,9 +91,7 @@
 }
 .el-table.table-border {
   border: 1px solid #ebeef5;
-  td {
-    // border-bottom: 1px solid #ebeef5;
-  }
+  
   tbody tr:last-of-type td {
     border-bottom: none;
   }

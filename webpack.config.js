@@ -14,6 +14,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 const readEnv = require('./readEnv')
 const { resolve } = require('path')
 const envirmont = readEnv()
+
 module.exports = env => {
   return {
     entry: {
