@@ -45,6 +45,33 @@
 .el-form .el-input {
   width: 150px !important;
 }
+// placeholder样式
+.el-input__inner::placeholder {
+  color: #666 !important;
+}
+// 下拉框的里面的placeholder的字体
+.el-select-y {
+  .el-input__inner::placeholder {
+    color: #666;
+  }
+}
+.task_list {
+  .filterTools {
+    input::-webkit-input-placeholder {
+      color: #4d4d4d;
+    }
+    input::-moz-input-placeholder {
+      color: #4d4d4d;
+    }
+    input::-ms-input-placeholder {
+      color: #4d4d4d;
+    }
+  }
+}
+
+.el-radio__label {
+  font-size: 12px;
+}
 
 // dropdown
 .el-dropdown-menu {
@@ -84,7 +111,7 @@
 .el-table__body td {
   padding: 0;
   height: 30px;
-  color: #777777 !important;
+  color: #000 !important;
   font-size: 12px;
 }
 .el-table th.el-table__cell > .cell {
@@ -93,15 +120,49 @@
 .el-table--mini .el-table__cell{
   padding: 2px 0px !important;
 }
+.el-table--enable-row-hover .el-table__body tr:hover > td,
+.el-table__body tr.current-row > td {
+  background: rgba(211, 223, 247, 1) !important;
+  transition: background 0.3s;
+}
 
+// 色调
+.el-button--primary.is-plain {
+  color: #1676fe;
+  background-color: #f5f5f5;
+  border-color: #f5f5f5;
+}
+
+.el-button.el-button--text {
+  color: #1676fe !important;
+}
 .el-form-item__label {
   font-size: 12px !important;
   font-weight: 400;
 }
 // tooltip样式
+.el-tooltip__popper.is-light.tooltip-item {
+  border: 1px solid rgba($color: #808080, $alpha: 0.2) !important;
+  // color: red !important;
+}
+// .el-tooltip__popper.table-over {
+//   background: #e86474 !important;
+//   color: $red;
+//   border: 1px solid rgba($color: #808080, $alpha: 0.2) !important;
+// }
 .el-tooltip__popper.is-dark.cust-discounter-rate {
   background: #e86474 !important;
   color: #fff !important;
+}
+// .el-tooltip__popper.is-dark.cust-discounter-rate {
+//   background: #e86474 !important;
+//   color: #fff !important;
+// }
+// 按钮组样式
+.el-radio-group .el-radio-button__orig-radio:checked+.el-radio-button__inner  {
+  color: $--color-primary !important;
+  background-color: transparent !important;
+
 }
 
 

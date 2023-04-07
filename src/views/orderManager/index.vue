@@ -5,19 +5,35 @@
 -->
 <template>
   <div class="container">
-    <el-form ref="form">
+    <el-form ref="form" inline>
+      <el-form-item>
+        <el-input prefix-icon="el-icon-search" placeholder="订单号" clearable></el-input>
+      </el-form-item>
       <el-form-item>
         <el-input></el-input>
       </el-form-item>
+      <div>
+        <el-form-item>
+          <el-radio-group v-model="form.status" @change="statusChange">
+            <el-radio-button :label="99">全部</el-radio-button>
+            <el-radio-button :label="0">待付款</el-radio-button>
+            <el-radio-button :label="1">待发货</el-radio-button>
+            <el-radio-button :label="2">已发货</el-radio-button>
+            <el-radio-button :label="3">已完成</el-radio-button>
+            <el-radio-button :label="4">已取消</el-radio-button>
+            <el-radio-button :label="5">已关闭</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+      </div>
     </el-form>
     <div class="box-show">
-      <el-table :data="list" fit :height="tableHeight" size="mini">
+      <el-table :data="list" fit :height="tableHeight" tooltip-effect="light">
         <el-table-column prop="orderId" label="订单号"> </el-table-column>
         <el-table-column prop="userObj.nickName" label="用户">
         </el-table-column>
         <el-table-column prop="receivAble" label="订单金额"> </el-table-column>
         <el-table-column prop="actualAmount" label="实收"> </el-table-column>
-        <el-table-column prop="address" label="地址" show-overflow-tooltip="">
+        <el-table-column prop="address" label="地址" show-overflow-tooltip>
         </el-table-column>
         <el-table-column prop="invoiceStatus" label="支付状态" align="center">
           <template v-slot="{ row }">
@@ -65,6 +81,9 @@ export default {
         page: 1,
         pageSize: 20,
       },
+      form: {
+        status: 99
+      },
       total: 0,
       tableHeight: undefined,
     };
@@ -90,6 +109,9 @@ export default {
     },
     handleSizeChange() { },
     handleCurrentChange() { },
+    statusChange(val) {
+      console.log(val, 'status-tab-change');
+    }
   },
 };
 </script>
