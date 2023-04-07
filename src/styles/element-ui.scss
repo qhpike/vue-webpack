@@ -87,6 +87,7 @@
 }
 .el-table--fit {
   border: 1px solid #ebeef5;
+  border-right:  1px solid #ebeef5 !important;
 }
 .el-table.table-border {
   border: 1px solid #ebeef5;
@@ -129,7 +130,7 @@
   border-left: none;
 }
 .box-show .el-table__row td:last-of-type {
-  border-right: 1px solid #ebeef5;
+  border-right: none;
 }
 
 // 色调
