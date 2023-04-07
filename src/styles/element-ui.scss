@@ -39,9 +39,7 @@
     }
   }
 }
-.el-form-item--small.el-form-item {
-  margin-bottom: 10px !important;
-}
+
 .el-form .el-input {
   width: 150px !important;
 }
@@ -124,6 +122,14 @@
 .el-table__body tr.current-row > td {
   background: rgba(211, 223, 247, 1) !important;
   transition: background 0.3s;
+}
+
+.box-show .el-table__row td:first-of-type {
+  // border-left: 1px solid #ebeef5;
+  border-left: none;
+}
+.box-show .el-table__row td:last-of-type {
+  border-right: 1px solid #ebeef5;
 }
 
 // 色调
