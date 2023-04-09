@@ -5,28 +5,47 @@
 -->
 <template>
   <div class="container">
-    <h5>订单管理</h5>
     <el-form ref="form" inline>
+      <h5>订单管理</h5>
       <el-form-item label="下单日期：">
-        <date-range v-model="query.createTime" @change="createTimeChange"></date-range>
+        <date-range
+          v-model="query.createTime"
+          @change="querySearch"
+        ></date-range>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="query.orderId" style="width:210px !important;"
-          prefix-icon="el-icon-search" placeholder="订单号" clearable></el-input>
+        <el-input
+          v-model="query.orderId"
+          style="width: 210px !important"
+          prefix-icon="el-icon-search"
+          placeholder="订单号"
+          @change="querySearch"
+          clearable
+        ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="query.nickName" style="width:210px !important;"
-          prefix-icon="el-icon-search" placeholder="用户名" clearable></el-input>
+        <el-input
+          v-model="query.nickName"
+          prefix-icon="el-icon-search"
+          placeholder="用户名"
+          @change="querySearch"
+          clearable
+        ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-select v-model="query.invoiceStatus" @change="getData" placeholder="请选择支付状态" clearable>
+        <el-select
+          v-model="query.invoiceStatus"
+          @change="querySearch"
+          placeholder="请选择支付状态"
+          clearable
+        >
           <el-option label="已付款" :value="1" />
           <el-option label="未付款" :value="0" />
         </el-select>
       </el-form-item>
       <div>
         <el-form-item>
-          <el-radio-group v-model="form.status" @change="statusChange">
+          <el-radio-group v-model="form.status" @change="querySearch">
             <el-radio-button :label="99">全部</el-radio-button>
             <el-radio-button :label="0">待付款</el-radio-button>
             <el-radio-button :label="1">待发货</el-radio-button>
@@ -39,7 +58,13 @@
       </div>
     </el-form>
     <div class="box-show">
-      <el-table :data="list" fit :height="tableHeight" tooltip-effect="light" v-loading="loading">
+      <el-table
+        :data="list"
+        fit
+        :height="tableHeight"
+        tooltip-effect="light"
+        v-loading="loading"
+      >
         <el-table-column prop="orderId" label="订单号"> </el-table-column>
         <el-table-column prop="userObj.nickName" label="用户">
         </el-table-column>
@@ -49,7 +74,9 @@
         </el-table-column>
         <el-table-column prop="invoiceStatus" label="支付状态" align="center">
           <template v-slot="{ row }">
-            <div :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'">
+            <div
+              :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'"
+            >
               {{ row.invoiceStatus === 0 ? "待支付" : "已支付" }}
             </div>
           </template>
@@ -65,13 +92,12 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="text-align: right; margin-top: 20px">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-          :current-page.sync="params.page" :page-sizes="[2, 5, 10, 20, 50, 100]"
-          :page-size="params.pageSize" layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
-      </div>
+      <Pagination
+        :page="params.page"
+        :pageSize="params.pageSize"
+        :total="total"
+        @change="pageChange"
+      />
     </div>
   </div>
 </template>
@@ -94,15 +120,15 @@ export default {
         page: 1,
         pageSize: 20,
       },
-      custQuery: '',//模糊查询
+      custQuery: "", //模糊查询
       query: {
-        createTime: '',
-        orderId: '',
-        nickName: '',
-        invoiceStatus: '',
+        createTime: "",
+        orderId: "",
+        nickName: "",
+        invoiceStatus: "",
       },
       form: {
-        status: 99
+        status: 99,
       },
       total: 0,
       tableHeight: undefined,
@@ -128,14 +154,19 @@ export default {
     getStatus(val) {
       return status.get(val);
     },
-    handleSizeChange() { },
-    handleCurrentChange() { },
-    statusChange(val) {
-      console.log(val, 'status-tab-change');
+    pageChange(val) {
+      this.params.page = val.page;
+      this.params.pageSize = val.pageSize;
+      this.getData();
     },
-    createTimeChange(val) {
-      console.log(val, 'time==change');
-    }
+
+    querySearch() {
+      this.params.page = 1;
+      this.getData();
+    },
+    paginationChange(val) {
+      console.log(val, "页码变动");
+    },
   },
 };
 </script>

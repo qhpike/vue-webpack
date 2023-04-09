@@ -106,16 +106,12 @@
         </el-table-column>
       </el-table>
       <div style="text-align: right; margin-top: 20px">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="params.page"
-          :page-sizes="[2, 5, 10, 20, 50, 100]"
-          :page-size="params.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
+        <Pagination
+          :page="params.page"
+          :pageSize="params.pageSize"
           :total="total"
-        >
-        </el-pagination>
+          @change="pageChange"
+        />
       </div>
     </div>
 
@@ -203,12 +199,9 @@ export default {
       if (code !== 200) return;
       this.categoryList = data;
     },
-    handleSizeChange(val) {
-      this.params.pageSize = Number(val);
-      this.getList();
-    },
-    handleCurrentChange(val) {
-      this.params.page = Number(val);
+    pageChange(val) {
+      this.params.page = val.page;
+      this.params.pageSize = val.pageSize;
       this.getList();
     },
     handleAdd() {

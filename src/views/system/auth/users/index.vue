@@ -76,18 +76,12 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="text-align: right; margin-top: 20px">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page.sync="params.page"
-          :page-sizes="[2, 5, 10, 20, 50, 100]"
-          :page-size="params.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        >
-        </el-pagination>
-      </div>
+      <Pagination
+        :page="params.page"
+        :pageSize="params.pageSize"
+        :total="total"
+        @change="pageChange"
+      />
     </div>
     <user-dialog
       :visible.sync="visible"
@@ -159,12 +153,9 @@ export default {
         this.areaTree = formatToAreaTree(data, this.areaId, "self");
       }
     },
-    handleSizeChange(val) {
-      this.params.pageSize = Number(val);
-      this.getList();
-    },
-    handleCurrentChange(val) {
-      this.params.page = Number(val);
+    pageChange(val) {
+      this.params.page = val.page;
+      this.params.pageSize = val.pageSize;
       this.getList();
     },
     /**部门筛选 */
