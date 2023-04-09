@@ -45,7 +45,7 @@
       </el-form-item>
       <div>
         <el-form-item>
-          <el-radio-group v-model="form.status" @change="querySearch">
+          <el-radio-group v-model="query.status" @change="querySearch">
             <el-radio-button :label="99">全部</el-radio-button>
             <el-radio-button :label="0">待付款</el-radio-button>
             <el-radio-button :label="1">待发货</el-radio-button>
@@ -126,10 +126,9 @@ export default {
         orderId: "",
         nickName: "",
         invoiceStatus: "",
-      },
-      form: {
         status: 99,
       },
+
       total: 0,
       tableHeight: undefined,
     };
@@ -144,28 +143,43 @@ export default {
   methods: {
     async getData() {
       this.loading = true;
-      const { code, data } = await this.$service.order.list();
+      const params = this.getParams();
+      const { code, data } = await this.$service.order.list(params);
       if (code !== 200) return;
       this.list = data.result;
       this.total = data.total;
       this.loading = false;
-      console.log(code, data);
     },
     getStatus(val) {
       return status.get(val);
     },
+    /**查询(分页) */
     pageChange(val) {
-      this.params.page = val.page;
-      this.params.pageSize = val.pageSize;
+      this.params = val;
       this.getData();
     },
-
+    /**查询（分页除外） */
     querySearch() {
       this.params.page = 1;
       this.getData();
     },
-    paginationChange(val) {
-      console.log(val, "页码变动");
+    /**查询参数处理 */
+    getParams() {
+      const query = JSON.parse(JSON.stringify(this.query));
+      for (const key in query) {
+        if (Object.hasOwnProperty.call(query, key)) {
+          if (!query[key] && query[key] !== 0) {
+            delete query[key];
+          }
+          if (query.status === 99) {
+            delete query.status;
+          }
+        }
+      }
+      return {
+        params: this.params,
+        query: query,
+      };
     },
   },
 };
