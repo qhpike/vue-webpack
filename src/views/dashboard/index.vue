@@ -22,7 +22,7 @@
   <div style="width: 400px; height: 400px; position: relative">
     <!-- <PicZoom  :url="baseUrl+avatar" :scale="3"/> -->
     <word-cloud></word-cloud>
-    <seam-less></seam-less>
+    <seam-less :list-data="listData"></seam-less>
   </div>
 </template>
 
@@ -38,10 +38,28 @@ export default {
   data() {
     return {
       baseUrl: MYURL.BASE_SERVER,
+      listData: [],
     };
   },
   computed: {
     ...mapGetters(["sidebar", "avatar", "name"]),
   },
+  mounted() {
+    this.getSeamList()
+  },
+  methods: {
+    async getSeamList() {
+      const params = {
+        params: {
+          page: 1,
+          pageSize: 20,
+        }
+      }
+      const { code, data } = await this.$service.order.list(params);
+      if (code !== 200) return;
+      this.listData = data.result;
+
+    }
+  }
 };
 </script>
