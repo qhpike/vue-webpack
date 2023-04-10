@@ -49,7 +49,7 @@
             <el-radio-button :label="99">全部</el-radio-button>
             <el-radio-button :label="0">待付款</el-radio-button>
             <el-radio-button :label="1">待发货</el-radio-button>
-            <el-radio-button :label="2">已发货</el-radio-button>
+            <el-radio-button :label="2">待收货</el-radio-button>
             <el-radio-button :label="3">已完成</el-radio-button>
             <el-radio-button :label="4">已取消</el-radio-button>
             <el-radio-button :label="5">已关闭</el-radio-button>
@@ -91,6 +91,19 @@
             <span>{{ row.createTime | onlyDate }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="操作">
+          <template v-slot="{ row }">
+            <el-button
+              v-if="row.status === 1"
+              type="text"
+              @click="handleSend(row)"
+              >发货</el-button
+            >
+            <el-button type="text" @click="handleDetail(row)"
+              >订单详情</el-button
+            >
+          </template>
+        </el-table-column>
       </el-table>
       <Pagination
         :page="params.page"
@@ -99,6 +112,7 @@
         @change="pageChange"
       />
     </div>
+    <Detail :id="id" :visible.sync="visible" />
   </div>
 </template>
 
@@ -108,10 +122,13 @@ const status = new Map()
   .set(0, "待付款")
   .set(1, "待发货")
   .set(2, "待收货")
-  .set(3, "已收货")
+  .set(3, "订单完成")
   .set(4, "订单取消")
   .set(5, "订单关闭");
 export default {
+  components: {
+    Detail: () => import("./Detail.vue"),
+  },
   data() {
     return {
       loading: false,
@@ -131,6 +148,8 @@ export default {
 
       total: 0,
       tableHeight: undefined,
+      id: undefined, //用于详情
+      visible: false, //用于详情
     };
   },
   mounted() {
@@ -180,6 +199,27 @@ export default {
         params: this.params,
         query: query,
       };
+    },
+    /**发货操作 */
+    async handleSend({ id }) {
+      try {
+        await this.$confirm("是否确认已发货", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+        });
+        const data = {
+          type: "send",
+        };
+        const { code } = await this.$service.order.update(id, data);
+        if (code !== 200) this.$message.error("操作失败");
+        this.$message.success("操作成功");
+        this.querySearch();
+      } catch (error) {}
+    },
+    /**订单详情 */
+    handleDetail({ id }) {
+      this.id = id;
+      this.visible = true;
     },
   },
 };

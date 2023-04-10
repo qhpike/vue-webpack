@@ -1,7 +1,7 @@
 /*
  * @Author: akexian
  * @Date: 2023-03-30
- * @Description: 
+ * @Description:
  */
 import request from "@/utils/request";
 class OrderService {
@@ -9,19 +9,19 @@ class OrderService {
     return request({
       url: `/api/v1/order/manager`,
       method: "get",
-      data
+      data,
     });
   }
 
   detail(id) {
     return request({
-      url: `/api/v1/spu/list/${id}`,
+      url: `/api/v1/order/list/${id}`,
       method: "get",
     });
   }
-  update(data) {
+  update(id, data) {
     return request({
-      url: "/api/v1/spu/list",
+      url: `/api/v1/order/list/${id}`,
       method: "put",
       data,
     });
