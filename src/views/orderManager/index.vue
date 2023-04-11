@@ -51,7 +51,7 @@
               <el-popover placement="bottom" trigger="hover" :open-delay="500"
                 class="item-p-container">
                 <div style="width:270px;">
-                  <el-table :data="row.skuArr" class="table-border">
+                  <el-table :data="row.skuArr" size="mini" class="table-border">
                     <el-table-column label="商品" prop="productSpuName" show-overflow-tooltip />
                     <el-table-column label="规格" prop="productSkuName" />
                     <el-table-column label="数量" prop="count" />
