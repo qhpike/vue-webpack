@@ -173,4 +173,13 @@
 
 }
 
+//控制网格 v-html 绑定的文本内容
+.el-table.child-table .item-p-container {
+  display: flex;
+  width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 

@@ -45,6 +45,26 @@
         <el-table-column prop="userObj.nickName" label="用户">
         </el-table-column>
         <el-table-column prop="receivAble" label="订单金额"> </el-table-column>
+        <el-table-column label="商品明细">
+          <template v-slot="{ row }">
+            <div v-if="row.skuText">
+              <el-popover placement="bottom" trigger="hover" :open-delay="500"
+                class="item-p-container">
+                <div style="width:270px;">
+                  <el-table :data="row.skuArr" class="table-border">
+                    <el-table-column label="商品" prop="productSpuName" show-overflow-tooltip />
+                    <el-table-column label="规格" prop="productSkuName" />
+                    <el-table-column label="数量" prop="count" />
+                  </el-table>
+                </div>
+                <div slot="reference" style="curosr:pointer;" class="ellipsis">
+                  {{row.skuText || '-'}}
+                </div>
+              </el-popover>
+            </div>
+            <span v-else>无</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="actualAmount" label="实收"> </el-table-column>
         <el-table-column prop="address" label="地址" show-overflow-tooltip>
         </el-table-column>
@@ -137,6 +157,11 @@ export default {
       const params = this.getParams();
       const { code, data } = await this.$service.order.list(params);
       if (code !== 200) return;
+      (data.result || []).forEach(item => { //商品明细描述文字
+        item.skuText = item.skuArr.map(child => {
+          return child.productSpuName + '/' + child.productSkuName
+        }).join(',')
+      })
       this.list = data.result;
       this.total = data.total;
       this.totalList = data.sumData
