@@ -200,6 +200,12 @@ module.exports = env => {
             chunks: 'all',
             priority: 10
           },
+          echarts: {
+            test: /[\\/]node_modules[\\/]echarts[\\/]/,
+            name: 'echarts',
+            chunks: "all",
+            priority: 10,
+          }
         },
       },
     },

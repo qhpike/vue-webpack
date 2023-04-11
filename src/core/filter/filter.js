@@ -1,3 +1,8 @@
+/*
+ * @Author: akexian
+ * @Date: 2022-12-07
+ * @Description: 
+ */
 import { parseTime } from '@/utils'
 import moment from 'moment'
 export function userTime(time, option) {
@@ -13,4 +18,11 @@ export function sex(value) {
 
 export function onlyDate(value) {
     return moment(value).format('yyyy-MM-DD')
+}
+export function DateTime(value) {
+    if (value) {
+        return moment(value).format('yyyy-MM-DD HH:mm:ss')
+    } else {
+        return ''
+    }
 }

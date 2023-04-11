@@ -8,37 +8,19 @@
     <el-form ref="form" inline>
       <h5>订单管理</h5>
       <el-form-item label="下单日期：">
-        <date-range
-          v-model="query.createTime"
-          @change="querySearch"
-        ></date-range>
+        <date-range v-model="query.createTime" @change="querySearch"></date-range>
       </el-form-item>
       <el-form-item>
-        <el-input
-          v-model="query.orderId"
-          style="width: 210px !important"
-          prefix-icon="el-icon-search"
-          placeholder="订单号"
-          @change="querySearch"
-          clearable
-        ></el-input>
+        <el-input v-model="query.orderId" style="width: 210px !important"
+          prefix-icon="el-icon-search" placeholder="订单号" @change="querySearch" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input
-          v-model="query.nickName"
-          prefix-icon="el-icon-search"
-          placeholder="用户名"
-          @change="querySearch"
-          clearable
-        ></el-input>
+        <el-input v-model="query.nickName" prefix-icon="el-icon-search" placeholder="用户名"
+          @change="querySearch" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-select
-          v-model="query.invoiceStatus"
-          @change="querySearch"
-          placeholder="请选择支付状态"
-          clearable
-        >
+        <el-select v-model="query.invoiceStatus" @change="querySearch" placeholder="请选择支付状态"
+          clearable>
           <el-option label="已付款" :value="1" />
           <el-option label="未付款" :value="0" />
         </el-select>
@@ -58,13 +40,7 @@
       </div>
     </el-form>
     <div class="box-show">
-      <el-table
-        :data="list"
-        fit
-        :height="tableHeight"
-        tooltip-effect="light"
-        v-loading="loading"
-      >
+      <el-table :data="list" fit :height="tableHeight" tooltip-effect="light" v-loading="loading">
         <el-table-column prop="orderId" label="订单号"> </el-table-column>
         <el-table-column prop="userObj.nickName" label="用户">
         </el-table-column>
@@ -74,9 +50,7 @@
         </el-table-column>
         <el-table-column prop="invoiceStatus" label="支付状态" align="center">
           <template v-slot="{ row }">
-            <div
-              :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'"
-            >
+            <div :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'">
               {{ row.invoiceStatus === 0 ? "待支付" : "已支付" }}
             </div>
           </template>
@@ -93,24 +67,13 @@
         </el-table-column>
         <el-table-column label="操作">
           <template v-slot="{ row }">
-            <el-button
-              v-if="row.status === 1"
-              type="text"
-              @click="handleSend(row)"
-              >发货</el-button
-            >
-            <el-button type="text" @click="handleDetail(row)"
-              >订单详情</el-button
-            >
+            <el-button v-if="row.status === 1" type="text" @click="handleSend(row)">发货</el-button>
+            <el-button type="text" @click="handleDetail(row)">订单详情</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <Pagination
-        :page="params.page"
-        :pageSize="params.pageSize"
-        :total="total"
-        @change="pageChange"
-      />
+      <Pagination :page="params.page" :pageSize="params.pageSize" :total="total"
+        @change="pageChange" />
     </div>
     <Detail :id="id" :visible.sync="visible" />
   </div>
@@ -148,7 +111,7 @@ export default {
 
       total: 0,
       tableHeight: undefined,
-      id: undefined, //用于详情
+      id: 0, //用于详情
       visible: false, //用于详情
     };
   },
@@ -214,7 +177,7 @@ export default {
         if (code !== 200) this.$message.error("操作失败");
         this.$message.success("操作成功");
         this.querySearch();
-      } catch (error) {}
+      } catch (error) { }
     },
     /**订单详情 */
     handleDetail({ id }) {

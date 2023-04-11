@@ -47,6 +47,9 @@
 .el-input__inner::placeholder {
   color: #666 !important;
 }
+.el-form-item__content {
+  font-size: 12px !important;
+}
 // 下拉框的里面的placeholder的字体
 .el-select-y {
   .el-input__inner::placeholder {
