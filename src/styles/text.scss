@@ -28,3 +28,7 @@
 .primary-text {
     @include colorText($textPrimary);
   }
+
+.price-text {
+  color: $textError;
+}

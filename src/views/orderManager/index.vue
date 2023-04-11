@@ -72,8 +72,16 @@
           </template>
         </el-table-column>
       </el-table>
-      <Pagination :page="params.page" :pageSize="params.pageSize" :total="total"
-        @change="pageChange" />
+      <div class="page-container">
+        <div>
+          <span style="margin-left:10px;" v-for="item in totalList" :key="item.status">
+            {{getStatus(+item.status)}}：<label
+              class="price-text font-size-12">{{ item.total}}</label> </span>
+        </div>
+        <Pagination :page="params.page" :pageSize="params.pageSize" :total="total"
+          @change="pageChange" />
+      </div>
+
     </div>
     <Detail :id="id" :visible.sync="visible" />
   </div>
@@ -113,6 +121,7 @@ export default {
       tableHeight: undefined,
       id: 0, //用于详情
       visible: false, //用于详情
+      totalList: [],
     };
   },
   mounted() {
@@ -130,6 +139,7 @@ export default {
       if (code !== 200) return;
       this.list = data.result;
       this.total = data.total;
+      this.totalList = data.sumData
       this.loading = false;
     },
     getStatus(val) {
@@ -196,10 +206,18 @@ export default {
   border-radius: 20px 20px 20px 20px;
   opacity: 0.1;
 }
-// .success-text {
-//   color: $green;
-// }
-// .error-text {
-//   color: $menuActiveText;
-// }
+.page-container {
+  display: flex;
+  div:first-of-type {
+    color: #333333;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding-bottom: 15px;
+  }
+  div:last-of-type {
+    width: 30%;
+  }
+}
 </style>

@@ -17,11 +17,13 @@
         </el-col>
 
         <el-col :span="12">
-          <el-form-item label="订单金额">¥{{order.receivAble}}</el-form-item>
+          <el-form-item label="订单金额">¥ <span
+              class="price-text">{{order.receivAble}}</span></el-form-item>
 
         </el-col>
         <el-col :span="12">
-          <el-form-item label="实收金额">¥{{order.actualAmount || '0.00'}}</el-form-item>
+          <el-form-item label="实收金额">¥ <span
+              class="price-text">{{order.actualAmount || '0.00'}}</span></el-form-item>
         </el-col>
 
         <el-col :span="12">
