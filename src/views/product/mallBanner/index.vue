@@ -1,14 +1,22 @@
 <template>
   <div class="container">
     <el-form :model="query" label-width="80px" size="small" ref="form">
-      <h5>商城banner2</h5>
+      <h5>商城banner</h5>
       <el-form-item style="text-align: right">
         <el-button type="primary" @click="handleAdd">新增Banner</el-button>
       </el-form-item>
     </el-form>
     <div class="box-show">
-      <el-table :data="tableData" style="width: 100%" fit size="mini" :height="tableHeight"
-        align="center" :header-cell-style="headClass" :cell-style="classChange">
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        fit
+        size="mini"
+        :height="tableHeight"
+        align="center"
+        :header-cell-style="headClass"
+        :cell-style="classChange"
+      >
         <el-table-column label="名称" align="center" prop="name" />
         <el-table-column label="图片" align="center" prop="imgUrl">
           <template v-slot="{ row }">
@@ -33,15 +41,29 @@
 
         <el-table-column label="操作" align="center">
           <template v-slot="{ row }">
-            <el-button size="small" type="text" icon="el-icon-edit"
-              @click="handleEdit(row)">编辑</el-button>
-            <el-button size="small" type="text" icon="el-icon-delete"
-              @click="handleDelete(row)">删除</el-button>
+            <el-button
+              size="small"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleEdit(row)"
+              >编辑</el-button
+            >
+            <el-button
+              size="small"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <banner-dialog :visible.sync="visible" :id.sync="id" @success="getList"></banner-dialog>
+    <banner-dialog
+      :visible.sync="visible"
+      :id.sync="id"
+      @success="getList"
+    ></banner-dialog>
   </div>
 </template>
 
@@ -64,7 +86,6 @@ export default {
   },
 
   mounted() {
-    console.log(`window.MYURL`, MYURL);
     this.getList();
     this.$nextTick(() => {
       this.tableHeight = getTableHeight(this.$refs.form) - 20 - 40 - 30;

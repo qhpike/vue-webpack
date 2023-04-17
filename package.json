@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server",
-    "build:prod": "cross-env NODE_ENV=production webpack",
-    "build:test": "cross-env NODE_ENV=development webpack"
+    "dev": "cross-env NODE_ENV=development  webpack-dev-server --env development ",
+    "build:prod": "cross-env NODE_ENV=production webpack --env production ",
+    "build:test": "cross-env NODE_ENV=development webpack --env development"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +22,6 @@
     "core-js": "^3.23.2",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
-    "dotenv": "^16.0.3",
     "eslint-config-vue": "^2.0.2",
     "eslint-plugin-vue": "^9.5.1",
     "html-webpack-plugin": "^5.5.0",

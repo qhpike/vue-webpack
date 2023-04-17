@@ -11,9 +11,9 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const WebpackBar = require('webpackbar')
 const { DefinePlugin } = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
+const readEnv = require('./readEnv')
 const { resolve } = require('path')
-const envirmont = require('dotenv').config({ path: `./.env.${process.env.NODE_ENV}` })
-console.log(process.env.NODE_ENV, 'rocess.env');
+const envirmont = readEnv()
 
 module.exports = env => {
   return {
@@ -45,7 +45,9 @@ module.exports = env => {
       }),
       new DefinePlugin({
         BASEURL: "'./'",
-        MYURL: JSON.stringify(envirmont.parsed),
+        MYURL: JSON.stringify({
+          ...envirmont
+        })
 
       }),
       new VueLoaderPlugin(),
