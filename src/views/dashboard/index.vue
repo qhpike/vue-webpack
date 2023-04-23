@@ -45,7 +45,7 @@ export default {
     ...mapGetters(["sidebar", "avatar", "name"]),
   },
   mounted() {
-    this.getSeamList()
+    this.getSeamList();
   },
   methods: {
     async getSeamList() {
@@ -53,13 +53,12 @@ export default {
         params: {
           page: 1,
           pageSize: 20,
-        }
-      }
+        },
+      };
       const { code, data } = await this.$service.order.list(params);
       if (code !== 200) return;
       this.listData = data.result;
-
-    }
-  }
+    },
+  },
 };
 </script>

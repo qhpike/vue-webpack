@@ -57,8 +57,6 @@
         ></el-input>
       </el-form-item>
 
-      
-
       <el-form-item label="划线价：" prop="origPrice">
         <el-input
           v-model="skuForm.origPrice"
@@ -68,7 +66,7 @@
         ></el-input>
       </el-form-item>
 
-       <el-form-item label="库存：" prop="stock">
+      <el-form-item label="库存：" prop="stock">
         <el-input
           v-model.number="skuForm.stock"
           placeholder="库存"
@@ -77,7 +75,7 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="是否上架：" prop="isOnsale" style="width:315px;">
+      <el-form-item label="是否上架：" prop="isOnsale" style="width: 315px">
         <el-switch
           v-model="skuForm.isOnsale"
           :active-value="1"
@@ -87,20 +85,17 @@
       </el-form-item>
 
       <el-form-item label="是否热门：" prop="isHot">
-        <div style="width:215px;">
+        <div style="width: 215px">
           <el-switch
-          v-model="skuForm.isHot"
-          :active-value="1"
-          :inactive-value="0"
-        >
-        </el-switch>
+            v-model="skuForm.isHot"
+            :active-value="1"
+            :inactive-value="0"
+          >
+          </el-switch>
         </div>
-        
       </el-form-item>
 
-     
-
-      <el-form-item label="是否新品：" prop="isNew" style="width:315px;">
+      <el-form-item label="是否新品：" prop="isNew" style="width: 315px">
         <el-switch
           v-model="skuForm.isNew"
           :active-value="1"
@@ -121,7 +116,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    spuList:[],
+    spuList: [],
     id: undefined,
   },
   data() {
@@ -129,7 +124,7 @@ export default {
       skuForm: {
         productSpuId: undefined,
         name: "",
-        unit: '',
+        unit: "",
         price: "",
         origPrice: "",
         stock: 0,
@@ -163,7 +158,7 @@ export default {
       });
     },
     async handleSubmit() {
-       await this.$refs.skuForm.validate();
+      await this.$refs.skuForm.validate();
       const skuForm = JSON.parse(JSON.stringify(this.skuForm));
       delete skuForm.checkPass;
       if (!skuForm.origPrice) {
@@ -186,7 +181,7 @@ export default {
       this.$emit("success");
       this.close();
     },
-  
+
     async getDetail(id) {
       const { code, data } = await this.$service.sku.detail(id);
       this.skuForm = data;

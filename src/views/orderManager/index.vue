@@ -8,19 +8,37 @@
     <el-form ref="form" inline>
       <h5>订单管理</h5>
       <el-form-item label="下单日期：">
-        <date-range v-model="query.createTime" @change="querySearch"></date-range>
+        <date-range
+          v-model="query.createTime"
+          @change="querySearch"
+        ></date-range>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="query.orderId" style="width: 210px !important"
-          prefix-icon="el-icon-search" placeholder="订单号" @change="querySearch" clearable></el-input>
+        <el-input
+          v-model="query.orderId"
+          style="width: 210px !important"
+          prefix-icon="el-icon-search"
+          placeholder="订单号"
+          @change="querySearch"
+          clearable
+        ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="query.nickName" prefix-icon="el-icon-search" placeholder="用户名"
-          @change="querySearch" clearable></el-input>
+        <el-input
+          v-model="query.nickName"
+          prefix-icon="el-icon-search"
+          placeholder="用户名"
+          @change="querySearch"
+          clearable
+        ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-select v-model="query.invoiceStatus" @change="querySearch" placeholder="请选择支付状态"
-          clearable>
+        <el-select
+          v-model="query.invoiceStatus"
+          @change="querySearch"
+          placeholder="请选择支付状态"
+          clearable
+        >
           <el-option label="已付款" :value="1" />
           <el-option label="未付款" :value="0" />
         </el-select>
@@ -40,7 +58,13 @@
       </div>
     </el-form>
     <div class="box-show">
-      <el-table :data="list" fit :height="tableHeight" tooltip-effect="light" v-loading="loading">
+      <el-table
+        :data="list"
+        fit
+        :height="tableHeight"
+        tooltip-effect="light"
+        v-loading="loading"
+      >
         <el-table-column prop="orderId" label="订单号"> </el-table-column>
         <el-table-column prop="userObj.nickName" label="用户">
         </el-table-column>
@@ -48,17 +72,25 @@
         <el-table-column label="商品明细">
           <template v-slot="{ row }">
             <div v-if="row.skuText">
-              <el-popover placement="bottom" trigger="hover" :open-delay="500"
-                class="item-p-container">
-                <div style="width:270px;">
+              <el-popover
+                placement="bottom"
+                trigger="hover"
+                :open-delay="500"
+                class="item-p-container"
+              >
+                <div style="width: 270px">
                   <el-table :data="row.skuArr" size="mini" class="table-border">
-                    <el-table-column label="商品" prop="productSpuName" show-overflow-tooltip />
+                    <el-table-column
+                      label="商品"
+                      prop="productSpuName"
+                      show-overflow-tooltip
+                    />
                     <el-table-column label="规格" prop="productSkuName" />
                     <el-table-column label="数量" prop="count" />
                   </el-table>
                 </div>
-                <div slot="reference" style="curosr:pointer;" class="ellipsis">
-                  {{row.skuText || '-'}}
+                <div slot="reference" style="curosr: pointer" class="ellipsis">
+                  {{ row.skuText || "-" }}
                 </div>
               </el-popover>
             </div>
@@ -70,7 +102,9 @@
         </el-table-column>
         <el-table-column prop="invoiceStatus" label="支付状态" align="center">
           <template v-slot="{ row }">
-            <div :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'">
+            <div
+              :class="row.invoiceStatus === 0 ? 'error-text' : 'success-text'"
+            >
               {{ row.invoiceStatus === 0 ? "待支付" : "已支付" }}
             </div>
           </template>
@@ -87,21 +121,38 @@
         </el-table-column>
         <el-table-column label="操作">
           <template v-slot="{ row }">
-            <el-button v-if="row.status === 1" type="text" @click="handleSend(row)">发货</el-button>
-            <el-button type="text" @click="handleDetail(row)">订单详情</el-button>
+            <el-button
+              v-if="row.status === 1"
+              type="text"
+              @click="handleSend(row)"
+              >发货</el-button
+            >
+            <el-button type="text" @click="handleDetail(row)"
+              >订单详情</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
       <div class="page-container">
         <div>
-          <span style="margin-left:10px;" v-for="item in totalList" :key="item.status">
-            {{getStatus(+item.status)}}：<label
-              class="price-text font-size-12">{{ item.total}}</label> </span>
+          <span
+            style="margin-left: 10px"
+            v-for="item in totalList"
+            :key="item.status"
+          >
+            {{ getStatus(+item.status) }}：<label
+              class="price-text font-size-12"
+              >{{ item.total }}</label
+            >
+          </span>
         </div>
-        <Pagination :page="params.page" :pageSize="params.pageSize" :total="total"
-          @change="pageChange" />
+        <Pagination
+          :page="params.page"
+          :pageSize="params.pageSize"
+          :total="total"
+          @change="pageChange"
+        />
       </div>
-
     </div>
     <Detail :id="id" :visible.sync="visible" />
   </div>
@@ -119,6 +170,13 @@ const status = new Map()
 export default {
   components: {
     Detail: () => import("./Detail.vue"),
+  },
+  mounted() {
+    this.getData();
+
+    this.$nextTick(() => {
+      this.tableHeight = getTableHeight(this.$refs.form) - 52 - 20 - 40;
+    });
   },
   data() {
     return {
@@ -144,27 +202,24 @@ export default {
       totalList: [],
     };
   },
-  mounted() {
-    this.getData();
 
-    this.$nextTick(() => {
-      this.tableHeight = getTableHeight(this.$refs.form) - 52 - 20 - 40;
-    });
-  },
   methods: {
     async getData() {
       this.loading = true;
       const params = this.getParams();
       const { code, data } = await this.$service.order.list(params);
       if (code !== 200) return;
-      (data.result || []).forEach(item => { //商品明细描述文字
-        item.skuText = item.skuArr.map(child => {
-          return child.productSpuName + '/' + child.productSkuName
-        }).join(',')
-      })
+      (data.result || []).forEach((item) => {
+        //商品明细描述文字
+        item.skuText = item.skuArr
+          .map((child) => {
+            return child.productSpuName + "/" + child.productSkuName;
+          })
+          .join(",");
+      });
       this.list = data.result;
       this.total = data.total;
-      this.totalList = data.sumData
+      this.totalList = data.sumData;
       this.loading = false;
     },
     getStatus(val) {
@@ -212,7 +267,7 @@ export default {
         if (code !== 200) this.$message.error("操作失败");
         this.$message.success("操作成功");
         this.querySearch();
-      } catch (error) { }
+      } catch (error) {}
     },
     /**订单详情 */
     handleDetail({ id }) {

@@ -125,6 +125,7 @@
             <span>{{ row.isHot === 1 ? "是" : "否" }}</span>
           </template>
         </el-table-column>
+
         <el-table-column prop="isNew" align="center" label="新品">
           <template v-slot="{ row }">
             <span>{{ row.isNew === 1 ? "是" : "否" }}</span>
