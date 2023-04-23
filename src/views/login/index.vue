@@ -15,13 +15,8 @@
             </div>
             <div>
               <h5>账号</h5>
-              <input
-                type="text"
-                v-model="username"
-                @focus="input1 = true"
-                @blur="input1 = username ? true : false"
-                class="input"
-              />
+              <input type="text" v-model="username" @focus="input1 = true"
+                @blur="input1 = username ? true : false" class="input" />
             </div>
           </div>
           <div class="input-group" :class="{ focus: input2 }">
@@ -30,14 +25,8 @@
             </div>
             <div>
               <h5>密码</h5>
-              <input
-                type="password"
-                v-model="password"
-                @focus="input2 = true"
-                autocomplete="false"
-                @blur="input2 = password ? true : false"
-                class="input"
-              />
+              <input type="password" v-model="password" @focus="input2 = true" autocomplete="false"
+                @blur="input2 = password ? true : false" class="input" />
             </div>
           </div>
           <input type="submit" class="btn" value="登录" />
@@ -46,6 +35,11 @@
       </div>
     </div>
     <!-- <a href="https://www.cqbegin.com" target="_blank" class="copyright">&copy; cqbegin</a> -->
+    <div class="footer">
+      <a href="http://beian.miit.gov.cn">
+        渝ICP备2021003794号
+      </a>
+    </div>
   </div>
 </template>
 <script>
@@ -67,7 +61,7 @@ export default {
       immediate: true,
     },
   },
-  mounted() {},
+  mounted() { },
   methods: {
     resetForm() {
       this.username = "";
@@ -88,7 +82,7 @@ export default {
             this.$message.error(res.message);
           }
         })
-        .catch((error) => {});
+        .catch((error) => { });
     },
     userBlur() {
       this.input1 = true;
@@ -97,7 +91,7 @@ export default {
       this.input2 = true;
     },
   },
-  mounted() {},
+  mounted() { },
 };
 </script>
 <style lang="scss" scoped>
@@ -158,7 +152,7 @@ form h2 {
 }
 .input-group:before,
 .input-group:after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -2px;
   width: 0;
@@ -219,7 +213,7 @@ form h2 {
   padding: 8px 11px;
   font-size: 18px;
   color: #555;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 a {
   display: block;
@@ -245,7 +239,7 @@ a:hover {
   cursor: pointer;
   color: #fff;
   text-transform: uppercase;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-size: 200%;
   transition: 0.5s;
 }
@@ -260,7 +254,7 @@ a:hover {
   color: #38d39f;
   text-align: center;
   font-size: 18px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 /*媒体查询*/
@@ -296,5 +290,12 @@ a:hover {
   .login-box {
     justify-content: center;
   }
+}
+.footer {
+  text-align: center;
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  color: lightskyblue;
 }
 </style>
