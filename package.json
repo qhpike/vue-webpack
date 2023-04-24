@@ -8,7 +8,8 @@
     "dev": "cross-env NODE_ENV=development  webpack-dev-server --env development ",
     "build:prod": "cross-env NODE_ENV=production webpack --env production ",
     "build:test": "cross-env NODE_ENV=development webpack --env development",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "lint-fix": "eslint --fix --ext .js,.vue src"
   },
   "keywords": [],
   "author": "",
@@ -23,10 +24,6 @@
     "core-js": "^3.23.2",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
-    "eslint": "^8.39.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.11.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
     "postcss-loader": "^7.0.0",
