@@ -93,6 +93,10 @@ export default {
     },
     handleAdd() {
       this.visible = true;
+
+
+
+      
     },
     handleEdit({ id }) {
       this.id = id;

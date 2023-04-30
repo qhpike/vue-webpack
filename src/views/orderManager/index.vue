@@ -116,7 +116,7 @@
         </el-table-column>
         <el-table-column prop="createTime" label="下单时间">
           <template v-slot="{ row }">
-            <span>{{ row.createTime | onlyDate }}</span>
+            <span>{{ row.createTime | dateTime }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
