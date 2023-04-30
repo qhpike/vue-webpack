@@ -17,11 +17,11 @@ export function sex(value) {
 }
 
 export function onlyDate(value) {
-    return moment(value).format('yyyy-MM-DD')
+    return moment(value).format('yyyy-MM-dd')
 }
 export function DateTime(value) {
     if (value) {
-        return moment(value).format('yyyy-MM-DD HH:mm:ss')
+        return moment(value).format('yyyy-MM-dd HH:mm:ss')
     } else {
         return ''
     }
