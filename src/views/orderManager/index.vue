@@ -71,7 +71,7 @@
         <el-table-column prop="receivAble" label="订单金额"> </el-table-column>
         <el-table-column label="商品明细">
           <template v-slot="{ row }">
-            <div v-if="row.skuText">
+            <div v-if="row.skuText" style="cursor: pointer;">
               <el-popover
                 placement="bottom"
                 trigger="hover"

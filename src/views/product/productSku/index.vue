@@ -204,7 +204,7 @@ export default {
       total: 100,
       params: {
         page: 1,
-        pageSize: 5,
+        pageSize: 20,
       },
       tableHeight: 0,
       visible: false,

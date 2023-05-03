@@ -42,6 +42,10 @@
           <el-form-item label="支付时间">{{order.invoiceTime | DateTime }}</el-form-item>
         </el-col>
 
+        <el-col :span="12" v-if="order.invoiceStatus === 1">
+          <el-form-item label="支付方式">{{order.payType === 1 ? '微信':'现金' }}</el-form-item>
+        </el-col>
+
         <el-col :span="12" v-if="![0,1,4,5].includes(order.status)">
           <el-form-item label="发货时间">{{order.sendTime | DateTime }}</el-form-item>
 
