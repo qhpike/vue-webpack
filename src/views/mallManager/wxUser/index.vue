@@ -35,6 +35,16 @@
             {{row.updateTime | dateTime }}
           </template>
         </el-table-column>
+        <el-table-column prop="updateTime" label="登录IP">
+          <template v-slot="{ row }">
+            {{row.ipAddress }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="updateTime" label="位置">
+          <template v-slot="{ row }">
+            {{row.ipPositon }}
+          </template>
+        </el-table-column>
 
       </el-table>
 
