@@ -1,40 +1,40 @@
 // base color
-$blue:#324157;
-$light-blue:#3A71A8;
-$red:#f56c6c;
-$pink: #E65D6E;
-$green: #30B08F;
-$tiffany: #4AB7BD;
-$yellow:#FEC171;
-$panGreen: #30B08F;
+$blue: #324157;
+$light-blue: #3a71a8;
+$red: #f56c6c;
+$pink: #e65d6e;
+$green: #30b08f;
+$tiffany: #4ab7bd;
+$yellow: #fec171;
+$panGreen: #30b08f;
 $dark-blue: #0278dc;
 
 $--color-primary: #3067d9;
 $--color-success: #13ce66;
-$--color-warning: #FFBA00;
-$--color-danger: #F56C6C;
+$--color-warning: #ffba00;
+$--color-danger: #f56c6c;
 
 // sidebar
-$menuText:#bfcbd9;
-$menuActiveText:#409EFF;
-$subMenuActiveText:#f4f4f5; //https://github.com/ElemeFE/element/issues/12951
+$menuText: #bfcbd9;
+$menuActiveText: #409eff;
+$subMenuActiveText: #f4f4f5; //https://github.com/ElemeFE/element/issues/12951
 
 // $menuBg:#4b8ddf;
-$menuBg:#304156;
+$menuBg: #304156;
 // $menuBg:#ff7f00;
-$menuHover:#263445;
+$menuHover: #263445;
 
-$subMenuBg:#1f2d3d;
-$subMenuHover:#001528;
+$subMenuBg: #1f2d3d;
+$subMenuHover: #001528;
 
 $sideBarWidth: 210px;
 
 // 用于表格提醒
-$textError: #EC3C3C;
-$textWarning: #E89519;
-$textInfo:#666666;
-$textSuccess: #4CB519;
-$textPrimary:#0099FF;
+$textError: #ec3c3c;
+$textWarning: #e89519;
+$textInfo: #666666;
+$textSuccess: #4cb519;
+$textPrimary: #0099ff;
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
